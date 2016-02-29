@@ -17,15 +17,28 @@ import org.verapdf.rest.environment.Environments;
  */
 @Path("/api")
 public final class ApiResource {
+    /**
+     * @return
+     */
     @GET
-    @Path("/")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Environment getEnvironent() {
+    public static Environment getEnvironent() {
         return Environments.getEnvironment();
     }
     
+    /**
+     * @return
+     */
     @Path("/profiles")
-    public ProfileResource getProfileResource() {
+    public static ProfileResource getProfileResource() {
         return new ProfileResource();
+    }
+
+    /**
+     * @return
+     */
+    @Path("/validate")
+    public static ValidateResource getValidateResource() {
+        return new ValidateResource();
     }
 }
