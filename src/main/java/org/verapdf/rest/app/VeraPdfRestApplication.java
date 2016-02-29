@@ -4,10 +4,9 @@
 package org.verapdf.rest.app;
 
 import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.dropwizard.views.ViewBundle;
 
 import java.util.EnumSet;
 
@@ -50,12 +49,7 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
         // Dropwizard bundle to handle Jackson XML serialisation
         final XmlBundle xmlBundle = new XmlBundle();
         bootstrap.addBundle(xmlBundle);
-        // Allow us to serve views
-        bootstrap.addBundle(new ViewBundle<>());
-        // Allow us to serve static assets for CSS and Javascript
-        bootstrap.addBundle(new AssetsBundle("/assets/css", "/css", null, "css")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        bootstrap.addBundle(new AssetsBundle("/assets/img", "/img", null, "img")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        bootstrap.addBundle(new MultiPartBundle());
     }
 
     @Override
