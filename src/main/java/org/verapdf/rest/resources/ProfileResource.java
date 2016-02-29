@@ -37,9 +37,8 @@ public class ProfileResource {
      * 
      */
     @GET
-    @Path("/")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Set<ProfileDetails> getProfileDetails() {
+    public static Set<ProfileDetails> getProfileDetails() {
         return DETAILS;
     }
 
