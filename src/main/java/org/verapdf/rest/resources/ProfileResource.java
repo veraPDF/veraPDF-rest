@@ -69,7 +69,7 @@ public class ProfileResource {
      * 
      */
     @GET
-    @Path("/id/{profileid}")
+    @Path("/{profileid}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public ValidationProfile getProfile(@PathParam("profileid") String profileId) {
         return DIRECTORY.getValidationProfileById(profileId);
