@@ -89,20 +89,20 @@ Services and curl tests
 There are a few services that you can test a few with [curl](https://curl.haxx.se/).
 
 ### API Environment service
-Shows some simple information about the server environment on [localhost:8080/api](localhost:8080/api)
+Shows some simple information about the server environment on [localhost:8080/api](http://localhost:8080/api)
 
     curl localhost:8080/api
 
 ### Validation Profile services
-Validation Profiles contain the PDF/A validation tests and their description.  A list of profile details is available at [localhost:8080/api/profiles/](localhost:8080/api/profiles/). To test with curl:
+Validation Profiles contain the PDF/A validation tests and their description.  A list of profile details is available at [localhost:8080/api/profiles/](http://localhost:8080/api/profiles/). To test with curl:
 
     curl localhost:8080/api/profiles
 
-Each profile is identified by a 2 letter code made up the PDF/A version amd level. These are listed at [localhost:8080/api/profles/ids/](localhost:8080/api/profiles/ids/):
+Each profile is identified by a 2 letter code made up the PDF/A version amd level. These are listed at [localhost:8080/api/profles/ids/](http://localhost:8080/api/profiles/ids/):
 
     curl localhost:8080/api/profiles/ids
 
-An individual profile can be obtained by ID at http://localhost:8080/api/profiles/*id*, e.g. [localhost:8080/api/profiles/1b/](localhost:8080/api/profiles/1b/):
+An individual profile can be obtained by ID at http://localhost:8080/api/profiles/*id*, e.g. [localhost:8080/api/profiles/1b/](http://localhost:8080/api/profiles/1b/):
 
     curl localhost:8080/api/profiles/1b
 
