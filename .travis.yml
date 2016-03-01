@@ -1,0 +1,17 @@
+language: java
+
+jdk:
+  - openjdk7
+  - oraclejdk7
+  - oraclejdk8
+
+branches:
+  except:
+    - /^v|d\d+\.\d+\.\d+$/
+
+install:
+  - mvn clean install -q
+
+after_script:
+  - java -jar target/verapdf-rest-0.0.1-SNAPSHOT.jar server
+  - wget http://localhost:8080/api
