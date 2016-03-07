@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+
+    <title>VeraPDF validator</title>
+</head>
+<body>
+<section>
+
+    <article>
+        <header>
+            <h2>VeraPDF validator</h2>
+        </header>
+        <form id="validate-form" action="rest/file/upload" method="post" enctype="multipart/form-data">
+            <label for="inputProfileId">Select profile for validation</label>
+            <select id="inputProfileId" name="profileID">
+                <option value="1b" selected="selected">1b</option>
+                <option value="2b">2b</option>
+                <option value="3b">3b</option>
+            </select>
+            <br/>
+
+            <label for="inputPdfToValidate">Upload PDF file to validate</label>
+            <input id="inputPdfToValidate" type="file" name="file">
+            <br/>
+
+            <input id="getprofile" type="button" value="Get profile"/>
+            <input id="validate" type="button" value="Validate"/>
+
+        </form>
+    </article>
+
+    <article id="result" class="hidden">
+        <header>
+            <h4>Results</h4>
+        </header>
+        <div id="result-content"></div>
+    </article>
+
+</section>
+<script src="/js/verapdf.js"></script>
+</body>
+</html>
