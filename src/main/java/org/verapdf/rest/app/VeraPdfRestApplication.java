@@ -4,6 +4,7 @@
 package org.verapdf.rest.app;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -13,6 +14,7 @@ import java.util.EnumSet;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
+import io.dropwizard.views.ViewBundle;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.verapdf.rest.resources.ApiResource;
 
@@ -50,6 +52,10 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
         final XmlBundle xmlBundle = new XmlBundle();
         bootstrap.addBundle(xmlBundle);
         bootstrap.addBundle(new MultiPartBundle());
+        bootstrap.addBundle(new ViewBundle());
+        bootstrap.addBundle(new AssetsBundle("/assets/css", "/css", null, "css")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        bootstrap.addBundle(new AssetsBundle("/assets/img", "/img", null, "img")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-
     }
 
     @Override
