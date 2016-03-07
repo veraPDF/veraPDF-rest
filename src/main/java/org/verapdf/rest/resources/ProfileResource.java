@@ -51,7 +51,7 @@ public class ProfileResource {
     @GET
     @Path("/ids")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Set<String> getProfileIds() {
+    public static Set<String> getProfileIds() {
         return DIRECTORY.getValidationProfileIds();
     }
 
@@ -62,7 +62,7 @@ public class ProfileResource {
     @GET
     @Path("/flavours")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Set<PDFAFlavour> getFlavours() {
+    public static Set<PDFAFlavour> getFlavours() {
         return DIRECTORY.getPDFAFlavours();
     }
 
@@ -73,7 +73,7 @@ public class ProfileResource {
     @GET
     @Path("/{profileid}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public ValidationProfile getProfile(@PathParam("profileid") String profileId) {
+    public static ValidationProfile getProfile(@PathParam("profileid") String profileId) {
         return DIRECTORY.getValidationProfileById(profileId);
     }
 
@@ -84,7 +84,7 @@ public class ProfileResource {
     @GET
     @Path("/{profileid}/ruleids")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Set<RuleId> getProfileRules(@PathParam("profileid") String profileId) {
+    public static Set<RuleId> getProfileRules(@PathParam("profileid") String profileId) {
         Set<RuleId> ids = new HashSet<>();
         for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
             ids.add(rule.getRuleId());
@@ -97,9 +97,9 @@ public class ProfileResource {
      * 
      */
     @GET
-    @Path("/{profileid}/clause/{clause}")
+    @Path("/{profileid}/{clause}")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public Set<Rule> getRulesforClause(@PathParam("profileid") String profileId, @PathParam("clause") String clause) {
+    public static Set<Rule> getRulesforClause(@PathParam("profileid") String profileId, @PathParam("clause") String clause) {
         Set<Rule> rules = new HashSet<>();
         for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
             if (rule.getRuleId().getClause().equalsIgnoreCase(clause)) {
