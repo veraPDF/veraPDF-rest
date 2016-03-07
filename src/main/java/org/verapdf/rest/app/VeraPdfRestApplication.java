@@ -15,10 +15,12 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
 import io.dropwizard.views.ViewBundle;
+
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.verapdf.rest.resources.ApiResource;
 
 import com.yunspace.dropwizard.xml.XmlBundle;
+
 import org.verapdf.rest.resources.HomePageResource;
 
 /**
@@ -53,7 +55,7 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
         final XmlBundle xmlBundle = new XmlBundle();
         bootstrap.addBundle(xmlBundle);
         bootstrap.addBundle(new MultiPartBundle());
-        bootstrap.addBundle(new ViewBundle());
+        bootstrap.addBundle(new ViewBundle<VeraPdfRestConfiguration>());
         bootstrap.addBundle(new AssetsBundle("/assets/css", "/css", null, "css")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         bootstrap.addBundle(new AssetsBundle("/assets/img", "/img", null, "img")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-
