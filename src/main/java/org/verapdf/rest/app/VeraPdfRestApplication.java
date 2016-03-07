@@ -19,6 +19,7 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.verapdf.rest.resources.ApiResource;
 
 import com.yunspace.dropwizard.xml.XmlBundle;
+import org.verapdf.rest.resources.HomePageResource;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -63,7 +64,9 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
             Environment environment) throws Exception {
         // Create & register our REST resources
         final ApiResource restApi = new ApiResource();
+        final HomePageResource homePageResource = new HomePageResource();
         environment.jersey().register(restApi);
+        environment.jersey().register(homePageResource);
         // Set up cross domain REST
         setupCORS(environment);
     }

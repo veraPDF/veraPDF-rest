@@ -19,12 +19,6 @@ import org.verapdf.rest.views.RestClientView;
 @Path("/api")
 public final class ApiResource {
 
-    @GET
-    @Produces({ MediaType.TEXT_HTML })
-    public RestClientView client() {
-        return new RestClientView();
-    }
-
     /**
      * @return
      */
