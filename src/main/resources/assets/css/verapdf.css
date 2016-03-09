@@ -60,6 +60,11 @@ input[readonly] {
 #validation div input {
     width: 400px;
 }
+
+#results pre {
+    font-size: 20px;
+}
+
 .voffset  { margin-top: 2px; }
 .voffset1 { margin-top: 5px; }
 .voffset2 { margin-top: 10px; }
