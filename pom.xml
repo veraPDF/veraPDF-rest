@@ -1,463 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
- <modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
- <parent>
-  <artifactId>oss-parent</artifactId>
-  <groupId>org.sonatype.oss</groupId>
-  <version>7</version>
- </parent>
+  <parent>
+    <groupId>org.verapdf</groupId>
+    <artifactId>verapdf-parent</artifactId>
+    <version>1.0.13</version>
+  </parent>
 
- <groupId>org.verapdf</groupId>
- <artifactId>verapdf-rest</artifactId>
- <version>0.0.1-SNAPSHOT</version>
+  <groupId>org.verapdf</groupId>
+  <artifactId>verapdf-rest</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
 
- <name>veraPDF RESTful web services</name>
- <description>JAX-RS web services and client for veraPDF library</description>
-
- <inceptionYear>2015</inceptionYear>
- <organization>
-  <name>The veraPDF Consortium</name>
-  <url>http://www.verapdf.org/</url>
- </organization>
- <licenses>
-  <license>
-   <name>GNU General Public License, version 3 (GPL-3.0)</name>
-   <url>http://opensource.org/licenses/GPL-3.0</url>
-   <distribution>repo</distribution>
-  </license>
-  <license>
-   <name>Mozilla Public License 2.0 (MPL-2.0)</name>
-   <url>http://opensource.org/licenses/MPL-2.0</url>
-   <distribution>repo</distribution>
-  </license>
- </licenses>
-
- <developers>
-  <developer>
-   <email>carl@openpreservation.org</email>
-   <name>Carl Wilson</name>
-   <url>https://github.com/carlwilson</url>
-   <organization>Open Preservation Foundation</organization>
-   <organizationUrl>http://openpreservation.org</organizationUrl>
-   <id>carlwilson</id>
-  </developer>
- </developers>
+  <name>veraPDF RESTful web services</name>
+  <description>JAX-RS web services and client for veraPDF library</description>
 
 
- <scm>
-  <url>https://github.com/veraPDF/veraPDF-library/</url>
-  <connection>scm:git:https://github.com/veraPDF/veraPDF-library.git</connection>
-  <developerConnection>scm:git:git@github.com:veraPDF/veraPDF-library.git</developerConnection>
- </scm>
- <issueManagement>
-  <url>https://github.com/veraPDF/veraPDF-library/issues/</url>
-  <system>GitHub Issues</system>
- </issueManagement>
- <ciManagement>
-  <system>OPF Jenkins</system>
-  <url>http://jenkins.opf-labs.org</url>
- </ciManagement>
- <distributionManagement>
-  <repository>
-   <id>OPF Artefactory</id>
-   <name>OPF Artefactory-releases</name>
-   <url>http://artifactory.opf-labs.org/artifactory/vera-dev-local</url>
-  </repository>
- </distributionManagement>
+  <scm>
+    <url>https://github.com/veraPDF/veraPDF-rest/</url>
+    <connection>scm:git:https://github.com/veraPDF/veraPDF-rest.git</connection>
+    <developerConnection>scm:git:git@github.com:veraPDF/veraPDF-rest.git</developerConnection>
+  </scm>
+  <issueManagement>
+    <url>https://github.com/veraPDF/veraPDF-rest/issues/</url>
+    <system>GitHub Issues</system>
+  </issueManagement>
 
- <repositories>
-  <repository>
-   <snapshots>
-    <enabled>true</enabled>
-   </snapshots>
-   <id>vera-dev</id>
-   <name>Vera development</name>
-   <url>http://artifactory.opf-labs.org/artifactory/vera-dev</url>
-  </repository>
-  <repository>
-   <id>jcenter</id>
-   <url>http://jcenter.bintray.com</url>
-  </repository>
- </repositories>
- <pluginRepositories>
-  <pluginRepository>
-   <snapshots>
-    <enabled>false</enabled>
-   </snapshots>
-   <id>vera-dev</id>
-   <name>Vera development</name>
-   <url>http://artifactory.opf-labs.org/artifactory/vera-dev</url>
-  </pluginRepository>
- </pluginRepositories>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>vera-dev</id>
+      <name>Vera development</name>
+      <url>http://artifactory.opf-labs.org/artifactory/vera-dev</url>
+    </repository>
+    <repository>
+      <id>jcenter</id>
+      <url>http://jcenter.bintray.com</url>
+    </repository>
+  </repositories>
 
- <properties>
-  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  <java.version>1.7</java.version>
-  <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco-it.exec</sonar.jacoco.itReportPath>
-  <sonar.language>java</sonar.language>
-  <maven.surefire.version>2.18.1</maven.surefire.version>
-  <maven.exec.version>1.4.0</maven.exec.version>
-  <mvn.javadoc.version>2.10</mvn.javadoc.version>
-  <mvn.source.version>2.4</mvn.source.version>
-  <mvn.gpg.plugin.version>1.6</mvn.gpg.plugin.version>
-  <dropwizard.version>0.8.1</dropwizard.version>
- </properties>
+  <properties>
+    <dropwizard.version>0.8.1</dropwizard.version>
+    <verapdf.pdfbox.validation.version>[0.11.100,0.12.0)</verapdf.pdfbox.validation.version>
+  </properties>
 
- <build>
-  <plugins>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-compiler-plugin</artifactId>
-    <version>3.3</version>
-    <configuration>
-     <source>${java.version}</source>
-     <target>${java.version}</target>
-     <encoding>${project.build.sourceEncoding}</encoding>
-    </configuration>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-shade-plugin</artifactId>
-    <version>1.6</version>
-    <configuration>
-     <createDependencyReducedPom>true</createDependencyReducedPom>
-     <filters>
-      <filter>
-       <artifact>*:*</artifact>
-       <excludes>
-        <exclude>META-INF/*.SF</exclude>
-        <exclude>META-INF/*.DSA</exclude>
-        <exclude>META-INF/*.RSA</exclude>
-       </excludes>
-      </filter>
-     </filters>
-    </configuration>
-    <executions>
-     <execution>
-      <phase>package</phase>
-      <goals>
-       <goal>shade</goal>
-      </goals>
-      <configuration>
-       <transformers>
-        <transformer
-         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-        <transformer
-         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-         <mainClass>org.verapdf.rest.app.VeraPdfRestApplication</mainClass>
-        </transformer>
-       </transformers>
-      </configuration>
-     </execution>
-    </executions>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-assembly-plugin</artifactId>
-    <version>2.5.5</version>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-deploy-plugin</artifactId>
-    <version>2.8.2</version>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-resources-plugin</artifactId>
-    <version>2.7</version>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-gpg-plugin</artifactId>
-    <version>${mvn.gpg.plugin.version}</version>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-release-plugin</artifactId>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-site-plugin</artifactId>
-    <version>3.4</version>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-surefire-plugin</artifactId>
-    <version>${maven.surefire.version}</version>
-   </plugin>
-
-   <plugin>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>appassembler-maven-plugin</artifactId>
-    <version>1.10</version>
-   </plugin>
-
-   <plugin>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>versions-maven-plugin</artifactId>
-    <version>2.2</version>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-source-plugin</artifactId>
-    <version>${mvn.source.version}</version>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-javadoc-plugin</artifactId>
-    <version>${mvn.javadoc.version}</version>
-   </plugin>
-
-  </plugins>
- </build>
-
- <dependencies>
-  <dependency>
-   <groupId>io.dropwizard</groupId>
-   <artifactId>dropwizard-core</artifactId>
-   <version>${dropwizard.version}</version>
-  </dependency>
-  <dependency>
-   <groupId>io.dropwizard</groupId>
-   <artifactId>dropwizard-forms</artifactId>
-   <version>${dropwizard.version}</version>
-  </dependency>
-  <dependency>
-   <groupId>com.yunspace.dropwizard</groupId>
-   <artifactId>dropwizard-xml</artifactId>
-   <version>0.8.1-25</version>
-  </dependency>
-  <dependency>
-   <groupId>org.verapdf</groupId>
-   <artifactId>core</artifactId>
-   <version>0.10.8</version>
-  </dependency>
-  <dependency>
-   <groupId>org.verapdf</groupId>
-   <artifactId>model-implementation</artifactId>
-   <version>0.10.8</version>
-  </dependency>
-  <dependency>
-   <groupId>junit</groupId>
-   <artifactId>junit</artifactId>
-   <version>4.12</version>
-  </dependency>
-  <dependency>
-   <groupId>io.dropwizard</groupId>
-   <artifactId>dropwizard-views</artifactId>
-   <version>${dropwizard.version}</version>
-  </dependency>
-  <dependency>
-   <groupId>io.dropwizard</groupId>
-   <artifactId>dropwizard-views-mustache</artifactId>
-   <version>${dropwizard.version}</version>
-  </dependency>
-  <dependency>
-   <groupId>io.dropwizard</groupId>
-   <artifactId>dropwizard-assets</artifactId>
-   <version>${dropwizard.version}</version>
-  </dependency>
-  <dependency>
-   <groupId>commons-codec</groupId>
-   <artifactId>commons-codec</artifactId>
-   <version>1.6</version>
-  </dependency>
- </dependencies>
-
-
- <reporting>
-  <plugins>
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-project-info-reports-plugin</artifactId>
-    <version>2.4</version>
-    <configuration>
-     <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
-     <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-    </configuration>
-    <reportSets>
-     <reportSet>
-      <reports>
-       <report>index</report>
-       <report>dependencies</report>
-       <report>project-team</report>
-       <report>mailing-list</report>
-       <report>cim</report>
-       <report>issue-tracking</report>
-       <report>license</report>
-       <report>scm</report>
-      </reports>
-     </reportSet>
-    </reportSets>
-   </plugin>
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-javadoc-plugin</artifactId>
-    <version>2.10.3</version>
-    <configuration>
-     <show>public</show>
-    </configuration>
-   </plugin>
-  </plugins>
- </reporting>
-
- <profiles>
-  <profile>
-   <id>apply-mpl-header</id>
-   <build>
-    <pluginManagement>
-     <plugins>
-      <plugin>
-       <groupId>com.mycila</groupId>
-       <artifactId>license-maven-plugin</artifactId>
-       <version>2.3</version>
-       <configuration>
-        <header>license/template/MPL-2.txt</header>
-        <properties>
-         <owner>veraPDF Consortium</owner>
-         <email>info@verapdf.org</email>
-        </properties>
-        <excludes>
-         <exclude>license/template/**</exclude>
-         <exclude>src/test/resources/**</exclude>
-         <exclude>src/main/resources/**</exclude>
-        </excludes>
-       </configuration>
-       <executions>
-        <execution>
-         <goals>
-          <goal>check</goal>
-         </goals>
-        </execution>
-       </executions>
-      </plugin>
-     </plugins>
-    </pluginManagement>
-   </build>
-  </profile>
-  <profile>
-   <id>apply-gpl-header</id>
-   <build>
-    <pluginManagement>
-     <plugins>
-      <plugin>
-       <groupId>com.mycila</groupId>
-       <artifactId>license-maven-plugin</artifactId>
-       <version>2.3</version>
-       <configuration>
-        <header>license/template/GPL-3.txt</header>
-        <properties>
-         <owner>veraPDF Consortium</owner>
-         <email>info@verapdf.org</email>
-        </properties>
-        <excludes>
-         <exclude>license/template/**</exclude>
-         <exclude>src/test/resources/**</exclude>
-         <exclude>src/main/resources/**</exclude>
-        </excludes>
-       </configuration>
-       <executions>
-        <execution>
-         <goals>
-          <goal>check</goal>
-         </goals>
-        </execution>
-       </executions>
-      </plugin>
-     </plugins>
-    </pluginManagement>
-   </build>
-  </profile>
-
-  <profile>
-   <id>coverage-per-test</id>
-   <build>
+  <build>
     <plugins>
 
-     <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-surefire-plugin</artifactId>
-      <configuration>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
 
-       <properties>
-        <property>
-         <name>listener</name>
-         <value>org.sonar.java.jacoco.JUnitListener</value>
-        </property>
-       </properties>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>1.6</version>
+        <configuration>
+          <createDependencyReducedPom>true</createDependencyReducedPom>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+              </excludes>
+            </filter>
+          </filters>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.verapdf.rest.app.VeraPdfRestApplication</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
-       <excludes>
-        <exclude>**/*IT.java</exclude>
-       </excludes>
 
-      </configuration>
-     </plugin>
     </plugins>
-   </build>
-   <dependencies>
+  </build>
+
+  <dependencies>
     <dependency>
-     <groupId>org.codehaus.sonar-plugins.java</groupId>
-     <artifactId>sonar-jacoco-listeners</artifactId>
-     <version>1.2</version>
-     <scope>test</scope>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-core</artifactId>
+      <version>${dropwizard.version}</version>
     </dependency>
-   </dependencies>
-  </profile>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-forms</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.yunspace.dropwizard</groupId>
+      <artifactId>dropwizard-xml</artifactId>
+      <version>0.8.1-25</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-views</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-views-mustache</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-assets</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.6</version>
+    </dependency>
 
-  <profile>
-   <id>release-sign-artifacts</id>
-   <activation>
-    <property>
-     <name>performRelease</name>
-     <value>true</value>
-    </property>
-   </activation>
+    <dependency>
+      <groupId>org.verapdf</groupId>
+      <artifactId>pdfbox-feature-reporting</artifactId>
+      <version>${verapdf.pdfbox.validation.version}</version>
+    </dependency>
 
-   <build>
+    <dependency>
+      <groupId>org.verapdf</groupId>
+      <artifactId>pdfbox-validation-model</artifactId>
+      <version>${verapdf.pdfbox.validation.version}</version>
+    </dependency>
+  </dependencies>
+
+
+  <reporting>
     <plugins>
-     <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-gpg-plugin</artifactId>
-      <executions>
-       <execution>
-        <id>sign-artifacts</id>
-        <phase>verify</phase>
-        <goals>
-         <goal>sign</goal>
-        </goals>
-       </execution>
-      </executions>
-     </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>dependencies</report>
+              <report>project-team</report>
+              <report>mailing-list</report>
+              <report>cim</report>
+              <report>issue-tracking</report>
+              <report>license</report>
+              <report>scm</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.3</version>
+        <configuration>
+          <show>public</show>
+        </configuration>
+      </plugin>
     </plugins>
-   </build>
-  </profile>
-
-  <profile>
-   <id>sonar</id>
-   <activation>
-    <activeByDefault>true</activeByDefault>
-   </activation>
-   <properties>
-    <sonar.host.url>
-     http://sonar.opf-labs.org
-    </sonar.host.url>
-   </properties>
-  </profile>
-
- </profiles>
+  </reporting>
 
 </project>
   

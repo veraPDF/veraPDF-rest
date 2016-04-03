@@ -40,7 +40,7 @@ public class ValidateResource {
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
         PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
-        try (ModelParser toValidate = new ModelParser(uploadedInputStream)) {
+        try (ModelParser toValidate = new ModelParser(uploadedInputStream, flavour)) {
             PDFAValidator validator = Validators.createValidator(flavour,
                     false);
             return validator.validate(toValidate);
