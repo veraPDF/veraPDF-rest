@@ -10,7 +10,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.verapdf.rest.environment.Environment;
 import org.verapdf.rest.environment.Environments;
-import org.verapdf.rest.views.RestClientView;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>.</p>
@@ -43,5 +42,14 @@ public final class ApiResource {
     @Path("/validate")
     public static ValidateResource getValidateResource() {
         return new ValidateResource();
+    }
+
+
+    /**
+     * @return
+     */
+    @Path("/sha1")
+    public static ByteStreamResource getBytestreamResource() {
+        return new ByteStreamResource();
     }
 }

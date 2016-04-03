@@ -1,62 +1,80 @@
-$(document).ready(function(){
+$(document).on('change', '.btn-file :file', function() {
+    var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, ''),
+        rusha = new Rusha(),
+        file = input.get(0).files[0],
+        reader = new FileReader();
+    reader.onload = function(e) {
+        var rawData = reader.result;
+        var digest = rusha.digest(rawData);
+        input.trigger('fileselect', [numFiles, label, digest]);
+    }
+    reader.readAsBinaryString(file);
+});
 
-    var curFile = null;
-
-    $(document).on("click", 'input#validate', function(e) {
-        console.log('validatePdf called');
-
-        var path = "http://localhost:8080/api/validate/" + $("#inputProfileId")[0].value + '/';
-        var formData = new FormData();
-        formData.append('file', curFile);
-
-        $.ajax({
-            type: 'POST',
-            url: path,
-            data: formData,
-            cache : false,
-            contentType : false,
-            processData : false,
-            accepts: {
-                text: "application/json"
-            },
-            success: function (response) {
-                $("article#result").removeClass('hidden');
-                $("#result-content").html("");
-                var respStr = JSON.stringify(response, undefined, 4);
-
-                $('<pre/>', {text: respStr}).appendTo("#result-content");
-
-            }
-        });
-
-
+$(document).ready( function() {
+    $('.btn-file :file').on('fileselect', function(event, numFiles, label, digest) {
+        var input = $(this).parents('.input-group').find(':text'),
+            log = numFiles > 1 ? numFiles + ' files selected' : label;
+        
+        if( input.length ) {
+            input.val(log);
+        } else {
+            if( log ) alert(log);
+        }
+        getRequestDataType();
+        $("#digest").val(digest);
+        callPreflightService();
     });
+});
 
-    $(document).on("click", 'input#getprofile', function(e) {
-        var path = "/api/profiles/" + $("#inputProfileId")[0].value + '/';
-
-        $.ajax({
-            type: 'GET',
-            url: path,
-            cache : false,
-            contentType : false,
-            processData : false,
-            accepts: {
-                text: "application/json"
-            },
-            success: function (response) {
-                $("article#result").removeClass('hidden');
-                $("#result-content").html("");
-                var respStr = JSON.stringify(response, undefined, 4);
-
-                $('<pre/>', {text: respStr}).appendTo("#result-content");
-
-            }
-        });
-    });
-
-    $(document).on('change', '#inputPdfToValidate', function (e) {
-        curFile = this.files[0];
-    });
+$(document).on('click', "#type-requested > button", function() {
+    var input = $(this);
+    // Do nothing if the active view
+    if (input.hasClass("btn-success")) return;
+    // select the new button
+    $("#type-requested > button.btn-success").removeClass("btn-success").addClass("btn-default");
+    input.addClass("btn-success");
+    // return if no file selected
+    if ($("#filename").val()) callPreflightService();
 
 });
+
+function getRequestDataType() {
+    return($("#type-requested > button.btn-success").attr("name"));
+}
+
+function callPreflightService() {
+    var formData = new FormData($('form')[0]);
+
+    $("#results").empty();
+    var spinHtml = $("#spinner-template").html();
+    $("#results").html(spinHtml);
+    $.ajax({
+        url:   '/api/validate/1b/',
+        type:  'POST',
+        data:  formData,
+        dataType: getRequestDataType(),
+        contentType: false,
+        processData: false,
+        success : function (data, textStatus, jqXHR) {
+           $("#results").empty();
+           if (getRequestDataType() != "html") {
+                var preBlock = $("<pre>").text(jqXHR.responseText);
+                $("#results").append(preBlock);
+           } else {
+                $("#results").html(jqXHR.responseText);
+           }
+        },
+        error : function (jqXHR, textStatus, errorThrown) {
+            $("#results").empty();
+            var tempHtml = $("#error-template").html();
+            $("#results").html(tempHtml);
+            console.log('uploadAttachment error: ' + textStatus + errorThrown);
+            console.log(jqXHR);
+            console.log('uploadAttachment error: ' + textStatus + errorThrown);
+
+        }
+    });
+}
