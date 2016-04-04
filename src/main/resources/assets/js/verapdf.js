@@ -23,7 +23,6 @@ $(document).ready( function() {
     } else {
       if( log ) alert(log);
     }
-    getRequestDataType();
     $("#digest").val(digest);
   });
 });
@@ -32,6 +31,7 @@ $(document).ready(function () {
 
   var navListItems = $('div.setup-panel div a'),
   allWells = $('.setup-content'),
+  allPreviousBtn = $('.previousBtn');
   allNextBtn = $('.nextBtn');
 
   allWells.hide();
@@ -56,7 +56,6 @@ $(document).ready(function () {
     nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
     curInputs = curStep.find("input[type='text'],input[type='url']"),
     isValid = true;
-
     $(".form-group").removeClass("has-error");
     for(var i=0; i<curInputs.length; i++){
       if (!curInputs[i].validity.valid){
@@ -67,6 +66,24 @@ $(document).ready(function () {
 
     if (isValid)
     nextStepWizard.removeAttr('disabled').trigger('click');
+    if (curStepBtn == 'configure') callVeraPdfService();
+  });
+
+  allPreviousBtn.click(function(){
+    var curStep = $(this).closest(".setup-content"),
+    curStepBtn = curStep.attr("id"),
+    nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a"),
+    curInputs = curStep.find("input[type='text'],input[type='url']"),
+    isValid = true;
+    $(".form-group").removeClass("has-error");
+    for(var i=0; i<curInputs.length; i++){
+      if (!curInputs[i].validity.valid){
+        isValid = false;
+        $(curInputs[i]).closest(".form-group").addClass("has-error");
+      }
+    }
+
+    if (isValid) nextStepWizard.removeAttr('disabled').trigger('click');
   });
 
   $('div.setup-panel div a.btn-primary').trigger('click');
@@ -79,45 +96,36 @@ $(document).on('click', "#type-requested > button", function() {
   // select the new button
   $("#type-requested > button.btn-success").removeClass("btn-success").addClass("btn-default");
   input.addClass("btn-success");
-  // return if no file selected
-  // if ($("#filename").val()) callPreflightService();
-
+  renderResult(getRenderType());
 });
 
-function getRequestDataType() {
+function getRenderType() {
   return($("#type-requested > button.btn-success").attr("name"));
 }
 
-function callPreflightService() {
+function callVeraPdfService() {
   var formData = new FormData($('form')[0]);
 
   $("#results").empty();
   var spinHtml = $("#spinner-template").html();
   $("#results").html(spinHtml);
-  $.ajax({
-    url:   '/api/validate/1b/',
-    type:  'POST',
-    data:  formData,
-    dataType: getRequestDataType(),
-    contentType: false,
-    processData: false,
-    success : function (data, textStatus, jqXHR) {
-      $("#results").empty();
-      if (getRequestDataType() != "html") {
-        var preBlock = $("<pre>").text(jqXHR.responseText);
-        $("#results").append(preBlock);
-      } else {
-        $("#results").html(jqXHR.responseText);
-      }
-    },
-    error : function (jqXHR, textStatus, errorThrown) {
-      $("#results").empty();
-      var tempHtml = $("#error-template").html();
-      $("#results").html(tempHtml);
-      console.log('uploadAttachment error: ' + textStatus + errorThrown);
-      console.log(jqXHR);
-      console.log('uploadAttachment error: ' + textStatus + errorThrown);
-
-    }
+  pdfaValidator.validate(formData, function() {
+    renderResult(getRenderType());
   });
+}
+
+function renderResult(renderType) {
+  $("#results").empty();
+  if (renderType == 'xml') {
+    var preBlock = $("<pre>").text(pdfaValidator.xmlResult());
+    $("#results").append(preBlock);
+  } else if (renderType ==  'html') {
+    var template = $('#template').html();
+    Mustache.parse(template);   // optional, speeds up future uses
+    var rendered = Mustache.render(template, pdfaValidator);
+    $('#results').html(rendered);
+  } else if (renderType == 'json') {
+    var preBlock = $("<pre>").text(pdfaValidator.jsonResult());
+    $("#results").append(preBlock);
+  }
 }

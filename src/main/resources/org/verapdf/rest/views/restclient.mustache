@@ -12,7 +12,7 @@
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
   <!-- FontAwesome -->
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Our theme -->
   <link rel="stylesheet" href="/css/verapdf.css">
 
@@ -37,69 +37,76 @@
     <div class="stepwizard">
       <div class="stepwizard-row setup-panel">
         <div class="stepwizard-step">
-          <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
-          <p>Step 1</p>
+          <a href="#choose" type="button" class="btn btn-primary btn-circle">1</a>
+          <p>Choose</p>
         </div>
         <div class="stepwizard-step">
-          <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-          <p>Step 2</p>
+          <a href="#configure" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
+          <p>Configure</p>
         </div>
         <div class="stepwizard-step">
-          <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
-          <p>Step 3</p>
+          <a href="#validate" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
+          <p>Validate</p>
         </div>
       </div>
     </div>
-    <form role="form">
-      <div class="row setup-content" id="step-1">
+    <form role="form" enctype="multipart/form-data">
+      <div class="row setup-content" id="choose">
         <div class="col-xs-12">
           <div class="col-md-12">
-            <h4>
-              Select a PDF document to upload it for validation; the generated report will appear below. This service currently serves HTML, XML, & JSON representations. NOTE: changing the representation currently repeats the validation process.
-            </h4>
-            <form enctype="multipart/form-data">
-              <div class="input-group">
-                <span class="input-group-btn">
-                  <span class="btn btn-success btn-file">
-                    Browse&hellip; <input type="file" name="file">
-                  </span>
+            <h3>Choose a PDF file to validate.</h3>
+            <div class="input-group">
+              <span class="input-group-btn">
+                <span class="btn btn-success btn-file">
+                  Browse&hellip; <input type="file" name="file">
                 </span>
-                <input id="filename" type="text" class="form-control" placeholder="Select a file to upload." readonly />
-              </div>
-              <div class="input-group voffset2">
-                <span class="input-group-addon">JS SHA-1: </span>
-                <input id="digest" type="text" class="form-control" placeholder="Javascript calculated hash of file." readonly />
-              </div>
-            </form>
+              </span>
+              <input id="filename" type="text" class="form-control" placeholder="Select a file to upload." required="required" readonly />
+            </div>
+            <div class="input-group voffset2">
+              <span class="input-group-addon">JS SHA-1: </span>
+              <input id="digest" type="text" class="form-control" placeholder="Javascript calculated hash of file." readonly />
+            </div>
             <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
           </div>
         </div>
       </div>
-      <div class="row setup-content" id="step-2">
+      <div class="row setup-content" id="configure">
         <div class="col-xs-12">
           <div class="col-md-12">
-            <h3> Step 2</h3>
+            <h3>Configure PDF/A Validator</h3>
             <div class="form-group">
-              <label class="control-label">Company Name</label>
-              <input maxlength="200" type="text" required="required" class="form-control" placeholder="Enter Company Name" />
+              <label class="control-label">Validation Profile</label>
+              <select class="form-control">
+                <option>PDF/A-1b</option>
+                <option>PDF/A-1a</option>
+                <option>PDF/A-2b</option>
+                <option>PDF/A-3b</option>
+              </select>
             </div>
             <div class="form-group">
-              <label class="control-label">Company Address</label>
-              <input maxlength="200" type="text" required="required" class="form-control" placeholder="Enter Company Address"  />
+              <label class="control-label">Extract features:</label>
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> yes
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> no
+              </label>
             </div>
+            <button class="btn btn-primary previousBtn btn-lg pull-left" type="button" >Previous</button>
             <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
           </div>
         </div>
       </div>
-      <div class="row setup-content" id="step-3">
+      <div class="row setup-content" id="validate">
         <div class="col-xs-12">
           <div class="col-md-12">
             <div class="list-group voffset2">
               <a href="#" class="list-group-item active">
-                <h2 class="list-group-item-heading">PDF/A Validation Report</h2>
-                <p class="list-group-item-text">Validation results are shown below. NOTE: This service is a prototype only; no guarantees are offered!</p>
+                <h2 class="list-group-item-heading">PDF/A Validation Results</h2>
+                <p class="list-group-item-text">Validation results are shown below.</p>
                 <div id="type-requested">
-                  <h5>Choose report representation format:</h5>
+                  <h5>View results as:</h5>
                   <button type="button" class="btn btn-success" name="html">HTML</button>
                   <button type="button" class="btn btn-default" name="xml">XML</button>
                   <button type="button" class="btn btn-default" name="json">JSON</button>
@@ -122,6 +129,31 @@
       <p class="text-center"><span class="fa fa-refresh fa-spin fa-2x"></span> Uploading and validating.</p>
     </div>
   </script>
+  <script id="template" type="x-tmpl-mustache">
+    {{=<% %>=}}
+    {{#result}}
+    <div class="result-{{#compliant}}valid{{/compliant}}{{^compliant}}invalid{{/compliant}}">
+      PDF/A:{{flavour}}
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle-o fa-stack-2x"></i>
+        <i class="fa {{#compliant}}fa-check{{/compliant}}{{^compliant}}fa-times{{/compliant}} fa-stack-1x"></i>
+      </span>
+      Checks performed: {{totalAssertions}}
+      <h3>Failed tests</h3>
+      <ul class="list-group">
+      {{#testAssertions}}
+        <li class="list-group-item">
+          <span class="badge">{{ordinal}}</span>
+          {{ruleId.clause}}-{{ruleId.testNumber}}<br/>
+          {{message}}
+        </li>
+      {{/testAssertions}}
+      </ul>
+    </div>
+    {{/result}}
+    <%={{ }}=%>
+  </script>
+
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -138,6 +170,8 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   <script src="/js/verapdf.js"></script>
+  <script src="/js/mustache.js"></script>
+  <script src="/js/vera.results.js"></script>
   <script src="/js/sha1.js"></script>
   <script src="/js/jquery.bootstrap.wizard.js"></script>
 </body>
