@@ -43,7 +43,6 @@ public class ByteStreamResource {
      *         the uploaded file's byte stream serialised according to requested
      *         content type.
      */
-    @SuppressWarnings("static-method")
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
@@ -67,7 +66,6 @@ public class ByteStreamResource {
      *         an empty (0 byte) byte stream serialised according to requested
      *         content type.
      */
-    @SuppressWarnings("static-method")
     @GET
     @Path("/null")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
