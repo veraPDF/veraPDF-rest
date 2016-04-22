@@ -28,13 +28,14 @@ First clone this project, got to the project directory and then build the Maven 
 
 	git clone git@github.com:veraPDF/veraPDF-rest.git
 	cd veraPDF-rest
+	git checkout integration
 	mvn clean package
 
 To start up the server:
 
 	java -jar target/verapdf-rest-0.0.1-SNAPSHOT.jar server
 
-Go to [localhost:8080/api](http://localhost:8080/api) to see if the server is running, you should see something like:
+Go to [localhost:8080/api/info](http://localhost:8080/api/info) to see if the server is running, you should see something like:
 
 	<Environment>
 		<os>
@@ -91,7 +92,7 @@ There are a few services that you can test a few with [curl](https://curl.haxx.s
 ### API Environment service
 Shows some simple information about the server environment on [localhost:8080/api](http://localhost:8080/api)
 
-    curl localhost:8080/api
+    curl localhost:8080/api/info
 
 ### Validation Profile services
 Validation Profiles contain the PDF/A validation tests and their description.  A list of profile details is available at [localhost:8080/api/profiles/](http://localhost:8080/api/profiles/). To test with curl:
@@ -108,7 +109,7 @@ An individual profile can be obtained by ID at http://localhost:8080/api/profile
 
 The curl call defaults to a JSON representation, to obtain the XML profile:
 
-    curl localhost:8080/api/profiles/ids -H  "Accept:application/xml"
+    curl localhost:8080/api/profiles/1b -H  "Accept:application/xml"
 
 ### PDF/A Validation services
 PDF/A validation is also available as a POST service at http://localhost:8080/api/validate/*id*. There's currently no client application or page, but curl can be used:
