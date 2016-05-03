@@ -2,12 +2,11 @@
 * @namespace JS Encapsulation of information required to render PDF/A validtion results.
 */
 var pdfaValidator = {
-  flavour: '1b',
   // validation result
   result : null,
-  validate : function (formData, callback) {
+  validate : function (formData, flavour, callback) {
     $.ajax({
-      url:   '/api/validate/' + pdfaValidator.flavour + '/',
+      url:   '/api/validate/' + flavour + '/',
       type:  'POST',
       data:  formData,
       dataType: 'json',
