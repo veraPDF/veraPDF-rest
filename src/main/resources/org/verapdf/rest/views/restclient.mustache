@@ -77,11 +77,11 @@
             <h3>Configure PDF/A Validator</h3>
             <div class="form-group">
               <label class="control-label">Validation Profile</label>
-              <select class="form-control">
-                <option>PDF/A-1b</option>
-                <option>PDF/A-1a</option>
-                <option>PDF/A-2b</option>
-                <option>PDF/A-3b</option>
+              <select class="form-control" onchange="changeFlavour(this.value)">
+                <option value="1b">PDF/A-1b</option>
+                <option value="1a">PDF/A-1a</option>
+                <option value="2b">PDF/A-2b</option>
+                <option value="3b">PDF/A-3b</option>
               </select>
             </div>
             <div class="form-group">

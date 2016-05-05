@@ -103,13 +103,19 @@ function getRenderType() {
   return($("#type-requested > button.btn-success").attr("name"));
 }
 
+var flavour = "1b";
+
+function changeFlavour(newFlavour) {
+  flavour = newFlavour;
+}
+
 function callVeraPdfService() {
   var formData = new FormData($('form')[0]);
 
   $("#results").empty();
   var spinHtml = $("#spinner-template").html();
   $("#results").html(spinHtml);
-  pdfaValidator.validate(formData, function() {
+  pdfaValidator.validate(formData, flavour, function() {
     renderResult(getRenderType());
   });
 }
