@@ -14,6 +14,7 @@ var pdfaValidator = {
       processData: false,
       success : function (data, textStatus, jqXHR) {
         pdfaValidator.result = JSON.parse(jqXHR.responseText);
+        pdfaValidator.result["flavour"] = pdfaValidator.formatFlavour(pdfaValidator.result.pdfaflavour);
         callback();
       },
       error : function (jqXHR, textStatus, errorThrown) {
@@ -25,6 +26,16 @@ var pdfaValidator = {
         console.log('uploadAttachment error: ' + textStatus + errorThrown);
       }
     });
+  },
+  /**
+  * @function formatFlavour
+  *
+  * Formats the flavour enum to a friendly string
+  */
+  formatFlavour : function (enumFlavour) {
+    var flavourParts = enumFlavour.split("_");
+    var flavourCode = flavourParts[2];
+    return "PDF/A " + flavourParts[1] + flavourCode.toLowerCase();
   },
   /**
   * @function jsonResult
