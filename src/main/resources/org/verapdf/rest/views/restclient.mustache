@@ -26,11 +26,11 @@
 <body role="document">
   <div class="container theme-showcase" role="main">
     <div class="jumbotron" role="header">
-      <div class="container theme-showcase" role="header">
-        <img src="/img/veraPDF-logo-400.png">
-        <h1>veraPDF PDF/A Validation</h1>
+      <div class="container theme-showcase radialmask" role="header">
+        <img class="shadowed" src="/img/veraPDF-logo-400.png">
+        <h1>PDF/A Validation</h1>
         <p>
-          Prototype PDF/A-1b validation web service via REST
+          Prototype PDF/A validation REST service with client.
         </p>
       </div>
     </div>
@@ -133,7 +133,7 @@
     {{=<% %>=}}
     {{#result}}
     <div class="result-{{#compliant}}valid{{/compliant}}{{^compliant}}invalid{{/compliant}}">
-      PDF/A:{{flavour}}
+      {{flavour}}
       <span class="fa-stack fa-lg">
         <i class="fa fa-circle-o fa-stack-2x"></i>
         <i class="fa {{#compliant}}fa-check{{/compliant}}{{^compliant}}fa-times{{/compliant}} fa-stack-1x"></i>

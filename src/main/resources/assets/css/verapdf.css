@@ -2,20 +2,41 @@ body {
   padding-bottom: 30px;
 }
 
-.jumbotron {
+.container .jumbotron {
   color: white;
   background-color: #D0404F;
   /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
-  background-image: url("http://www.transparenttextures.com/patterns/3px-tile.png");
-  padding: 30px 0;
+  background-image: url("/img/vera-pages.jpg");
+  padding: 0;
+}
+
+.jumbotron .container {
+    padding: 20px;
+    padding-left: 60px;
 }
 
 .jumbotron img {
-  background: white;
-  padding: 2px;
+  padding: 0px;
   float: left;
   width: 200px;
   margin: 20px 10px 0 0;
+}
+
+.shadowed {
+  filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=12, OffY=12, Color='#444')";
+  filter: url(#drop-shadow);
+  -webkit-filter: drop-shadow(12px 12px 7px rgba(0,0,0,0.5));
+  filter: drop-shadow(12px 12px 7px rgba(0,0,0,0.5));
+}
+
+.radialmask {
+  background: -moz-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.05) 100%); /* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(0,0,0,0.9)), color-stop(20%,rgba(0,0,0,0.9)), color-stop(100%,rgba(0,0,0,0.05))); /* Chrome,Safari4+ */
+  background: -webkit-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.9) 20%,rgba(0,0,0,0.05) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.9) 20%,rgba(0,0,0,0.05) 100%); /* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover,  rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.9) 20%,rgba(0,0,0,0.05) 100%); /* IE10+ */
+  background: radial-gradient(ellipse at center,  rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.9) 20%,rgba(0,0,0,0.05) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e6000000', endColorstr='#0d000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .jumbotron h1 .jumbotron p {
