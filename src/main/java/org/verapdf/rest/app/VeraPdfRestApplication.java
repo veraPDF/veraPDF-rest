@@ -17,7 +17,9 @@ import javax.servlet.FilterRegistration;
 import io.dropwizard.views.ViewBundle;
 
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.verapdf.core.ValidationException;
 import org.verapdf.rest.resources.ApiResource;
+import org.verapdf.rest.resources.ValidationExceptionMapper;
 
 import com.yunspace.dropwizard.xml.XmlBundle;
 
@@ -67,8 +69,10 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
         // Create & register our REST resources
         final ApiResource restApi = new ApiResource();
         final HomePageResource homePageResource = new HomePageResource();
+        final ValidationExceptionMapper vem = new ValidationExceptionMapper();
         environment.jersey().register(restApi);
         environment.jersey().register(homePageResource);
+        environment.jersey().register(vem);
         // Set up cross domain REST
         setupCORS(environment);
     }

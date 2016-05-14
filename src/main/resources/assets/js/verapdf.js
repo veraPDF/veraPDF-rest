@@ -23,7 +23,7 @@ $(document).ready( function() {
     } else {
       if( log ) alert(log);
     }
-    $("#digest").val(digest);
+    $("#sha1Hex").val(digest);
   });
 });
 
