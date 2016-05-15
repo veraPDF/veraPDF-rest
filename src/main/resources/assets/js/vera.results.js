@@ -34,6 +34,9 @@ var pdfaValidator = {
   */
   formatFlavour : function (enumFlavour) {
     var flavourParts = enumFlavour.split("_");
+    if (flavourParts.length < 3) {
+      return "";
+    }
     var flavourCode = flavourParts[2];
     return "PDF/A " + flavourParts[1] + flavourCode.toLowerCase();
   },
