@@ -9,7 +9,6 @@
     <version>1.0.15</version>
   </parent>
 
-  <groupId>org.verapdf</groupId>
   <artifactId>verapdf-rest</artifactId>
   <version>0.1.0-SNAPSHOT</version>
 
@@ -44,7 +43,7 @@
 
   <properties>
     <dropwizard.version>0.8.1</dropwizard.version>
-    <verapdf.pdfbox.validation.version>[0.15.0,0.16.0)</verapdf.pdfbox.validation.version>
+    <verapdf.pdfbox.validation.version>[0.16.0,0.17.0)</verapdf.pdfbox.validation.version>
   </properties>
 
   <build>
