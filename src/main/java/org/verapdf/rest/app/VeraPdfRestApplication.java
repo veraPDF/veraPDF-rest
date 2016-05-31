@@ -3,27 +3,24 @@
  */
 package org.verapdf.rest.app;
 
-import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
-import io.dropwizard.forms.MultiPartBundle;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-
 import java.util.EnumSet;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
-import io.dropwizard.views.ViewBundle;
-
 import org.eclipse.jetty.servlets.CrossOriginFilter;
-import org.verapdf.core.ValidationException;
 import org.verapdf.rest.resources.ApiResource;
+import org.verapdf.rest.resources.HomePageResource;
 import org.verapdf.rest.resources.ValidationExceptionMapper;
 
 import com.yunspace.dropwizard.xml.XmlBundle;
 
-import org.verapdf.rest.resources.HomePageResource;
+import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.forms.MultiPartBundle;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
