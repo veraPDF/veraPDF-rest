@@ -29,6 +29,11 @@
 
   <repositories>
     <repository>
+      <id>vera-pdfbox</id>
+      <name>Vera PDF Box</name>
+      <url>http://artifactory.opf-labs.org/artifactory/vera-pdfbox-local</url>
+    </repository>
+    <repository>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
