@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.commons.codec.binary.Hex;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.verapdf.core.ValidationException;
+import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.VeraPDFException;
 import org.verapdf.model.ModelParser;
 import org.verapdf.pdfa.PDFAValidator;
@@ -31,61 +31,57 @@ import org.verapdf.pdfa.validators.Validators;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
- *
  */
 public class ValidateResource {
-    // java.security.digest name for the MD5 algorithm
-    private static final String SHA1_NAME = "SHA-1";
+	// java.security.digest name for the MD5 algorithm
+	private static final String SHA1_NAME = "SHA-1";
 
-    /**
-     * @return a validation profile selected by id
-     * @throws ValidationException
-     * 
-     */
-    @POST
-    @Path("/{profileid}")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public ValidationResult validate(
-            @PathParam("profileid") String profileId,
-            @FormDataParam("sha1Hex") String sha1Hex,
-            @FormDataParam("file") InputStream uploadedInputStream,
-            @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
-            throws VeraPDFException {
-        PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
-        MessageDigest sha1 = getDigest();
-        DigestInputStream dis = new DigestInputStream(uploadedInputStream, sha1);
-        try (ModelParser toValidate = ModelParser.createModelWithFlavour(dis,
-                flavour)) {
-            PDFAValidator validator = Validators
-                    .createValidator(flavour, false);
-            ValidationResult result = validator.validate(toValidate);
-            return result;
-        } catch (VeraPDFException e) {
-            // If we have the same sha-1 then it's a PDF Box parse error, so
-            // treat as non PDF.
-            if (sha1Hex.equalsIgnoreCase(Hex.encodeHexString(sha1.digest()))) {
-                throw new NotSupportedException(Response
-                        .status(Status.UNSUPPORTED_MEDIA_TYPE)
-                        .type(MediaType.TEXT_PLAIN).entity("File does not appear to be a PDF.").build());
-            }
-            throw e;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw (new ValidationException(e.getClass() + ":" + e.getMessage()
-                    + " thrown during validation.", e));
-        }
-    }
+	/**
+	 * @param profileId
+	 *            the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
+	 *            3b, 3a, or 3u)
+	 * @param sha1Hex
+	 *            the hex String representation of the file's SHA-1 hash
+	 * @param uploadedInputStream
+	 *            a {@link java.io.InputStream} to the PDF to be validated
+	 * @param contentDispositionHeader
+	 * @return the {@link org.verapdf.pdfa.results.ValidationResult} obtained
+	 *         when validating the uploaded stream against the selected profile.
+	 * @throws VeraPDFException
+	 */
+	@POST
+	@Path("/{profileid}")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public static ValidationResult validate(@PathParam("profileid") String profileId,
+			@FormDataParam("sha1Hex") String sha1Hex, @FormDataParam("file") InputStream uploadedInputStream,
+			@FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) throws VeraPDFException {
+		PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
+		MessageDigest sha1 = getDigest();
+		DigestInputStream dis = new DigestInputStream(uploadedInputStream, sha1);
+		try (ModelParser toValidate = ModelParser.createModelWithFlavour(dis, flavour)) {
+			PDFAValidator validator = Validators.createValidator(flavour, false);
+			ValidationResult result = validator.validate(toValidate);
+			return result;
+		} catch (ModelParsingException mpExcep) {
+			// If we have the same sha-1 then it's a PDF Box parse error, so
+			// treat as non PDF.
+			if (sha1Hex.equalsIgnoreCase(Hex.encodeHexString(sha1.digest()))) {
+				throw new NotSupportedException(Response.status(Status.UNSUPPORTED_MEDIA_TYPE)
+						.type(MediaType.TEXT_PLAIN).entity("File does not appear to be a PDF.").build(), mpExcep);
+			}
+			throw mpExcep;
+		}
+	}
 
-    private static MessageDigest getDigest() {
-        try {
-            return MessageDigest.getInstance(SHA1_NAME);
-        } catch (NoSuchAlgorithmException excep) {
-            // If this happens the Java Digest algorithms aren't present, a
-            // faulty Java install??
-            throw new IllegalStateException(
-                    "No digest algorithm implementation for " + SHA1_NAME
-                            + ", check you Java installation.");
-        }
-    }
+	private static MessageDigest getDigest() {
+		try {
+			return MessageDigest.getInstance(SHA1_NAME);
+		} catch (NoSuchAlgorithmException nsaExcep) {
+			// If this happens the Java Digest algorithms aren't present, a
+			// faulty Java install??
+			throw new IllegalStateException(
+					"No digest algorithm implementation for " + SHA1_NAME + ", check you Java installation.", nsaExcep);
+		}
+	}
 }
