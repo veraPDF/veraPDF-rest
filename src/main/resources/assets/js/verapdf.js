@@ -89,24 +89,16 @@ $(document).ready(function () {
   $('div.setup-panel div a.btn-primary').trigger('click');
 });
 
-$(document).on('click', "#type-requested > button", function() {
-  var input = $(this);
-  // Do nothing if the active view
-  if (input.hasClass("btn-success")) return;
-  // select the new button
-  $("#type-requested > button.btn-success").removeClass("btn-success").addClass("btn-default");
-  input.addClass("btn-success");
-  renderResult(getRenderType());
-});
-
-function getRenderType() {
-  return($("#type-requested > button.btn-success").attr("name"));
-}
-
 var flavour = "1b";
 
 function changeFlavour(newFlavour) {
   flavour = newFlavour;
+}
+
+var outputFormat = "html"
+
+function changeOutputFormat(newFormat) {
+  outputFormat = newFormat;
 }
 
 function callVeraPdfService() {
@@ -116,22 +108,16 @@ function callVeraPdfService() {
   var spinHtml = $("#spinner-template").html();
   $("#results").html(spinHtml);
   pdfaValidator.validate(formData, flavour, function() {
-    renderResult(getRenderType());
-  });
+    renderResult();
+  }, outputFormat);
 }
 
-function renderResult(renderType) {
+function renderResult() {
   $("#results").empty();
-  if (renderType == 'xml') {
-    var preBlock = $("<pre>").text(pdfaValidator.xmlResult());
-    $("#results").append(preBlock);
-  } else if (renderType ==  'html') {
-    var template = $('#template').html();
-    Mustache.parse(template);   // optional, speeds up future uses
-    var rendered = Mustache.render(template, pdfaValidator);
-    $('#results').html(rendered);
-  } else if (renderType == 'json') {
-    var preBlock = $("<pre>").text(pdfaValidator.jsonResult());
+  if (outputFormat ==  'html') {
+    $('#results').html(pdfaValidator.result);
+  } else {
+    var preBlock = $("<pre>").text(pdfaValidator.result);
     $("#results").append(preBlock);
   }
 }
