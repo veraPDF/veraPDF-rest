@@ -76,12 +76,24 @@
           <div class="col-md-12">
             <h3>Configure PDF/A Validator</h3>
             <div class="form-group">
-              <label class="control-label">Validation Profile</label>
+              <label class="control-label">Validation Profile:</label>
               <select class="form-control" onchange="changeFlavour(this.value)">
                 <option value="1b">PDF/A-1b</option>
                 <option value="1a">PDF/A-1a</option>
                 <option value="2b">PDF/A-2b</option>
+                <option value="2a">PDF/A-2a</option>
+                <option value="2u">PDF/A-2u</option>
                 <option value="3b">PDF/A-3b</option>
+                <option value="3a">PDF/A-3a</option>
+                <option value="3u">PDF/A-3u</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Output Format:</label>
+              <select class="form-control" onchange="changeOutputFormat(this.value)">
+                <option value="html">HTML</option>
+                <option value="xml">XML</option>
+                <option value="json">JSON</option>
               </select>
             </div>
             <div class="form-group">
@@ -102,16 +114,8 @@
         <div class="col-xs-12">
           <div class="col-md-12">
             <div class="list-group voffset2">
-              <a href="#" class="list-group-item active">
-                <h2 class="list-group-item-heading">PDF/A Validation Results</h2>
-                <p class="list-group-item-text">Validation results are shown below.</p>
-                <div id="type-requested">
-                  <h5>View results as:</h5>
-                  <button type="button" class="btn btn-success" name="html">HTML</button>
-                  <button type="button" class="btn btn-default" name="xml">XML</button>
-                  <button type="button" class="btn btn-default" name="json">JSON</button>
-                </div>
-              </a>
+              <h2 class="list-group-item-heading">PDF/A Validation Results</h2>
+              <p class="list-group-item-text">Validation results are shown below.</p>
               <div id="results"></div>
             </div>
           </div>
@@ -119,41 +123,21 @@
       </div>
     </form>
   </div>
-  <script id="error-template" type="text/html">
+  <script id="error-template" type="x-tmpl-mustache">
+    {{=<% %>=}}
     <div class="alert alert-danger" role="alert">
-      <p class="text-center"><span class="fa fa-warning fa-2x"> Sorry, it's embarrasing when things go wrong, did we mention that it's a prototype.</span></p>
+      <p class="text-center"><span class="fa fa-warning fa-2x">Whoops, there appears to be a problem.</span></p>
+      <p><pre>HTTP Status: {{ status }}</pre></p>
+      <p><pre>HTTP Status Text: {{ statusText }}</pre></p>
+      <p><pre>HTTP Response Text: {{ responseText }}</pre></p>
     </div>
+    <%={{ }}=%>
   </script>
   <script id="spinner-template" type="text/html">
     <div class="alert alert-info" role="alert">
       <p class="text-center"><span class="fa fa-refresh fa-spin fa-2x"></span> Uploading and validating.</p>
     </div>
   </script>
-  <script id="template" type="x-tmpl-mustache">
-    {{=<% %>=}}
-    {{#result}}
-    <div class="result-{{#compliant}}valid{{/compliant}}{{^compliant}}invalid{{/compliant}}">
-      {{flavour}}
-      <span class="fa-stack fa-lg">
-        <i class="fa fa-circle-o fa-stack-2x"></i>
-        <i class="fa {{#compliant}}fa-check{{/compliant}}{{^compliant}}fa-times{{/compliant}} fa-stack-1x"></i>
-      </span>
-      Checks performed: {{totalAssertions}}
-      <h3>Failed tests</h3>
-      <ul class="list-group">
-      {{#testAssertions}}
-        <li class="list-group-item">
-          <span class="badge">{{ordinal}}</span>
-          {{ruleId.clause}}-{{ruleId.testNumber}}<br/>
-          {{message}}
-        </li>
-      {{/testAssertions}}
-      </ul>
-    </div>
-    {{/result}}
-    <%={{ }}=%>
-  </script>
-
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
