@@ -46,7 +46,8 @@ import org.verapdf.report.MachineReadableReport;
 public class ValidateResource {
 	private static final ProfileDirectory DIRECTORY = Profiles.getVeraProfileDirectory();
 	// java.security.digest name for the MD5 algorithm
-	private static final String SHA1_NAME = "SHA-1";
+	private static final String SHA1_NAME = "SHA-1"; //$NON-NLS-1$
+	private static final String WIKI_URL_BASE = "https://github.com/veraPDF/veraPDF-validation-profiles/wiki/"; //$NON-NLS-1$
 
 	/**
 	 * @param profileId
@@ -80,7 +81,7 @@ public class ValidateResource {
 			// treat as non PDF.
 			if (sha1Hex.equalsIgnoreCase(Hex.encodeHexString(sha1.digest()))) {
 				throw new NotSupportedException(Response.status(Status.UNSUPPORTED_MEDIA_TYPE)
-						.type(MediaType.TEXT_PLAIN).entity("File does not appear to be a PDF.").build(), mpExcep);
+						.type(MediaType.TEXT_PLAIN).entity("File does not appear to be a PDF.").build(), mpExcep); //$NON-NLS-1$
 			}
 			throw mpExcep;
 		}
@@ -110,7 +111,7 @@ public class ValidateResource {
 		ValidationResult result = validate(profileId, sha1Hex, uploadedInputStream, contentDispositionHeader);
 		MachineReadableReport mrr = MachineReadableReport.fromValues(
 				ItemDetails.fromValues(contentDispositionHeader.getFileName(), contentDispositionHeader.getSize()),
-				DIRECTORY.getValidationProfileByFlavour(PDFAFlavour.byFlavourId(profileId)), result, false, 0, null,
+				DIRECTORY.getValidationProfileByFlavour(PDFAFlavour.byFlavourId(profileId)), result, false, 100, null,
 				null, new Date().getTime() - start);
 		byte[] htmlBytes = new byte[0];
 		try (ByteArrayOutputStream xmlBos = new ByteArrayOutputStream()) {
@@ -118,7 +119,7 @@ public class ValidateResource {
 			htmlBytes = getHtmlBytes(xmlBos.toByteArray());
 		} catch (IOException | JAXBException | TransformerException excep) {
 			excep.printStackTrace();
-			throw new VeraPDFException("Some Java Exception while validating", excep);
+			throw new VeraPDFException("Some Java Exception while validating", excep); //$NON-NLS-1$
 			// TODO Auto-generated catch block
 		}
 		return new ByteArrayInputStream(htmlBytes);
@@ -131,14 +132,14 @@ public class ValidateResource {
 			// If this happens the Java Digest algorithms aren't present, a
 			// faulty Java install??
 			throw new IllegalStateException(
-					"No digest algorithm implementation for " + SHA1_NAME + ", check you Java installation.", nsaExcep);
+					"No digest algorithm implementation for " + SHA1_NAME + ", check you Java installation.", nsaExcep); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
 	private static byte[] getHtmlBytes(byte[] xmlBytes) throws IOException, TransformerException {
 		try (ByteArrayInputStream xmlBis = new ByteArrayInputStream(xmlBytes);
 				ByteArrayOutputStream htmlBos = new ByteArrayOutputStream()) {
-			HTMLReport.writeHTMLReport(xmlBis, htmlBos, null, false);
+			HTMLReport.writeHTMLReport(xmlBis, htmlBos, WIKI_URL_BASE, false);
 			return htmlBos.toByteArray();
 		}
 
