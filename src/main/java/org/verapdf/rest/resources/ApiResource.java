@@ -46,6 +46,13 @@ public final class ApiResource {
         return new ValidateResource();
     }
 
+    /**
+     * @return a new {@link org.verapdf.rest.resources.ValidateResource}
+     */
+    @Path("/zipvalidate")
+    public static ZipProcessingResource getZipResource() {
+        return new ZipProcessingResource();
+    }
 
     /**
      * @return a new {@link ByteStreamResource}

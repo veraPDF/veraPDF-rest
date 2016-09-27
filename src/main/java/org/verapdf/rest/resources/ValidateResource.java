@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.NotSupportedException;
@@ -39,6 +38,7 @@ import org.verapdf.pdfa.validators.Validators;
 import org.verapdf.report.HTMLReport;
 import org.verapdf.report.ItemDetails;
 import org.verapdf.report.MachineReadableReport;
+import org.verapdf.report.TaskDetails;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -107,12 +107,12 @@ public class ValidateResource {
 	public static InputStream validateHtml(@PathParam("profileid") String profileId,
 			@FormDataParam("sha1Hex") String sha1Hex, @FormDataParam("file") InputStream uploadedInputStream,
 			@FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) throws VeraPDFException {
-		long start = new Date().getTime();
+		TaskDetails.TimedFactory timer = new TaskDetails.TimedFactory("validtion");
 		ValidationResult result = validate(profileId, sha1Hex, uploadedInputStream, contentDispositionHeader);
 		MachineReadableReport mrr = MachineReadableReport.fromValues(
 				ItemDetails.fromValues(contentDispositionHeader.getFileName(), contentDispositionHeader.getSize()),
 				DIRECTORY.getValidationProfileByFlavour(PDFAFlavour.byFlavourId(profileId)), result, false, 100, null,
-				null, new Date().getTime() - start);
+				null, timer.stop());
 		byte[] htmlBytes = new byte[0];
 		try (ByteArrayOutputStream xmlBos = new ByteArrayOutputStream()) {
 			MachineReadableReport.toXml(mrr, xmlBos, Boolean.FALSE);
