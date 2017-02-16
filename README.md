@@ -33,7 +33,7 @@ First clone this project, got to the project directory and then build the Maven 
 
 To start up the server:
 
-	java -jar target/verapdf-rest-0.0.1-SNAPSHOT.jar server
+	java -jar target/verapdf-rest-0.1.0-SNAPSHOT.jar server
 
 Go to [localhost:8080/api/info](http://localhost:8080/api/info) to see if the server is running, you should see something like:
 
