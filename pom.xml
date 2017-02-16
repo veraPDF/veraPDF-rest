@@ -29,6 +29,11 @@
 
   <repositories>
     <repository>
+      <id>vera-pdfbox</id>
+      <name>Vera PDF Box</name>
+      <url>http://artifactory.opf-labs.org/artifactory/vera-pdfbox-local</url>
+    </repository>
+    <repository>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -44,7 +49,7 @@
 
   <properties>
     <dropwizard.version>0.8.1</dropwizard.version>
-    <verapdf.pdfbox.validation.version>[0.16.0,0.17.0)</verapdf.pdfbox.validation.version>
+    <verapdf.pdfbox.validation.version>[0.21.0,0.22.0)</verapdf.pdfbox.validation.version>
   </properties>
 
   <build>
@@ -141,6 +146,12 @@
     <dependency>
       <groupId>org.verapdf</groupId>
       <artifactId>pdfbox-feature-reporting</artifactId>
+      <version>${verapdf.pdfbox.validation.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.verapdf</groupId>
+      <artifactId>gui</artifactId>
       <version>${verapdf.pdfbox.validation.version}</version>
     </dependency>
 
