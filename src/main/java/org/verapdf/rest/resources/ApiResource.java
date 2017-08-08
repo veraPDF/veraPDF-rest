@@ -27,7 +27,7 @@ public final class ApiResource {
     @GET
     @Path("/info")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public static Environment getEnvironent() {
+    public static Environment getEnvironment() {
         return Environments.getEnvironment();
     }
     
