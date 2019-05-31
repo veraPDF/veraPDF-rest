@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.verapdf</groupId>
     <artifactId>verapdf-parent</artifactId>
-    <version>1.0.17</version>
+    <version>1.12.2</version>
   </parent>
 
   <groupId>org.verapdf</groupId>
@@ -49,7 +49,7 @@
 
   <properties>
     <dropwizard.version>1.0.5</dropwizard.version>
-    <verapdf.validation.version>[1.4.0,1.5.0)</verapdf.validation.version>
+    <verapdf.validation.version>[1.12.0,1.13.0)</verapdf.validation.version>
   </properties>
 
   <build>

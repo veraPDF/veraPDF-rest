@@ -157,7 +157,7 @@ public class ValidateResource {
 		byte[] htmlBytes = new byte[0];
 		try (ByteArrayOutputStream xmlBos = new ByteArrayOutputStream()) {
 			BatchSummary summary = processFile(file, config, xmlBos);
-			htmlBytes = getHtmlBytes(xmlBos.toByteArray(), summary);
+			htmlBytes = getHtmlBytes(xmlBos.toByteArray(), summary.isMultiJob());
 		} catch (IOException | TransformerException excep) {
 			throw new VeraPDFException("Some Java Exception while validating", excep); //$NON-NLS-1$
 			// TODO Auto-generated catch block
@@ -176,10 +176,10 @@ public class ValidateResource {
 		}
 	}
 
-	private static byte[] getHtmlBytes(byte[] xmlBytes, BatchSummary summary) throws IOException, TransformerException {
+	private static byte[] getHtmlBytes(byte[] xmlBytes, boolean isMultiJob) throws IOException, TransformerException {
 		try (InputStream xmlBis = new ByteArrayInputStream(xmlBytes);
 				ByteArrayOutputStream htmlBos = new ByteArrayOutputStream()) {
-			HTMLReport.writeHTMLReport(xmlBis, htmlBos, summary, WIKI_URL_BASE, false);
+			HTMLReport.writeHTMLReport(xmlBis, htmlBos, isMultiJob, WIKI_URL_BASE, false);
 			return htmlBos.toByteArray();
 		}
 
