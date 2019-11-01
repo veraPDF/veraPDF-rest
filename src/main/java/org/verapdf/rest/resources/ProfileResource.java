@@ -14,12 +14,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.validation.ProfileDetails;
-import org.verapdf.pdfa.validation.ProfileDirectory;
-import org.verapdf.pdfa.validation.Profiles;
-import org.verapdf.pdfa.validation.Rule;
-import org.verapdf.pdfa.validation.RuleId;
-import org.verapdf.pdfa.validation.ValidationProfile;
+import org.verapdf.pdfa.validation.profiles.ProfileDetails;
+import org.verapdf.pdfa.validation.profiles.ProfileDirectory;
+import org.verapdf.pdfa.validation.profiles.Profiles;
+import org.verapdf.pdfa.validation.profiles.Rule;
+import org.verapdf.pdfa.validation.profiles.RuleId;
+import org.verapdf.pdfa.validation.profiles.ValidationProfile;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -70,9 +70,9 @@ public class ProfileResource {
 	 * @return a validation profile selected by id
 	 */
 	@GET
-	@Path("/{profileid}")
+	@Path("/{profileId}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public static ValidationProfile getProfile(@PathParam("profileid") String profileId) {
+	public static ValidationProfile getProfile(@PathParam("profileId") String profileId) {
 		return DIRECTORY.getValidationProfileById(profileId);
 	}
 
@@ -85,9 +85,9 @@ public class ProfileResource {
 	 *         Validation Profile
 	 */
 	@GET
-	@Path("/{profileid}/ruleids")
+	@Path("/{profileId}/ruleids")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public static Set<RuleId> getProfileRules(@PathParam("profileid") String profileId) {
+	public static Set<RuleId> getProfileRules(@PathParam("profileId") String profileId) {
 		Set<RuleId> ids = new HashSet<>();
 		for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
 			ids.add(rule.getRuleId());
@@ -107,9 +107,9 @@ public class ProfileResource {
 	 *         profile and clause
 	 */
 	@GET
-	@Path("/{profileid}/{clause}")
+	@Path("/{profileId}/{clause}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public static Set<Rule> getRulesforClause(@PathParam("profileid") String profileId,
+	public static Set<Rule> getRulesForClause(@PathParam("profileId") String profileId,
 			@PathParam("clause") String clause) {
 		Set<Rule> rules = new HashSet<>();
 		for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {

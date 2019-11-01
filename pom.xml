@@ -6,10 +6,9 @@
   <parent>
     <groupId>org.verapdf</groupId>
     <artifactId>verapdf-parent</artifactId>
-    <version>1.0.15</version>
+    <version>1.14.4</version>
   </parent>
 
-  <groupId>org.verapdf</groupId>
   <artifactId>verapdf-rest</artifactId>
   <version>0.1.0-SNAPSHOT</version>
 
@@ -48,8 +47,9 @@
   </repositories>
 
   <properties>
-    <dropwizard.version>0.8.1</dropwizard.version>
-    <verapdf.pdfbox.validation.version>[0.21.0,0.22.0)</verapdf.pdfbox.validation.version>
+    <dropwizard.version>1.1.2</dropwizard.version>
+    <fasterxml.version>2.7.8</fasterxml.version>
+    <verapdf.validation.version>[1.14.0,1.15.0)</verapdf.validation.version>
   </properties>
 
   <build>
@@ -63,7 +63,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>1.6</version>
+        <version>3.2.1</version>
         <configuration>
           <createDependencyReducedPom>true</createDependencyReducedPom>
           <filters>
@@ -115,7 +115,19 @@
     <dependency>
       <groupId>com.yunspace.dropwizard</groupId>
       <artifactId>dropwizard-xml</artifactId>
-      <version>0.8.1-25</version>
+      <version>41</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-xml-provider</artifactId>
+      <version>${fasterxml.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>${fasterxml.version}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -137,28 +149,23 @@
       <artifactId>dropwizard-assets</artifactId>
       <version>${dropwizard.version}</version>
     </dependency>
+
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.6</version>
+      <version>1.10</version>
+    </dependency>
+
+    <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.5</version>
     </dependency>
 
     <dependency>
       <groupId>org.verapdf</groupId>
-      <artifactId>pdfbox-feature-reporting</artifactId>
-      <version>${verapdf.pdfbox.validation.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.verapdf</groupId>
-      <artifactId>gui</artifactId>
-      <version>${verapdf.pdfbox.validation.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.verapdf</groupId>
-      <artifactId>pdfbox-validation-model</artifactId>
-      <version>${verapdf.pdfbox.validation.version}</version>
+      <artifactId>validation-model</artifactId>
+      <version>${verapdf.validation.version}</version>
     </dependency>
   </dependencies>
 

@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import org.verapdf.rest.environment.Environment;
 import org.verapdf.rest.environment.Environments;
 
+
 /**
  * API wrapper resource, provides routing for child API resources.
  * 
@@ -26,7 +27,7 @@ public final class ApiResource {
     @GET
     @Path("/info")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public static Environment getEnvironent() {
+    public static Environment getEnvironment() {
         return Environments.getEnvironment();
     }
     
