@@ -70,9 +70,9 @@ public class ProfileResource {
 	 * @return a validation profile selected by id
 	 */
 	@GET
-	@Path("/{profileid}")
+	@Path("/{profileId}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public static ValidationProfile getProfile(@PathParam("profileid") String profileId) {
+	public static ValidationProfile getProfile(@PathParam("profileId") String profileId) {
 		return DIRECTORY.getValidationProfileById(profileId);
 	}
 
@@ -85,9 +85,9 @@ public class ProfileResource {
 	 *         Validation Profile
 	 */
 	@GET
-	@Path("/{profileid}/ruleids")
+	@Path("/{profileId}/ruleids")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public static Set<RuleId> getProfileRules(@PathParam("profileid") String profileId) {
+	public static Set<RuleId> getProfileRules(@PathParam("profileId") String profileId) {
 		Set<RuleId> ids = new HashSet<>();
 		for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
 			ids.add(rule.getRuleId());
@@ -107,9 +107,9 @@ public class ProfileResource {
 	 *         profile and clause
 	 */
 	@GET
-	@Path("/{profileid}/{clause}")
+	@Path("/{profileId}/{clause}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public static Set<Rule> getRulesforClause(@PathParam("profileid") String profileId,
+	public static Set<Rule> getRulesForClause(@PathParam("profileId") String profileId,
 			@PathParam("clause") String clause) {
 		Set<Rule> rules = new HashSet<>();
 		for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
