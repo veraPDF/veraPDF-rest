@@ -22,6 +22,41 @@ The [Dropwizard core documentation](http://dropwizard.io/manual/core.html) cover
 
 Building and running
 --------------------
+
+### Docker
+This uses a Docker multi-stage build so the final container image which
+may be deployed does not require more than the base OpenJDK JRE without
+the entire build tool-chain.
+
+Tested lightly:
+
+```
+docker build -t verapdf-rest:latest . && docker run -d -p 8080:8080 -p 8081:8081 verapdf-rest:latest
+```
+
+If you encounter an error during docker run about "Can't set cookie dm_task_set_cookie failed", try:
+
+```
+sudo dmsetup udevcomplete_all
+```
+
+The built verapdf-rest image is notable smaller than just the base Maven image even before you consider the 
+downloaded dependencies so the multi-stage build is definitely worthwhile:
+
+```
+cadams@ganymede:~ $ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+verapdf-rest        latest              c3c2a52a7bc0        5 minutes ago       297MB
+maven               latest              88714384d642        11 days ago         749MB
+```
+
+Using the Alpine-based OpenJRE images provides a further hefty size reduction and we don't seem to be using 
+anything which would be easier on Ubuntu:
+
+```
+verapdf-rest        latest              c69af6445b35        31 seconds ago      103MB
+```
+
 ### Project structure
 Currently it's delivered as a single Maven module, veraPDF-rest.
 
