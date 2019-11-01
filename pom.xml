@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.verapdf</groupId>
     <artifactId>verapdf-parent</artifactId>
-    <version>1.0.17</version>
+    <version>1.12.2</version>
   </parent>
 
   <groupId>org.verapdf</groupId>
