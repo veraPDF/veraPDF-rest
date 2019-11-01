@@ -1,9 +1,8 @@
 # See https://docs.docker.com/engine/userguide/eng-image/multistage-build/
 
 FROM maven as builder
-RUN mkdir /build
 WORKDIR /build
-RUN git clone https://github.com/rstorey/veraPDF-rest.git
+RUN git clone https://github.com/veraPDF/veraPDF-rest.git
 RUN cd veraPDF-rest && git checkout integration && mvn clean package
 
 
