@@ -3,25 +3,24 @@
  */
 package org.verapdf.rest.app;
 
-import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
-import io.dropwizard.forms.MultiPartBundle;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-
 import java.util.EnumSet;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
-import io.dropwizard.views.ViewBundle;
-
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.verapdf.rest.resources.ApiResource;
+import org.verapdf.rest.resources.HomePageResource;
+import org.verapdf.rest.resources.ValidationExceptionMapper;
 
 import com.yunspace.dropwizard.xml.XmlBundle;
 
-import org.verapdf.rest.resources.HomePageResource;
+import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.forms.MultiPartBundle;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -58,7 +57,7 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
         bootstrap.addBundle(new ViewBundle<VeraPdfRestConfiguration>());
         bootstrap.addBundle(new AssetsBundle("/assets/css", "/css", null, "css")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        bootstrap.addBundle(new AssetsBundle("/assets/img", "/img", null, "img")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-
+        bootstrap.addBundle(new AssetsBundle("/assets/img", "/img", null, "img")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-
     }
 
     @Override
@@ -67,8 +66,10 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
         // Create & register our REST resources
         final ApiResource restApi = new ApiResource();
         final HomePageResource homePageResource = new HomePageResource();
+        final ValidationExceptionMapper vem = new ValidationExceptionMapper();
         environment.jersey().register(restApi);
         environment.jersey().register(homePageResource);
+        environment.jersey().register(vem);
         // Set up cross domain REST
         setupCORS(environment);
     }

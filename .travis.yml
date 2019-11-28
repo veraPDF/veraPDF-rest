@@ -1,16 +1,15 @@
 language: java
+sudo: required
+dist: trusty
 
 jdk:
-  - openjdk7
-  - oraclejdk7
+  - openjdk8
   - oraclejdk8
 
 branches:
   except:
     - /^v|d\d+\.\d+\.\d+$/
-
-install:
-  - mvn clean install -q
+    - /^jenkins-veraPDF-rest-v|d\\d+\\.\\d+\\.\\d+$/
 
 after_script:
   - java -jar target/verapdf-rest-0.0.1-SNAPSHOT.jar server  </dev/null &>/dev/null &
@@ -18,4 +17,3 @@ after_script:
   - wget -qO- http://localhost:8080/api/profiles
   - wget -qO- http://localhost:8080/api/profiles/1b
   - fuser -k 8080/tcp
-

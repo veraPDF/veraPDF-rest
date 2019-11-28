@@ -47,7 +47,7 @@ public class ByteStreamResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
             MediaType.TEXT_XML })
-    public ByteStreamId getSha1(
+    public static ByteStreamId getSha1(
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
         try {
@@ -70,7 +70,7 @@ public class ByteStreamResource {
     @Path("/null")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
             MediaType.TEXT_XML })
-    public ByteStreamId getEmptySha1() {
+    public static ByteStreamId getEmptySha1() {
         return ByteStreams.nullByteStreamId();
     }
 }

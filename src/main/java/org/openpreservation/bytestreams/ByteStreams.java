@@ -62,7 +62,7 @@ public final class ByteStreams {
             // faulty Java install??
             throw new IllegalStateException(
                     "No digest algorithm implementation for " + SHA1_NAME //$NON-NLS-1$
-                            + ", check you Java installation."); //$NON-NLS-1$
+                            + ", check you Java installation.", excep); //$NON-NLS-1$
         }
     }
 
