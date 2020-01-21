@@ -1,4 +1,4 @@
-veraPDF-rest
+proveraPDF-rest
 =========================
 
 *Dropwizard based veraPDF REST Services*
@@ -142,7 +142,7 @@ at [localhost:8080/api/profiles/](http://localhost:8080/api/profiles/). To test 
     curl localhost:8080/api/profiles
 
 Each profile is identified by a 2 letter code made up the PDF/A version amd level. These are listed at
-[localhost:8080/api/profles/ids/](http://localhost:8080/api/profiles/ids/):
+[localhost:8080/api/profiles/ids/](http://localhost:8080/api/profiles/ids/):
 
     curl localhost:8080/api/profiles/ids
 
