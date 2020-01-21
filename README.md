@@ -1,4 +1,4 @@
-proveraPDF-rest
+veraPDF-rest
 =========================
 
 *Dropwizard based veraPDF REST Services*
