@@ -30,7 +30,7 @@
     <repository>
       <id>vera-pdfbox</id>
       <name>Vera PDF Box</name>
-      <url>http://artifactory.opf-labs.org/artifactory/vera-pdfbox-local</url>
+      <url>https://artifactory.opf-labs.org/artifactory/vera-pdfbox-local</url>
     </repository>
     <repository>
       <snapshots>
@@ -38,7 +38,7 @@
       </snapshots>
       <id>vera-dev</id>
       <name>Vera development</name>
-      <url>http://artifactory.opf-labs.org/artifactory/vera-dev</url>
+      <url>https://artifactory.opf-labs.org/artifactory/vera-dev</url>
     </repository>
     <repository>
       <id>jcenter</id>
