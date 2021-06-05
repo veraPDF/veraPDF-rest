@@ -11,12 +11,9 @@ import javax.ws.rs.core.MediaType;
 import org.verapdf.rest.environment.Environment;
 import org.verapdf.rest.environment.Environments;
 
-
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.License;
 import io.swagger.annotations.Info;
+import io.swagger.annotations.License;
 import io.swagger.annotations.SwaggerDefinition;
 
 
