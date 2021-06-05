@@ -259,13 +259,12 @@ public class ValidateResource {
 	}
 
 	private static BatchSummary processFile(File file, ProcessorConfig config, OutputStream mrrStream)
-			throws VeraPDFException {
+			throws VeraPDFException, IOException {
 		List<File> files = Arrays.asList(file);
 		BatchSummary summary = null;
 		try (BatchProcessor processor = ProcessorFactory.fileBatchProcessor(config)) {
 			summary = processor.process(files,
 					ProcessorFactory.getHandler(FormatOption.MRR, false, mrrStream, 100, false));
-		} catch (IOException exception) {
 		}
 		return summary;
 	}
