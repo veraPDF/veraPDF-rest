@@ -21,6 +21,7 @@ USER verapdf-rest
 WORKDIR /opt/verapdf-rest
 
 COPY --from=builder /build/veraPDF-rest/target/verapdf-rest-${VERAPDF_REST_VERSION}.jar /opt/verapdf-rest/
+COPY --from=builder /build/veraPDF-rest/server.yml /opt/verapdf-rest/
 
 EXPOSE 8080
 ENTRYPOINT java -jar /opt/verapdf-rest/verapdf-rest-${VERAPDF_REST_VERSION}.jar server server.yml
