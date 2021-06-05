@@ -195,8 +195,8 @@ public class ValidateResource {
 
         if(!profileId.equals(AUTODETECT_PROFILE)) {
             PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
-            try (PDFAParser toValidate = Foundries.defaultInstance().createParser(dis, flavour)) {
-                PDFAValidator validator = ValidatorFactory.createValidator(flavour, false);
+            try (PDFAParser toValidate = Foundries.defaultInstance().createParser(dis, flavour);
+                 PDFAValidator validator = ValidatorFactory.createValidator(flavour, false);) {
                 result = validator.validate(toValidate);
             } catch (ModelParsingException mpExcep) {
                 // If we have the same sha-1 then it's a PDF Box parse error, so
@@ -213,8 +213,8 @@ public class ValidateResource {
                 exception.printStackTrace();
             }
         } else {
-            try (PDFAParser parser = Foundries.defaultInstance().createParser(dis)) {
-                PDFAValidator validator = Foundries.defaultInstance().createValidator(parser.getFlavour(), false);
+            try (PDFAParser parser = Foundries.defaultInstance().createParser(dis);
+                 PDFAValidator validator = Foundries.defaultInstance().createValidator(parser.getFlavour(), false);) {
                 result = validator.validate(parser);
             } catch (ModelParsingException mpExcep) {
                 // If we have the same sha-1 then it's a PDF Box parse error, so
