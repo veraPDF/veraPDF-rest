@@ -58,7 +58,9 @@ import org.verapdf.processor.TaskType;
 import org.verapdf.processor.plugins.PluginsCollectionConfig;
 import org.verapdf.processor.reports.BatchSummary;
 import org.verapdf.report.HTMLReport;
-
+import org.verapdf.report.ItemDetails;
+import org.verapdf.report.MachineReadableReport;
+import org.verapdf.report.TaskDetails;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
