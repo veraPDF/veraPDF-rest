@@ -142,7 +142,7 @@ public class ValidateResource {
 
 
         PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
-        ValidatorConfig validConf = ValidatorFactory.createConfig(flavour, false, 100);
+        ValidatorConfig validConf = ValidatorFactory.createConfig(flavour, false, 100, false);
         ProcessorConfig config = createValidateConfig(validConf);
 
 
