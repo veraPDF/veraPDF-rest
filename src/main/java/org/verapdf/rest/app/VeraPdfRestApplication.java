@@ -57,11 +57,15 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
         //bootstrap.addBundle(xmlBundle);
         bootstrap.addBundle(new MultiPartBundle());
         bootstrap.addBundle(new ViewBundle<VeraPdfRestConfiguration>());
-        bootstrap.addBundle(new SwaggerBundle<VeraPdfRestConfiguration>() {@Override
-			protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(VeraPdfRestConfiguration configuration) {
-			return configuration.swaggerBundleConfiguration;
-		}});
-        
+        bootstrap.addBundle(new SwaggerBundle<VeraPdfRestConfiguration>() {
+            @Override
+            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(
+                    VeraPdfRestConfiguration configuration) {
+                SwaggerBundleConfiguration config = new SwaggerBundleConfiguration();
+                config.setResourcePackage("com.pinterest.soundwave");
+                return config;
+            }
+        });
         bootstrap.addBundle(new AssetsBundle("/assets/css", "/css", null, "css")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         bootstrap.addBundle(new AssetsBundle("/assets/img", "/img", null, "img")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-

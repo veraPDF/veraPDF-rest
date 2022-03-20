@@ -22,9 +22,6 @@ public class VeraPdfRestConfiguration extends Configuration {
     private int port;
 
 
-    @JsonProperty("swagger")
-	public SwaggerBundleConfiguration swaggerBundleConfiguration;
-
     /**
      * @return the TCP/IP port used
      */
