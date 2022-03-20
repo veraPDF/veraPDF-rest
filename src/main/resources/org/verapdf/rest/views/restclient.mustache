@@ -64,8 +64,8 @@
               <input id="filename" type="text" class="form-control" placeholder="Select a file to upload." required="required" readonly />
             </div>
             <div class="input-group voffset2">
-              <span class="input-group-addon">JS SHA-1: </span>
-              <input id="sha1Hex" name="sha1Hex" type="text" class="form-control" value="da39a3ee5e6b4b0d3255bfef95601890afd80709" readonly />
+              <span class="input-group-addon">SHA-1: </span>
+              <input id="sha1Hex" name="sha1Hex" type="text" class="form-control" value="" readonly />
             </div>
             <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
           </div>
@@ -78,14 +78,19 @@
             <div class="form-group">
               <label class="control-label">Validation Profile:</label>
               <select class="form-control" onchange="changeFlavour(this.value)">
-                <option value="1b">PDF/A-1b</option>
-                <option value="1a">PDF/A-1a</option>
-                <option value="2b">PDF/A-2b</option>
-                <option value="2a">PDF/A-2a</option>
-                <option value="2u">PDF/A-2u</option>
-                <option value="3b">PDF/A-3b</option>
-                <option value="3a">PDF/A-3a</option>
-                <option value="3u">PDF/A-3u</option>
+                <option value="auto">Autodetect</option>
+                <option value="1b">PDF/A-1b Basic</option>
+                <option value="1a">PDF/A-1a Accessible</option>
+                <option value="2b">PDF/A-2b Basic</option>
+                <option value="2a">PDF/A-2a Accessible</option>
+                <option value="2u">PDF/A-2u Unicode</option>
+                <option value="3b">PDF/A-3b Basic</option>
+                <option value="3a">PDF/A-3a Accessible</option>
+                <option value="3u">PDF/A-3u Unicode</option>
+                <option value="4">PDF/A-4 Basic</option>
+                <option value="4e">PDF/A-4e Engineering</option>
+                <option value="4f">PDF/A-4f EmbeddedFiles</option>
+                <option value="ua1">PDF/UA-1</option>
               </select>
             </div>
             <div class="form-group">
@@ -122,6 +127,40 @@
         </div>
       </div>
     </form>
+      <div>
+          <h4>Validation Profile Information</h4>
+          <ul>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000318.shtml">PDF/A</a></li>
+              <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000125.shtml">PDF/A-1
+                  - PDF 1.4</a> |
+                  <a href="/api/profiles/1b" target="_blank">1b Basic</a> |
+                  <a href="/api/profiles/1a" target="_blank">1a Accessible</a>
+              </li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000319.shtml">PDF/A-2
+                 - PDF 1.7</a> |
+                <a href="/api/profiles/2b" target="_blank">2b Basic</a> |
+                <a href="/api/profiles/2a" target="_blank">2a Accessible</a> |
+                <a href="/api/profiles/2u" target="_blank">2u Unicode</a>
+            </li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000360.shtml">PDF/A-3
+                - PDF 1.7 with embedded files</a> |
+                <a href="/api/profiles/3b" target="_blank">3b Basic</a> |
+                <a href="/api/profiles/3a" target="_blank">3a Accessible</a> |
+                <a href="/api/profiles/3u" target="_blank">3u Unicode</a>
+            </li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000532.shtml">PDF/A-4
+                - PDF 2.0</a> |
+                <a href="/api/profiles/4" target="_blank">4</a> |
+                <a href="/api/profiles/4e" target="_blank">4e Engineering</a> |
+                <a href="/api/profiles/4f" target="_blank">4f EmbeddedFiles</a>
+            </li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000350.shtml">PDF/UA-1</a> |
+                <a href="/api/profiles/ua1" target="_blank">ua1</a>
+            </li>
+          </ul>
+      </div>
+      <div id="footer">
+      </div>
   </div>
   <script id="error-template" type="x-tmpl-mustache">
     {{=<% %>=}}
@@ -138,16 +177,9 @@
       <p class="text-center"><span class="fa fa-refresh fa-spin fa-2x"></span> Uploading and validating.</p>
     </div>
   </script>
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-19484201-6', 'auto');
-  ga('send', 'pageview');
 
-  </script>
+
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->

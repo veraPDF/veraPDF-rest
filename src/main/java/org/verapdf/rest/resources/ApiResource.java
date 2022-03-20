@@ -11,6 +11,11 @@ import javax.ws.rs.core.MediaType;
 import org.verapdf.rest.environment.Environment;
 import org.verapdf.rest.environment.Environments;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.License;
+import io.swagger.annotations.SwaggerDefinition;
+
 
 /**
  * API wrapper resource, provides routing for child API resources.
@@ -19,6 +24,17 @@ import org.verapdf.rest.environment.Environments;
  *
  */
 @Path("/api")
+@Api(value = "VeraPDF")
+@SwaggerDefinition(info=@Info(
+		description = "Rest API for Verapdf",
+		version = "V0.0.1",
+		title = "VeraPDF API",
+		license = @License(name = "Apache 2.0", url = "http://www.apache.org")
+
+		),
+		schemes = {SwaggerDefinition.Scheme.HTTP}
+		)
+
 public final class ApiResource {
 
     /**
@@ -27,7 +43,7 @@ public final class ApiResource {
     @GET
     @Path("/info")
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public static Environment getEnvironent() {
+    public static Environment getEnvironment() {
         return Environments.getEnvironment();
     }
     
