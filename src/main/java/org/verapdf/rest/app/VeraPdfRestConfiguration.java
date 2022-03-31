@@ -20,6 +20,7 @@ public class VeraPdfRestConfiguration extends Configuration {
     // FIXME: This isn't mapping to the port option from the config
     //
     private int port;
+    @JsonProperty("swagger")  public SwaggerBundleConfiguration swaggerBundleConfiguration;
 
 
     /**
