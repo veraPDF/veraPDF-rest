@@ -28,10 +28,16 @@ jobs:
       - name: Run REST server
         run: java -jar target/verapdf-rest-0.0.1-SNAPSHOT.jar server  </dev/null &>/dev/null &
       - name: Test API endpoint
-        run: wget -qO- http://localhost:8080/api
+        uses: wei/wget@v1
+        with:
+          args: -qO- http://localhost:8080/api
       - name: Test Profiles endpoint
-        run: wget -qO- http://localhost:8080/api/profiles
+        uses: wei/wget@v1
+        with:
+          args: -qO- http://localhost:8080/api/profiles
       - name: Test 1B profile endpoint
-        run: wget -qO- http://localhost:8080/api/profiles/1b
+        uses: wei/wget@v1
+        with:
+          args: -qO- http://localhost:8080/api/profiles/1b
       - name: Kill rest server
         run: fuser -k 8080/tcp
