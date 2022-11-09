@@ -21,8 +21,8 @@ import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
-import io.federecio.dropwizard.swagger.SwaggerBundle;
-import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+// import io.federecio.dropwizard.swagger.SwaggerBundle;
+// import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -57,10 +57,10 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
         //bootstrap.addBundle(xmlBundle);
         bootstrap.addBundle(new MultiPartBundle());
         bootstrap.addBundle(new ViewBundle<VeraPdfRestConfiguration>());
-        bootstrap.addBundle(new SwaggerBundle<VeraPdfRestConfiguration>() {@Override
-			protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(VeraPdfRestConfiguration configuration) {
-			return configuration.swaggerBundleConfiguration;
-		}});
+        // bootstrap.addBundle(new SwaggerBundle<VeraPdfRestConfiguration>() {@Override
+		// 	protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(VeraPdfRestConfiguration configuration) {
+		// 	return configuration.swaggerBundleConfiguration;
+		// }});
         
         bootstrap.addBundle(new AssetsBundle("/assets/css", "/css", null, "css")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
