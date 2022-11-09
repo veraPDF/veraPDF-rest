@@ -25,19 +25,15 @@ jobs:
         run: mvn --batch-mode --update-snapshots verify
       - name: Package with Maven
         run: mvn --batch-mode --update-snapshots package
-      - name: Run REST server
-        run: java -jar target/verapdf-rest-0.1.0-SNAPSHOT.jar server  </dev/null &>/dev/null &
-      - name: Test API endpoint
-        uses: wei/wget@v1
-        with:
-          args: -qO- http://localhost:8080/api
-      - name: Test Profiles endpoint
-        uses: wei/wget@v1
-        with:
-          args: -qO- http://localhost:8080/api/profiles
-      - name: Test 1B profile endpoint
-        uses: wei/wget@v1
-        with:
-          args: -qO- http://localhost:8080/api/profiles/1b
-      - name: Kill rest server
-        run: fuser -k 8080/tcp
+      # - name: Run REST server
+      #   run: java -jar target/verapdf-rest-0.1.0-SNAPSHOT.jar server  </dev/null &>/dev/null &
+      # - name: Test Profiles endpoint
+      #   uses: wei/wget@v1
+      #   with:
+      #     args: -qO- http://localhost:8080/api/profiles
+      # - name: Test 1B profile endpoint
+      #   uses: wei/wget@v1
+      #   with:
+      #     args: -qO- http://localhost:8080/api/profiles/1b
+      # - name: Kill rest server
+      #   run: fuser -k 8080/tcp

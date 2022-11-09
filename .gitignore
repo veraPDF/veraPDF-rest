@@ -1,6 +1,5 @@
+# Ignore Maven artifacts
 target/
-.idea/
-*.iml
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -10,8 +9,15 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
+# Ignore VS code
+.vscode
+
 # Ignore Eclipse artifacts
 .project
 .settings
 .classpath
 bin/
+
+# Ignore IDEA files
+.idea/
+*.iml
