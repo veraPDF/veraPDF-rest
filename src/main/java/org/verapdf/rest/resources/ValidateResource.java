@@ -44,7 +44,7 @@ import org.verapdf.metadata.fixer.FixerFactory;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
-import org.verapdf.pdfa.VeraGreenfieldFoundryProvider;
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.results.ValidationResults;
@@ -264,7 +264,7 @@ public class ValidateResource {
 		BatchSummary summary = null;
 		try (BatchProcessor processor = ProcessorFactory.fileBatchProcessor(config)) {
 			summary = processor.process(files,
-					ProcessorFactory.getHandler(FormatOption.MRR, false, mrrStream, 100, false));
+					ProcessorFactory.getHandler(FormatOption.MRR, false, mrrStream, false, WIKI_URL_BASE));
 		}
 		return summary;
 	}
