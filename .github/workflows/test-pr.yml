@@ -28,13 +28,9 @@ jobs:
 
   docker_test:
     name: Test Docker image
-    runs-on: ubuntu-latest
     needs: [ build ]
-
-    steps:
-      - name: call-docker-image-build
-        uses: "veraPDF/veraPDF-rest/.github/workflows/test-dkr-build.yml@gh-actions"
-        with:
-          files: core/target/site/jacoco/jacoco.xml
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+    uses: "veraPDF/veraPDF-rest/.github/workflows/test-dkr-build.yml@gh-actions"
+    with:
+      files: core/target/site/jacoco/jacoco.xml
+      fail_ci_if_error: true # optional (default = false)
+      verbose: true # optional (default = false)
