@@ -39,4 +39,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            GH_CHECKOUT=${{ github.sha }}
+            GH_CHECKOUT=${{ inputs.gh_checkout }}

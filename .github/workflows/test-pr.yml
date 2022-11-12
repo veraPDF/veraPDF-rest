@@ -31,4 +31,4 @@ jobs:
     needs: [ build ]
     uses: veraPDF/veraPDF-rest/.github/workflows/test-dkr-build.yml@gh-actions
     with:
-      gh_checkout: ${{ github.sha }}
+      gh_checkout: ${{ github.ref }}
