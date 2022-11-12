@@ -29,8 +29,6 @@ jobs:
   docker_test:
     name: Test Docker image
     needs: [ build ]
-    uses: "veraPDF/veraPDF-rest/.github/workflows/test-dkr-build.yml@gh-actions"
+    uses: veraPDF/veraPDF-rest/.github/workflows/test-dkr-build.yml@gh-actions
     with:
-      files: core/target/site/jacoco/jacoco.xml
-      fail_ci_if_error: true # optional (default = false)
-      verbose: true # optional (default = false)
+      gh_checkout: ${{ github.GITHUB_SHA }}
