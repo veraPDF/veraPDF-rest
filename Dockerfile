@@ -9,7 +9,7 @@ ENV GH_CHECKOUT=${GH_CHECKOUT:-integration}
 
 # Clone the repo, checkout the revision and build the application
 RUN git clone https://github.com/veraPDF/veraPDF-rest.git
-RUN cd veraPDF-rest && git checkout origin/${GH_CHECKOUT} && mvn clean package
+RUN cd veraPDF-rest && git checkout ${GH_CHECKOUT} && mvn clean package
 
 # Now build a Java JRE for the Alpine application image
 FROM eclipse-temurin:11 as jre-build
