@@ -1,0 +1,44 @@
+name: Build Docker test container
+
+on:
+  workflow_call:
+    inputs:
+      gh_checkout:
+        required: true
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  push_to_registry:
+    name: Build and push Docker image to GitHub packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build the Docker image
+        run: mvn --batch-mode --update-snapshots verify
+
+      - name: Log in to the Container registry
+        uses: docker/login-action
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            GH_CHECKOUT=${{ GITHUB_SHA }}
