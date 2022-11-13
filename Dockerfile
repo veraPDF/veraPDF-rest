@@ -12,6 +12,7 @@ RUN git clone https://github.com/veraPDF/veraPDF-rest.git
 RUN cd veraPDF-rest && git checkout ${GH_CHECKOUT} && mvn clean package
 
 # Now build a Java JRE for the Alpine application image
+# https://github.com/docker-library/docs/blob/master/eclipse-temurin/README.md#creating-a-jre-using-jlink
 FROM eclipse-temurin:11 as jre-build
 
 # Create a custom Java runtime
@@ -47,7 +48,7 @@ WORKDIR /opt/verapdf-rest
 # Copy the application from the previous stage
 COPY --from=app-builder /build/veraPDF-rest/target/verapdf-rest-${VERAPDF_REST_VERSION}.jar /opt/verapdf-rest/
 # Copy the default configuration file
-COPY server.yml /opt/verapdf-rest/
+COPY --from=app-builder /build/veraPDF-rest/server.yml /opt/verapdf-rest/
 
 EXPOSE 8080
 ENTRYPOINT exec java $JAVA_OPTS -Djava.awt.headless=true -jar /opt/verapdf-rest/verapdf-rest-${VERAPDF_REST_VERSION}.jar server server.yml
