@@ -36,7 +36,7 @@ ARG JAVA_OPTS
 ENV JAVA_OPTS=$JAVA_OPTS
 # Specify the veraPDF REST version if you want to (to be used in build automation), default is 0.1.0-SNAPSHOT
 ARG VERAPDF_REST_VERSION
-ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-0.1.0-SNAPSHOT}
+ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-0.2.0-SNAPSHOT}
 
 COPY --from=app-builder /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 RUN chmod +x /usr/local/bin/dumb-init
