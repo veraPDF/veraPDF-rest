@@ -1,0 +1,29 @@
+name: Test Docker deployment
+
+on:
+  workflow_call
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    name: Checkout and Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test API endpoint
+        uses: wei/wget@v1
+        with:
+          args: -qO- http://localhost:8080/api
+      - name: Test Profiles endpoint
+        uses: wei/wget@v1
+        with:
+          args: -qO- http://localhost:8080/api/profiles
+      - name: Test 1B profile endpoint
+        uses: wei/wget@v1
+        with:
+          args: -qO- http://localhost:8080/api/profiles/1b
+    services:
+      verarest:
+        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}

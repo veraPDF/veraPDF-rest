@@ -1,4 +1,4 @@
-name: PR QA
+name: Purge GitHub container registry.
 
 on:
   # Runs daily at midnight
