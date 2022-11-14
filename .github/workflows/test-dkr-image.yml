@@ -8,10 +8,6 @@ jobs:
     name: Deploy and test image
     runs-on: ubuntu-latest
     steps:
-      - name: Test API endpoint
-        uses: wei/wget@v1
-        with:
-          args: -qO- http://0.0.0.0:8080/api
       - name: Test Profiles endpoint
         uses: wei/wget@v1
         with:
