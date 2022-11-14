@@ -22,4 +22,4 @@ jobs:
           args: -qO- http://localhost:8080/api/profiles/1b
     services:
       verarest:
-        image: ghcr.io/${{ github.repository }}:pr-${{ github.event.pull_request.number }}
+        image: ghcr.io/verapdf/verapdf-rest:pr-${{ github.event.pull_request.number }}
