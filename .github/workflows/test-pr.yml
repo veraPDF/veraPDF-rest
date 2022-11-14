@@ -32,3 +32,18 @@ jobs:
     uses: veraPDF/veraPDF-rest/.github/workflows/test-dkr-build.yml@gh-actions
     with:
       gh_checkout: ${{ github.head_ref }}
+
+  purge-image:
+    name: Delete image from ghcr.io
+    needs: [ docker_test ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete image
+        uses: bots-house/ghcr-delete-image-action@v1.0.0
+        with:
+          # NOTE: at now only orgs is supported
+          owner: veraPDF
+          name: veraPDF-rest
+          # NOTE: using Personal Access Token
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: pr-${{ github.event.pull_request.number }}
