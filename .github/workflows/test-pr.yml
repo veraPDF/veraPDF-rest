@@ -33,17 +33,18 @@ jobs:
     with:
       gh_checkout: ${{ github.head_ref }}
 
-  purge-image:
+  purge-images:
     name: Delete image from ghcr.io
     needs: [ docker_test ]
     runs-on: ubuntu-latest
     steps:
-      - name: Delete image
-        uses: bots-house/ghcr-delete-image-action@v1.0.0
+      - name: Delete all PR containers older than a month, using a wildcard
+        uses: snok/container-retention-policy@v1
         with:
-          # NOTE: at now only orgs is supported
-          owner: veraPDF
-          name: veraPDF-rest
-          # NOTE: using Personal Access Token
+          image-names: verapdf-rest
+          cut-off: 15 mins ago
+          account-type: org
+          org-name: veraPDF
+          keep-at-least: 1
+          skip-tags: latest
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: pr-${{ github.event.pull_request.number }}
