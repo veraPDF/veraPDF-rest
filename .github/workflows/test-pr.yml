@@ -29,9 +29,9 @@ jobs:
   docker_build:
     name: Build a test Docker image and add to GH container registry
     needs: [ build ]
-    uses: veraPDF/veraPDF-rest/.github/workflows/test-dkr-build.yml@${{ github.sha }}
+    uses: veraPDF/veraPDF-rest/.github/workflows/test-dkr-build.yml@${{github.sha}}
 
   docker_test:
     name: Deploy and test the image built in previous step
     needs: [ docker_build ]
-    uses: veraPDF/veraPDF-rest/.github/workflows/test-dkr-image.yml@${{ github.sha }}
+    uses: veraPDF/veraPDF-rest/.github/workflows/test-dkr-image.yml@${{github.sha}}
