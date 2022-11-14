@@ -46,4 +46,4 @@ jobs:
           name: veraPDF-rest
           # NOTE: using Personal Access Token
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.head_ref }}
+          tag: pr-${{ github.event.pull_request.number }}
