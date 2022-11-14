@@ -7,17 +7,18 @@ jobs:
   test:
     name: Deploy and test image
     runs-on: ubuntu-latest
-    steps:
-      - name: Test Profiles endpoint
-        uses: wei/wget@v1
-        with:
-          args: -qO- http://localhost:8080/api/profiles
-      - name: Test 1B profile endpoint
-        uses: wei/wget@v1
-        with:
-          args: -qO- http://localhost:8080/api/profiles/1b
+    container: ubuntu
     services:
       verarest:
         image: ghcr.io/verapdf/verapdf-rest:pr-${{ github.event.pull_request.number }}
         ports:
           - 8080:8080
+    steps:
+      - name: Test Profiles endpoint
+        uses: wei/wget@v1
+        with:
+          args: -qO- verarest:8080/api/profiles
+      - name: Test 1B profile endpoint
+        uses: wei/wget@v1
+        with:
+          args: -qO- verarest:8080/api/profiles/1b
