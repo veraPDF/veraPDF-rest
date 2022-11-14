@@ -1,11 +1,7 @@
 name: Build Docker test container
 
 on:
-  workflow_call:
-    inputs:
-      gh_checkout:
-        required: true
-        type: string
+  workflow_call
 
 env:
   REGISTRY: ghcr.io

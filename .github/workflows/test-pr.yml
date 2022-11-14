@@ -26,25 +26,7 @@ jobs:
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots verify
 
-  docker_test:
-    name: Test Docker image
+  docker_build:
+    name: Build a test Docker image and add to GH container registry
     needs: [ build ]
     uses: veraPDF/veraPDF-rest/.github/workflows/test-dkr-build.yml@gh-actions
-    with:
-      gh_checkout: ${{ github.head_ref }}
-
-  purge-images:
-    name: Delete image from ghcr.io
-    needs: [ docker_test ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Delete all PR containers older than a month, using a wildcard
-        uses: snok/container-retention-policy@v1
-        with:
-          image-names: verapdf-rest
-          cut-off: 15 mins ago UTC
-          account-type: org
-          org-name: veraPDF
-          keep-at-least: 1
-          skip-tags: latest
-          token: ${{ secrets.PAT }}
