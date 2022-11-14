@@ -11,11 +11,11 @@ jobs:
       - name: Test Profiles endpoint
         uses: wei/wget@v1
         with:
-          args: -qO- http://verarest:8080/api/profiles
+          args: -qO- http://localhost:8080/api/profiles
       - name: Test 1B profile endpoint
         uses: wei/wget@v1
         with:
-          args: -qO- http://verarest:8080/api/profiles/1b
+          args: -qO- http://localhost:8080/api/profiles/1b
     services:
       verarest:
         image: ghcr.io/verapdf/verapdf-rest:pr-${{ github.event.pull_request.number }}
