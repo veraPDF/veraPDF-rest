@@ -36,7 +36,6 @@ jobs:
         with:
           context: .
           push: true
+          file: Dockerfile_dev
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            GH_CHECKOUT=${{ inputs.gh_checkout }}
