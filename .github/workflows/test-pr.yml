@@ -47,4 +47,4 @@ jobs:
           org-name: veraPDF
           keep-at-least: 1
           skip-tags: latest
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
