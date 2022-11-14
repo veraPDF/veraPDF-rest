@@ -49,11 +49,11 @@ COPY --from=jre-builder /javaruntime $JAVA_HOME
 # Since this is a running network service we'll create an unprivileged account
 # which will be used to perform the rest of the work and run the actual service:
 RUN useradd --system --user-group --home-dir=/opt/verapdf-rest verapdf-rest
+RUN mkdir --parents /var/opt/verapdf-rest/logs && chown -R verapdf-rest:verapdf-rest /var/opt/verapdf-rest
+
 USER verapdf-rest
-
-RUN mkdir --parents /var/opt/verapdf-rest/logs
-
 WORKDIR /opt/verapdf-rest
+
 # Copy the application from the previous stage
 COPY --from=app-builder /build/veraPDF-rest/target/verapdf-rest-${VERAPDF_REST_VERSION}.jar /opt/verapdf-rest/
 # Copy the default configuration file
