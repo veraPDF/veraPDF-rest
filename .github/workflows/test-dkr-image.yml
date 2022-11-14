@@ -3,10 +3,6 @@ name: Test Docker deployment
 on:
   workflow_call
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
   test:
     name: Checkout and Build
@@ -26,4 +22,4 @@ jobs:
           args: -qO- http://localhost:8080/api/profiles/1b
     services:
       verarest:
-        image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
+        image: ghcr.io/${{ github.repository }}:pr-${{ github.event.pull_request.number }}
