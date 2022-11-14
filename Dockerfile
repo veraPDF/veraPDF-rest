@@ -11,9 +11,13 @@ ENV GH_CHECKOUT=${GH_CHECKOUT:-integration}
 RUN git clone https://github.com/veraPDF/veraPDF-rest.git
 RUN cd veraPDF-rest && git checkout ${GH_CHECKOUT} && mvn clean package
 
+# Install dumb-init for process safety
+# https://github.com/Yelp/dumb-init
+RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64
+
 # Now build a Java JRE for the Alpine application image
 # https://github.com/docker-library/docs/blob/master/eclipse-temurin/README.md#creating-a-jre-using-jlink
-FROM eclipse-temurin:11 as jre-build
+FROM eclipse-temurin:11 as jre-builder
 
 # Create a custom Java runtime
 RUN $JAVA_HOME/bin/jlink \
@@ -34,21 +38,28 @@ ENV JAVA_OPTS=$JAVA_OPTS
 ARG VERAPDF_REST_VERSION
 ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-0.1.0-SNAPSHOT}
 
+COPY --from=app-builder /usr/local/bin/dumb-init /usr/local/bin/dumb-init
+RUN chmod +x /usr/local/bin/dumb-init
+
+# Copy the JRE from the previous stage
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH "${JAVA_HOME}/bin:${PATH}"
+COPY --from=jre-builder /javaruntime $JAVA_HOME
+
 # Since this is a running network service we'll create an unprivileged account
 # which will be used to perform the rest of the work and run the actual service:
 RUN useradd --system --user-group --home-dir=/opt/verapdf-rest verapdf-rest
 USER verapdf-rest
 
-# Copy the JRE from the previous stage
-ENV JAVA_HOME=/opt/java/openjdk
-ENV PATH "${JAVA_HOME}/bin:${PATH}"
-COPY --from=jre-build /javaruntime $JAVA_HOME
+RUN mkdir --parents /var/opt/verapdf-rest/logs
 
 WORKDIR /opt/verapdf-rest
 # Copy the application from the previous stage
 COPY --from=app-builder /build/veraPDF-rest/target/verapdf-rest-${VERAPDF_REST_VERSION}.jar /opt/verapdf-rest/
 # Copy the default configuration file
-COPY --from=app-builder /build/veraPDF-rest/server.yml /opt/verapdf-rest/
+COPY --from=app-builder /build/veraPDF-rest/server.yml /var/opt/verapdf-rest/config/
 
+VOLUME /var/opt/verapdf-rest
 EXPOSE 8080
-ENTRYPOINT exec java $JAVA_OPTS -Djava.awt.headless=true -jar /opt/verapdf-rest/verapdf-rest-${VERAPDF_REST_VERSION}.jar server server.yml
+
+ENTRYPOINT dumb-init java $JAVA_OPTS -Djava.awt.headless=true -jar /opt/verapdf-rest/verapdf-rest-${VERAPDF_REST_VERSION}.jar server /var/opt/verapdf-rest/config/server.yml

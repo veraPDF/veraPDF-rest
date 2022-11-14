@@ -14,9 +14,6 @@ import java.util.Date;
 /**
  * Static utility class that gathers environment details for reporting.
  * 
- * TODO JavaDoc for Environments TODO Tests for Environments TODO Implementation
- * for Environments
- * 
  * @author <a href="mailto:carl@openplanetsfoundation.org">Carl Wilson</a> <a
  *         href="https://github.com/carlwilson">carlwilson AT github</a>
  * @version 0.1
