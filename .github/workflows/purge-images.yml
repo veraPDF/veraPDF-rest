@@ -1,0 +1,22 @@
+name: PR QA
+
+on:
+  # Runs daily at midnight
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  purge-images:
+    name: Delete old untagged images from ghcr.io
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete all PR containers older than a month, using a wildcard
+        uses: snok/container-retention-policy@v1
+        with:
+          image-names: verapdf-rest
+          cut-off: 24 hours ago UTC
+          account-type: org
+          org-name: veraPDF
+          keep-at-least: 1
+          untagged-only: true
+          token: ${{ secrets.PAT }}
