@@ -6,7 +6,9 @@ WORKDIR /build
 # Copy the current dev source branch to a local build dir
 COPY src/ /build/veraPDF-rest/src/
 COPY pom.xml /build/veraPDF-rest/
-RUN cd veraPDF-rest && mvn clean package
+
+WORKDIR /build/veraPDF-rest
+RUN mvn clean package
 
 # Install dumb-init for process safety
 # https://github.com/Yelp/dumb-init
@@ -17,7 +19,7 @@ RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/
 FROM eclipse-temurin:11 as jre-builder
 
 # Create a custom Java runtime
-RUN $JAVA_HOME/bin/jlink \
+RUN "$JAVA_HOME/bin/jlink" \
          --add-modules java.base,java.logging,java.xml,java.management,java.sql,java.desktop \
          --strip-debug \
          --no-man-pages \

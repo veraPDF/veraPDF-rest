@@ -9,7 +9,9 @@ ENV GH_CHECKOUT=${GH_CHECKOUT:-integration}
 
 # Clone the repo, checkout the revision and build the application
 RUN git clone https://github.com/veraPDF/veraPDF-rest.git
-RUN cd veraPDF-rest && git checkout ${GH_CHECKOUT} && mvn clean package
+
+WORKDIR /build/veraPDF-rest
+RUN git checkout ${GH_CHECKOUT} && mvn clean package
 
 # Install dumb-init for process safety
 # https://github.com/Yelp/dumb-init
@@ -20,7 +22,7 @@ RUN wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/
 FROM eclipse-temurin:11 as jre-builder
 
 # Create a custom Java runtime
-RUN $JAVA_HOME/bin/jlink \
+RUN "$JAVA_HOME/bin/jlink" \
          --add-modules java.base,java.logging,java.xml,java.management,java.sql,java.desktop \
          --strip-debug \
          --no-man-pages \
