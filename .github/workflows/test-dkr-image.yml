@@ -14,11 +14,9 @@ jobs:
         ports:
           - 80:8080
     steps:
+      - name: Install wget 
+        run: apt-get update; apt-get install wget -y
       - name: Test Profiles endpoint
-        uses: wei/wget@v1
-        with:
-          args: -qO- 0.0.0.0/api/profiles
+        run: wget -qO- verarest/api/profiles
       - name: Test 1B profile endpoint
-        uses: wei/wget@v1
-        with:
-          args: -qO- 0.0.0.0/api/profiles/1b
+        run: wget -qO- verarest/api/profiles/1b
