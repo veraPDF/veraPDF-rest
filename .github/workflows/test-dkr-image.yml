@@ -12,13 +12,13 @@ jobs:
       verarest:
         image: ghcr.io/verapdf/verapdf-rest:pr-${{ github.event.pull_request.number }}
         ports:
-          - 8080:8080
+          - 80:8080
     steps:
       - name: Test Profiles endpoint
         uses: wei/wget@v1
         with:
-          args: -qO- verarest:8080/api/profiles
+          args: -qO- verarest/api/profiles
       - name: Test 1B profile endpoint
         uses: wei/wget@v1
         with:
-          args: -qO- verarest:8080/api/profiles/1b
+          args: -qO- verarest/api/profiles/1b
