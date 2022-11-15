@@ -17,8 +17,8 @@ jobs:
       - name: Test Profiles endpoint
         uses: wei/wget@v1
         with:
-          args: -qO- verarest/api/profiles
+          args: -qO- 0.0.0.0/api/profiles
       - name: Test 1B profile endpoint
         uses: wei/wget@v1
         with:
-          args: -qO- verarest/api/profiles/1b
+          args: -qO- 0.0.0.0/api/profiles/1b
