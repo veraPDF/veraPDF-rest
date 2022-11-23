@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>verapdf-rest</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
 
   <name>veraPDF RESTful web services</name>
   <description>JAX-RS web services and client for veraPDF library</description>
@@ -149,7 +149,7 @@
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.10</version>
+      <version>1.15</version>
     </dependency>
 
     <dependency>
@@ -163,11 +163,6 @@
       <artifactId>validation-model</artifactId>
       <version>${verapdf.validation.version}</version>
     </dependency>
-    <dependency>
-    	<groupId>com.smoketurner</groupId>
-    	<artifactId>dropwizard-swagger</artifactId>
-    	<version>1.3.17-1</version>
-	</dependency>
 
   </dependencies>
 
