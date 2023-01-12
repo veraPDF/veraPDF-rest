@@ -18,6 +18,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
+          server-id: github
       - name: Publish to GitHub Packages
         run: mvn --batch-mode deploy
         env:
