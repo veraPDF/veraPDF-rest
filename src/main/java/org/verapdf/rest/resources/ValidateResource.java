@@ -57,6 +57,8 @@ import org.verapdf.processor.ProcessorFactory;
 import org.verapdf.processor.TaskType;
 import org.verapdf.processor.plugins.PluginsCollectionConfig;
 import org.verapdf.processor.reports.BatchSummary;
+import org.verapdf.processor.reports.Reports;
+import org.verapdf.processor.reports.ValidationReport;
 import org.verapdf.report.HTMLReport;
 
 /**
@@ -98,7 +100,7 @@ public class ValidateResource {
     @Path("/{profileId}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public static ValidationResult validatePost(@PathParam("profileId") String profileId,
+    public static ValidationReport validatePost(@PathParam("profileId") String profileId,
             @FormDataParam("sha1Hex") String sha1Hex,
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
@@ -178,7 +180,7 @@ public class ValidateResource {
     @Path("/{profileId}")
     @Consumes(MediaType.WILDCARD)
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public static ValidationResult validatePut(@PathParam("profileId") String profileId,
+    public static ValidationReport validatePut(@PathParam("profileId") String profileId,
             @Context HttpHeaders headers,
             byte[] inFile)
             throws VeraPDFException {
@@ -189,8 +191,8 @@ public class ValidateResource {
 
     }
 
-    private static ValidationResult validate(String profileId, String sha1Hex,
-            InputStream uploadedInputStream)
+    private static ValidationReport validate(String profileId, String sha1Hex,
+                                             InputStream uploadedInputStream)
             throws VeraPDFException {
         MessageDigest sha1 = getDigest();
         DigestInputStream dis = new DigestInputStream(uploadedInputStream, sha1);
@@ -233,7 +235,8 @@ public class ValidateResource {
                 exception.printStackTrace();
             }
         }
-        return result;
+
+        return Reports.createValidationReport(result, false);
     }
 
     private static MessageDigest getDigest() {
