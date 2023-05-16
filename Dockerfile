@@ -60,6 +60,7 @@ WORKDIR /opt/verapdf-rest
 COPY --from=app-builder /build/veraPDF-rest/target/verapdf-rest-${VERAPDF_REST_VERSION}.jar /opt/verapdf-rest/
 # Copy the default configuration file
 COPY --from=app-builder /build/veraPDF-rest/server.yml /var/opt/verapdf-rest/config/
+COPY --from=app-builder /build/veraPDF-rest/config /opt/verapdf-rest/config/
 
 VOLUME /var/opt/verapdf-rest
 EXPOSE 8080

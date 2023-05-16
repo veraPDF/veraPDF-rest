@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<appConfig type="VALIDATE" format="MRR" isVerbose="true">
+    <fixerFolder>fix</fixerFolder>
+    <wikiPath>https://github.com/veraPDF/veraPDF-validation-profiles/wiki</wikiPath>
+    <policyFile></policyFile>
+</appConfig>

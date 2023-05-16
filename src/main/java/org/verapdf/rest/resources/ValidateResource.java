@@ -14,7 +14,6 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -39,8 +38,6 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.VeraPDFException;
-import org.verapdf.features.FeatureFactory;
-import org.verapdf.metadata.fixer.FixerFactory;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
@@ -49,13 +46,13 @@ import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.results.ValidationResults;
 import org.verapdf.pdfa.validation.validators.ValidatorConfig;
-import org.verapdf.pdfa.validation.validators.ValidatorFactory;
 import org.verapdf.processor.BatchProcessor;
 import org.verapdf.processor.FormatOption;
 import org.verapdf.processor.ProcessorConfig;
 import org.verapdf.processor.ProcessorFactory;
-import org.verapdf.processor.TaskType;
-import org.verapdf.processor.plugins.PluginsCollectionConfig;
+import org.verapdf.processor.app.ConfigManager;
+import org.verapdf.processor.app.ConfigManagerImpl;
+import org.verapdf.processor.app.VeraAppConfig;
 import org.verapdf.processor.reports.BatchSummary;
 import org.verapdf.processor.reports.Reports;
 import org.verapdf.processor.reports.ValidationReport;
@@ -68,9 +65,13 @@ public class ValidateResource {
     // java.security.digest name for the SHA-1 algorithm
     private static final String SHA1_NAME = "SHA-1"; //$NON-NLS-1$
     private static final String AUTODETECT_PROFILE = "auto";
-    private static final String WIKI_URL_BASE = "https://github.com/veraPDF/veraPDF-validation-profiles/wiki/"; //$NON-NLS-1$
-    {
+
+    private static ConfigManager configManager;
+
+    static {
         VeraGreenfieldFoundryProvider.initialise();
+        File root = new File("");
+        configManager = ConfigManagerImpl.create(new File(root.getAbsolutePath() + "/config"));
     }
 
     @GET
@@ -149,13 +150,15 @@ public class ValidateResource {
         }
 
         PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
-        ValidatorConfig validConf = ValidatorFactory.createConfig(flavour, false, 100, false);
-        ProcessorConfig config = createValidateConfig(validConf);
+        ValidatorConfig validatorConfig = configManager.getValidatorConfig();
+        validatorConfig.setFlavour(flavour);
+        ProcessorConfig config = createProcessorConfig(validatorConfig);
 
         byte[] htmlBytes;
         try (ByteArrayOutputStream xmlBos = new ByteArrayOutputStream()) {
-            BatchSummary summary = processFile(file, config, xmlBos);
-            htmlBytes = getHtmlBytes(xmlBos.toByteArray(), summary.isMultiJob());
+            VeraAppConfig appConfig = configManager.getApplicationConfig();
+            BatchSummary summary = processFile(file, config, xmlBos, appConfig, validatorConfig.isRecordPasses());
+            htmlBytes = getHtmlBytes(xmlBos.toByteArray(), summary.isMultiJob(), appConfig.getWikiPath());
         } catch (IOException | TransformerException excep) {
             throw new VeraPDFException("Some Java Exception while validating", excep); //$NON-NLS-1$
         }
@@ -197,11 +200,12 @@ public class ValidateResource {
         MessageDigest sha1 = getDigest();
         DigestInputStream dis = new DigestInputStream(uploadedInputStream, sha1);
         ValidationResult result = ValidationResults.defaultResult();
+        ValidatorConfig validatorConfig = configManager.getValidatorConfig();
 
         if (!profileId.equals(AUTODETECT_PROFILE)) {
             PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
             try (PDFAParser toValidate = Foundries.defaultInstance().createParser(dis, flavour);
-                    PDFAValidator validator = ValidatorFactory.createValidator(flavour, false);) {
+                 PDFAValidator validator = Foundries.defaultInstance().createValidator(validatorConfig, flavour)) {
                 result = validator.validate(toValidate);
             } catch (ModelParsingException mpExcep) {
                 // If we have the same sha-1 then it's a PDF Box parse error, so
@@ -217,9 +221,8 @@ public class ValidateResource {
                 exception.printStackTrace();
             }
         } else {
-            try (PDFAParser parser = Foundries.defaultInstance().createParser(dis);
-                    PDFAValidator validator = Foundries.defaultInstance().createValidator(parser.getFlavour(),
-                            false);) {
+            try (PDFAParser parser = Foundries.defaultInstance().createParser(dis, PDFAFlavour.NO_FLAVOUR);
+                 PDFAValidator validator = Foundries.defaultInstance().createValidator(validatorConfig, parser.getFlavour())) {
                 result = validator.validate(parser);
             } catch (ModelParsingException mpExcep) {
                 // If we have the same sha-1 then it's a PDF Box parse error, so
@@ -252,27 +255,31 @@ public class ValidateResource {
         }
     }
 
-    private static byte[] getHtmlBytes(byte[] xmlBytes, boolean isMultiJob) throws IOException, TransformerException {
+    private static byte[] getHtmlBytes(byte[] xmlBytes, boolean isMultiJob, String wikiPath)
+            throws IOException, TransformerException {
         try (InputStream xmlBis = new ByteArrayInputStream(xmlBytes);
                 ByteArrayOutputStream htmlBos = new ByteArrayOutputStream()) {
-            HTMLReport.writeHTMLReport(xmlBis, htmlBos, isMultiJob, WIKI_URL_BASE, false);
+            HTMLReport.writeHTMLReport(xmlBis, htmlBos, isMultiJob, wikiPath, false);
             return htmlBos.toByteArray();
         }
-
     }
 
-    private static ProcessorConfig createValidateConfig(ValidatorConfig validConf) {
-        return ProcessorFactory.fromValues(validConf, FeatureFactory.defaultConfig(),
-                PluginsCollectionConfig.defaultConfig(), FixerFactory.defaultConfig(), EnumSet.of(TaskType.VALIDATE));
+    private static ProcessorConfig createProcessorConfig(ValidatorConfig validatorConfig) {
+        VeraAppConfig veraAppConfig = configManager.getApplicationConfig();
+        return ProcessorFactory.fromValues(validatorConfig, configManager.getFeaturesConfig(),
+                                           configManager.getPluginsCollectionConfig(), configManager.getFixerConfig(),
+                                           veraAppConfig.getProcessType().getTasks(), veraAppConfig.getFixesFolder());
     }
 
-    private static BatchSummary processFile(File file, ProcessorConfig config, OutputStream mrrStream)
+    private static BatchSummary processFile(File file, ProcessorConfig config, OutputStream mrrStream,
+            VeraAppConfig appConfig, boolean logPassed)
             throws VeraPDFException, IOException {
         List<File> files = Arrays.asList(file);
         BatchSummary summary = null;
         try (BatchProcessor processor = ProcessorFactory.fileBatchProcessor(config)) {
             summary = processor.process(files,
-                    ProcessorFactory.getHandler(FormatOption.MRR, false, mrrStream, false, WIKI_URL_BASE));
+                    ProcessorFactory.getHandler(FormatOption.MRR,appConfig.isVerbose(), mrrStream,
+                            logPassed, appConfig.getWikiPath()));
         }
         return summary;
     }
