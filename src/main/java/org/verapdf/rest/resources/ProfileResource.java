@@ -54,7 +54,7 @@ public class ProfileResource {
 	}
 
 	/**
-	 * @return the Set of PDF/A Flavours
+	 * @return the Set of Flavours
 	 */
 	@GET
 	@Path("/flavours")

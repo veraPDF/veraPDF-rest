@@ -136,12 +136,12 @@ Shows some simple information about the server environment on [localhost:8080/ap
     curl localhost:8080/api/info
 
 ### Validation Profile services
-Validation Profiles contain the PDF/A validation tests and their description.  A list of profile details is available
+Validation Profiles contain the PDF/A and PDF/UA validation tests and their description.  A list of profile details is available
 at [localhost:8080/api/profiles/](http://localhost:8080/api/profiles/). To test with curl:
 
     curl localhost:8080/api/profiles
 
-Each profile is identified by a 2 letter code made up the PDF/A version amd level. These are listed at
+Each profile is identified by a letter code made up the PDF/A or PDF/UA version amd level. These are listed at
 [localhost:8080/api/profiles/ids/](http://localhost:8080/api/profiles/ids/):
 
     curl localhost:8080/api/profiles/ids
@@ -155,8 +155,8 @@ The curl call defaults to a JSON representation, to obtain the XML profile:
 
     curl localhost:8080/api/profiles/1b -H  "Accept:application/xml"
 
-### PDF/A Validation services
-PDF/A validation is also available as a POST service at http://localhost:8080/api/validate/*id*. There's currently
+### Validation services
+Validation is also available as a POST service at http://localhost:8080/api/validate/*id*. There's currently
 no client application or page, but curl can be used:
 
     curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b
