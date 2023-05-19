@@ -1,5 +1,5 @@
 /**
-* @namespace JS Encapsulation of information required to render PDF/A validtion results.
+* @namespace JS Encapsulation of information required to render validation results.
 */
 var pdfaValidator = {
   // validation result
