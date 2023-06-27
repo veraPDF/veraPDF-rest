@@ -20,6 +20,6 @@ jobs:
           distribution: 'temurin'
           server-id: github
       - name: Publish to GitHub Packages
-        run: mvn --batch-mode deploy
+        run: mvn --batch-mode deploy verapdf
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
