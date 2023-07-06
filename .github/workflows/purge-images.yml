@@ -1,6 +1,7 @@
 name: Purge GitHub container registry.
 
 on:
+  workflow_dispatch:
   # Runs daily at midnight
   schedule:
     - cron: '0 0 * * *'
@@ -11,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete all PR containers older than a day
-        uses: snok/container-retention-policy@v1
+        uses: snok/container-retention-policy@v2
         with:
           image-names: verapdf-rest
-          cut-off: 24 hours ago UTC
+          cut-off: 1 day ago UTC
           account-type: org
           org-name: veraPDF
           keep-at-least: 1
