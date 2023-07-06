@@ -1,7 +1,8 @@
 name: Build Docker test container
 
 on:
-  workflow_call
+  push:
+    branches: [ integration ]
 
 env:
   REGISTRY: ghcr.io
