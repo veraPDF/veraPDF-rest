@@ -1,8 +1,7 @@
 name: Test Docker deployment
 
 on:
-  push:
-    branches: [ integration ]
+  workflow_call
 
 jobs:
   test:
