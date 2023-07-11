@@ -14,10 +14,10 @@ jobs:
       - name: Delete all PR containers older than a day
         uses: snok/container-retention-policy@v2
         with:
-          image-names: verapdf-rest
-          cut-off: 1 day ago UTC
+          image-names: verapdf-rest*
+          cut-off: 1 week ago UTC
           account-type: org
           org-name: veraPDF
           keep-at-least: 1
-          untagged-only: true
+          untagged-only: false
           token: ${{ secrets.PAT }}
