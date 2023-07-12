@@ -7,7 +7,7 @@ var pdfaValidator = {
   status: null,
   details: null,
   release: null,
-  getDetails: function (callback, contentType = 'json') {
+  getDetails: function (callback, contentType = "json") {
     $.ajax({
       url: '/api/validate/details/',
       type: 'GET',
@@ -19,19 +19,19 @@ var pdfaValidator = {
       }
     })
   },
-  getRelease: function (callback, contentType = 'json') {
+  getRelease: function (callback, contentType = "json") {
     $.ajax({
-      url: '/api/',
-      type: 'GET',
+      url: "/api/",
+      type: "GET",
       success: function (data, textStatus, jqXHR) {
         console.log(jqXHR)
         console.log(data)
-        pdfaValidator.release = data
+        pdfaValidator.release = data;
         callback()
       }
     })
   },
-  validate: function (formData, flavour, callback, contentType = 'json') {
+  validate: function (formData, flavour, callback, contentType = "json") {
     $.ajax({
       url: '/api/validate/' + flavour + '/',
       type: 'POST',
