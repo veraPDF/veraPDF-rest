@@ -6,6 +6,7 @@ var pdfaValidator = {
   result: null,
   status: null,
   details: null,
+  release: null,
   getDetails: function (callback, contentType = 'json') {
     $.ajax({
       url: '/api/validate/details/',
@@ -14,6 +15,18 @@ var pdfaValidator = {
         console.log(jqXHR)
         console.log(data)
         pdfaValidator.details = data
+        callback()
+      }
+    })
+  },
+  getRelease: function (callback, contentType = 'json') {
+    $.ajax({
+      url: '/api/',
+      type: 'GET',
+      success: function (data, textStatus, jqXHR) {
+        console.log(jqXHR)
+        console.log(data)
+        pdfaValidator.release = data
         callback()
       }
     })

@@ -1,13 +1,13 @@
 $(document).on('change', '.btn-file :file', function () {
-  var input = $(this)
-  var numFiles = input.get(0).files ? input.get(0).files.length : 1
-  var label = input.val().replace(/\\/g, '/').replace(/.*\//, '')
-  var rusha = new Rusha()
-  var file = input.get(0).files[0]
-  var reader = new FileReader()
+  let input = $(this)
+  let numFiles = input.get(0).files ? input.get(0).files.length : 1
+  let label = input.val().replace(/\\/g, '/').replace(/.*\//, '')
+  let rusha = new Rusha()
+  let file = input.get(0).files[0]
+  let reader = new FileReader()
   reader.onload = function (e) {
-    var rawData = reader.result
-    var digest = rusha.digest(rawData)
+    let rawData = reader.result
+    let digest = rusha.digest(rawData)
     input.trigger('fileselect', [numFiles, label, digest])
   }
   reader.readAsBinaryString(file)
@@ -15,12 +15,16 @@ $(document).on('change', '.btn-file :file', function () {
 
 $(document).ready(function () {
   pdfaValidator.getDetails(function () {
-    var footer = $('<p>').text(pdfaValidator.details.description + ' v' + pdfaValidator.details.version)
+    let footer = $('<p>').text(pdfaValidator.details.description + ' v' + pdfaValidator.details.version)
+    $('#footer').append(footer)
+  })
+  pdfaValidator.getRelease(function () {
+    let footer = $('<p>').text(pdfaValidator.release.id + ' v' + pdfaValidator.release.version + ' ' + new Date(pdfaValidator.release.buildDate).toLocaleString())
     $('#footer').append(footer)
   })
   $('.btn-file :file').on('fileselect', function (event, numFiles, label, digest) {
-    var input = $(this).parents('.input-group').find(':text')
-    var log = numFiles > 1 ? numFiles + ' files selected' : label
+    let input = $(this).parents('.input-group').find(':text')
+    let log = numFiles > 1 ? numFiles + ' files selected' : label
 
     if (input.length) {
       input.val(log)
@@ -33,8 +37,8 @@ $(document).ready(function () {
 
 $(document).ready(function () {
 
-  var navListItems = $('div.setup-panel div a')
-  var allWells = $('.setup-content')
+  let navListItems = $('div.setup-panel div a')
+  let allWells = $('.setup-content')
   var allPreviousBtn = $('.previousBtn')
   var allNextBtn = $('.nextBtn')
 

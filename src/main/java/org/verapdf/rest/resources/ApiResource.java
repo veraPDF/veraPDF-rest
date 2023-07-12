@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.verapdf.ReleaseDetails;
 import org.verapdf.rest.environment.Environment;
 import org.verapdf.rest.environment.Environments;
 
@@ -20,6 +21,15 @@ import org.verapdf.rest.environment.Environments;
  */
 @Path("/api")
 public final class ApiResource {
+    private static ReleaseDetails buildDetails = ReleaseDetails.addDetailsFromResource(
+            ReleaseDetails.APPLICATION_PROPERTIES_ROOT + "rest." + ReleaseDetails.PROPERTIES_EXT);
+
+    @GET
+    @Path("/")
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public static ReleaseDetails getReleaseDetails() {
+        return buildDetails;
+    }
 
     /**
      * @return the server environment information as a
