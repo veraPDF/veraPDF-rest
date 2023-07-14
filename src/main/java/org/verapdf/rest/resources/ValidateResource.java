@@ -271,14 +271,14 @@ public class ValidateResource {
                                            veraAppConfig.getProcessType().getTasks(), veraAppConfig.getFixesFolder());
     }
 
-    private static BatchSummary processFile(File file, ProcessorConfig config, OutputStream mrrStream,
+    private static BatchSummary processFile(File file, ProcessorConfig config, OutputStream xmlStream,
             VeraAppConfig appConfig, boolean logPassed)
             throws VeraPDFException, IOException {
         List<File> files = Arrays.asList(file);
         BatchSummary summary = null;
         try (BatchProcessor processor = ProcessorFactory.fileBatchProcessor(config)) {
             summary = processor.process(files,
-                    ProcessorFactory.getHandler(FormatOption.MRR,appConfig.isVerbose(), mrrStream,
+                    ProcessorFactory.getHandler(FormatOption.XML, appConfig.isVerbose(), xmlStream,
                             logPassed, appConfig.getWikiPath()));
         }
         return summary;
