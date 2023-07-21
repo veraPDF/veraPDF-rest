@@ -17,7 +17,7 @@ public class HomePageResource {
 
 	/**
 	 * @return a new
-	 *         {@link org.verapdf.rest.views.RestClientView.RestClientView} for
+	 *         {@link org.verapdf.rest.views.RestClientView} for
 	 *         the home page.
 	 */
 	@GET

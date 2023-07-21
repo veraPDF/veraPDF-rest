@@ -134,7 +134,7 @@ public final class ByteStreams {
         while ((bytesRead = bis.read(buff, 0, BUFFER_SIZE)) > -1) {
             totalBytes += bytesRead;
         }
-        // Return the new instance from the calulated details
+        // Return the new instance from the calculated details
         return (totalBytes == 0L) ? ByteStreams.nullByteStreamId()
                 : ByteStreamIdImpl.fromValues(totalBytes,
                         Hex.encodeHexString(SHA1.digest()));
