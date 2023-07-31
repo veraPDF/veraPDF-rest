@@ -10,15 +10,15 @@ The services are capable of serving up XML or JSON dependent upon the content ty
 
 ### Technologies
 The project's a Maven managed Java application, the application is based on
-[DropWizard](http://dropwizard.io/index.html), this brings together a set of reliable libraries, the
-following are most used and may prove informative if your reading the code:
+[DropWizard](https://www.dropwizard.io/en/stable/index.html), this brings together a set of reliable libraries, the
+following are most used and may prove informative if you are reading the code:
 
- * [Jetty](http://www.eclipse.org/jetty/) as a lean HTTP server,
- * [Jersey](http://jersey.java.net/) for REST services and associated, and
- * [Jackson](http://jersey.java.net/) for JSON and XML serialisation.
+ * [Jetty](https://www.eclipse.org/jetty/) as a lean HTTP server,
+ * [Jersey](https://jersey.java.net/) for REST services and associated, and
+ * [Jackson](https://github.com/FasterXML/jackson/) for JSON and XML serialisation.
 
-A good place to get going is the [Dropwizard getting started guide](http://dropwizard.io/getting-started.html).
-The [Dropwizard core documentation](http://dropwizard.io/manual/core.html) covers the features used in the code base.
+A good place to get going is the [Dropwizard getting started guide](https://www.dropwizard.io/en/stable/getting-started.html).
+The [Dropwizard core documentation](https://www.dropwizard.io/en/stable/manual/core.html) covers the features used in the code base.
 
 Building and running
 --------------------
@@ -65,7 +65,7 @@ Currently it's delivered as a single Maven module, veraPDF-rest.
 ### Want to try?
 First clone this project, got to the project directory and then build the Maven project:
 
-	git clone git@github.com:veraPDF/veraPDF-rest.git
+	git clone https://github.com/veraPDF/veraPDF-rest.git
 	cd veraPDF-rest
 	git checkout integration
 	mvn clean package
@@ -141,12 +141,12 @@ at [localhost:8080/api/profiles/](http://localhost:8080/api/profiles/). To test 
 
     curl localhost:8080/api/profiles
 
-Each profile is identified by a letter code made up the PDF/A or PDF/UA version amd level. These are listed at
+Each profile is identified by a letter code made up the PDF/A or PDF/UA version and level. These are listed at
 [localhost:8080/api/profiles/ids/](http://localhost:8080/api/profiles/ids/):
 
     curl localhost:8080/api/profiles/ids
 
-An individual profile can be obtained by ID at http://localhost:8080/api/profiles/*id*, e.g.
+An individual profile can be obtained by ID at `http://localhost:8080/api/profiles/*id*`, e.g.
 [localhost:8080/api/profiles/1b/](http://localhost:8080/api/profiles/1b/):
 
     curl localhost:8080/api/profiles/1b
@@ -156,11 +156,11 @@ The curl call defaults to a JSON representation, to obtain the XML profile:
     curl localhost:8080/api/profiles/1b -H  "Accept:application/xml"
 
 ### Validation services
-Validation is also available as a POST service at http://localhost:8080/api/validate/*id*. There's currently
+Validation is also available as a POST service at `http://localhost:8080/api/validate/*id*`. There's currently
 no client application or page, but curl can be used:
 
     curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b
 
 or to obtain the result in XML:
 
-    curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b -H  "Accept:application/xml"
+    curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b -H "Accept:application/xml"

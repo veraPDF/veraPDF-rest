@@ -29,7 +29,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.xml.transform.TransformerException;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
@@ -85,7 +84,7 @@ public class ValidateResource {
      * @param profileId
      *                                 the String id of the Validation profile
      *                                 (auto, 1b, 1a, 2b, 2a, 2u,
-     *                                 3b, 3a, or 3u)
+     *                                 3b, 3a. 3u, 4, 4e, 4f or ua1)
      * @param sha1Hex
      *                                 the hex String representation of the file's
      *                                 SHA-1 hash
@@ -100,22 +99,50 @@ public class ValidateResource {
     @POST
     @Path("/{profileId}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public static ValidationReport validatePost(@PathParam("profileId") String profileId,
-            @FormDataParam("sha1Hex") String sha1Hex,
-            @FormDataParam("file") InputStream uploadedInputStream,
-            @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
+    @Produces({ MediaType.APPLICATION_XML })
+    public static InputStream validateXml(@PathParam("profileId") String profileId,
+                                                @FormDataParam("sha1Hex") String sha1Hex,
+                                                @FormDataParam("file") InputStream uploadedInputStream,
+                                                @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
             throws VeraPDFException {
 
-        return validate(profileId, sha1Hex, uploadedInputStream);
-
+        return validate(uploadedInputStream, profileId, FormatOption.XML);
     }
 
     /**
      * @param profileId
      *                                 the String id of the Validation profile
      *                                 (auto, 1b, 1a, 2b, 2a, 2u,
-     *                                 3b, 3a, or 3u)
+     *                                 3b, 3a. 3u, 4, 4e, 4f or ua1)
+     * @param sha1Hex
+     *                                 the hex String representation of the file's
+     *                                 SHA-1 hash
+     * @param uploadedInputStream
+     *                                 a {@link java.io.InputStream} to the PDF to
+     *                                 be validated
+     * @param contentDispositionHeader
+     * @return the {@link org.verapdf.pdfa.results.ValidationResult} obtained
+     *         when validating the uploaded stream against the selected profile.
+     * @throws VeraPDFException
+     */
+    @POST
+    @Path("/{profileId}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces({ MediaType.APPLICATION_JSON })
+    public static InputStream validateJson(@PathParam("profileId") String profileId,
+                                               @FormDataParam("sha1Hex") String sha1Hex,
+                                               @FormDataParam("file") InputStream uploadedInputStream,
+                                               @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
+            throws VeraPDFException {
+
+        return validate(uploadedInputStream, profileId, FormatOption.JSON);
+    }
+
+    /**
+     * @param profileId
+     *                                 the String id of the Validation profile
+     *                                 (auto, 1b, 1a, 2b, 2a, 2u,
+     *                                 3b, 3a, 3u, 4, 4e, 4f or ua1)
      * @param sha1Hex
      *                                 the hex String representation of the file's
      *                                 SHA-1 hash
@@ -135,41 +162,14 @@ public class ValidateResource {
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
             throws VeraPDFException {
-
-        File file;
-        try {
-            file = File.createTempFile("cache", "");
-        } catch (IOException exception) {
-            throw new VeraPDFException("IOException creating a temp file", exception); //$NON-NLS-1$
-        }
-        try (OutputStream fos = new FileOutputStream(file);) {
-            IOUtils.copy(uploadedInputStream, fos);
-            uploadedInputStream.close();
-        } catch (IOException excep) {
-            throw new VeraPDFException("IOException creating a temp file", excep); //$NON-NLS-1$
-        }
-
-        PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
-        ValidatorConfig validatorConfig = configManager.getValidatorConfig();
-        validatorConfig.setFlavour(flavour);
-        ProcessorConfig config = createProcessorConfig(validatorConfig);
-
-        byte[] htmlBytes;
-        try (ByteArrayOutputStream xmlBos = new ByteArrayOutputStream()) {
-            VeraAppConfig appConfig = configManager.getApplicationConfig();
-            BatchSummary summary = processFile(file, config, xmlBos, appConfig, validatorConfig.isRecordPasses());
-            htmlBytes = getHtmlBytes(xmlBos.toByteArray(), summary.isMultiJob(), appConfig.getWikiPath());
-        } catch (IOException | TransformerException excep) {
-            throw new VeraPDFException("Some Java Exception while validating", excep); //$NON-NLS-1$
-        }
-        return new ByteArrayInputStream(htmlBytes);
+        return validate(uploadedInputStream, profileId, FormatOption.HTML);
     }
 
     /**
      * @param profileId
      *                  the String id of the Validation profile (auto, 1b, 1a, 2b,
      *                  2a, 2u,
-     *                  3b, 3a, or 3u)
+     *                  3b, 3a, 3u, 4, 4e, 4f or ua1)
      * @param headers
      *                  the {@link javax.ws.rs.core.HttpHeaders} context of this
      *                  request
@@ -189,57 +189,66 @@ public class ValidateResource {
             throws VeraPDFException {
 
         InputStream fileInputStream = new ByteArrayInputStream(inFile);
-
         return validate(profileId, null, fileInputStream);
 
     }
 
-    private static ValidationReport validate(String profileId, String sha1Hex,
-                                             InputStream uploadedInputStream)
+    private static InputStream validate(InputStream uploadedInputStream, String profileId, FormatOption formatOption) throws VeraPDFException {
+        File file;
+        try {
+            file = File.createTempFile("cache", "");
+        } catch (IOException exception) {
+            throw new VeraPDFException("IOException creating a temp file", exception); //$NON-NLS-1$
+        }
+        try (OutputStream fos = new FileOutputStream(file);) {
+            IOUtils.copy(uploadedInputStream, fos);
+            uploadedInputStream.close();
+        } catch (IOException excep) {
+            throw new VeraPDFException("IOException creating a temp file", excep); //$NON-NLS-1$
+        }
+
+        PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
+        ValidatorConfig validatorConfig = configManager.getValidatorConfig();
+        validatorConfig.setFlavour(flavour);
+        ProcessorConfig config = createProcessorConfig(validatorConfig);
+
+        byte[] outputBytes;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            VeraAppConfig appConfig = configManager.getApplicationConfig();
+            processFile(file, config, outputStream, appConfig, formatOption);
+            outputBytes = outputStream.toByteArray();
+        } catch (IOException excep) {
+            throw new VeraPDFException("Some Java Exception while validating", excep); //$NON-NLS-1$
+        }
+        return new ByteArrayInputStream(outputBytes);
+    }
+
+    private static ValidationReport validate(String profileId, String sha1Hex, InputStream uploadedInputStream)
             throws VeraPDFException {
         MessageDigest sha1 = getDigest();
         DigestInputStream dis = new DigestInputStream(uploadedInputStream, sha1);
         ValidationResult result = ValidationResults.defaultResult();
         ValidatorConfig validatorConfig = configManager.getValidatorConfig();
 
-        if (!profileId.equals(AUTODETECT_PROFILE)) {
-            PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
-            try (PDFAParser toValidate = Foundries.defaultInstance().createParser(dis, flavour);
-                 PDFAValidator validator = Foundries.defaultInstance().createValidator(validatorConfig, flavour)) {
-                result = validator.validate(toValidate);
-            } catch (ModelParsingException mpExcep) {
-                // If we have the same sha-1 then it's a PDF Box parse error, so
-                // treat as non PDF.
-                if ((sha1Hex != null) && (sha1Hex.equalsIgnoreCase(Hex.encodeHexString(sha1.digest())))) {
-                    throw new NotSupportedException(Response.status(Status.UNSUPPORTED_MEDIA_TYPE)
-                            .type(MediaType.TEXT_PLAIN).entity("File does not appear " +
-                                    "to be a PDF.") //$NON-NLS-1$
-                            .build(), mpExcep);
-                }
-                throw mpExcep;
-            } catch (IOException exception) {
-                exception.printStackTrace();
+        PDFAFlavour flavour = AUTODETECT_PROFILE.equals(profileId) ? PDFAFlavour.NO_FLAVOUR : PDFAFlavour.byFlavourId(profileId);
+        try (PDFAParser parser = Foundries.defaultInstance().createParser(dis, flavour);
+             PDFAValidator validator = Foundries.defaultInstance().createValidator(validatorConfig, parser.getFlavour())) {
+            result = validator.validate(parser);
+        } catch (ModelParsingException mpExcep) {
+            // If we have the same sha-1 then it's a parse error, so
+            // treat as non PDF.
+            if (sha1Hex != null && sha1Hex.equalsIgnoreCase(Hex.encodeHexString(sha1.digest()))) {
+                throw new NotSupportedException(Response.status(Status.UNSUPPORTED_MEDIA_TYPE)
+                        .type(MediaType.TEXT_PLAIN).entity("File does not appear " +
+                                "to be a PDF.") //$NON-NLS-1$
+                        .build(), mpExcep);
             }
-        } else {
-            try (PDFAParser parser = Foundries.defaultInstance().createParser(dis, PDFAFlavour.NO_FLAVOUR);
-                 PDFAValidator validator = Foundries.defaultInstance().createValidator(validatorConfig, parser.getFlavour())) {
-                result = validator.validate(parser);
-            } catch (ModelParsingException mpExcep) {
-                // If we have the same sha-1 then it's a PDF Box parse error, so
-                // treat as non PDF.
-                if (sha1Hex.equalsIgnoreCase(Hex.encodeHexString(sha1.digest()))) {
-                    throw new NotSupportedException(Response.status(Status.UNSUPPORTED_MEDIA_TYPE)
-                            .type(MediaType.TEXT_PLAIN).entity("File does not appear " +
-                                    "to be a PDF.") //$NON-NLS-1$
-                            .build(), mpExcep);
-                }
-                throw mpExcep;
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+            throw mpExcep;
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
 
-        return Reports.createValidationReport(result, false);
+        return Reports.createValidationReport(result, validatorConfig.isRecordPasses());
     }
 
     private static MessageDigest getDigest() {
@@ -255,15 +264,6 @@ public class ValidateResource {
         }
     }
 
-    private static byte[] getHtmlBytes(byte[] xmlBytes, boolean isMultiJob, String wikiPath)
-            throws IOException, TransformerException {
-        try (InputStream xmlBis = new ByteArrayInputStream(xmlBytes);
-                ByteArrayOutputStream htmlBos = new ByteArrayOutputStream()) {
-            HTMLReport.writeHTMLReport(xmlBis, htmlBos, isMultiJob, wikiPath, false);
-            return htmlBos.toByteArray();
-        }
-    }
-
     private static ProcessorConfig createProcessorConfig(ValidatorConfig validatorConfig) {
         VeraAppConfig veraAppConfig = configManager.getApplicationConfig();
         return ProcessorFactory.fromValues(validatorConfig, configManager.getFeaturesConfig(),
@@ -271,15 +271,15 @@ public class ValidateResource {
                                            veraAppConfig.getProcessType().getTasks(), veraAppConfig.getFixesFolder());
     }
 
-    private static BatchSummary processFile(File file, ProcessorConfig config, OutputStream xmlStream,
-            VeraAppConfig appConfig, boolean logPassed)
+    private static BatchSummary processFile(File file, ProcessorConfig config, OutputStream stream,
+            VeraAppConfig appConfig, FormatOption formatOption)
             throws VeraPDFException, IOException {
         List<File> files = Arrays.asList(file);
-        BatchSummary summary = null;
+        BatchSummary summary;
         try (BatchProcessor processor = ProcessorFactory.fileBatchProcessor(config)) {
             summary = processor.process(files,
-                    ProcessorFactory.getHandler(FormatOption.XML, appConfig.isVerbose(), xmlStream,
-                            logPassed, appConfig.getWikiPath()));
+                    ProcessorFactory.getHandler(formatOption, appConfig.isVerbose(), stream,
+                            config.getValidatorConfig().isRecordPasses(), appConfig.getWikiPath()));
         }
         return summary;
     }

@@ -39,7 +39,7 @@ public class ByteStreamResource {
      *            InputStream for the uploaded file
      * @param contentDispositionHeader
      *            extra info about the uploaded file, currently unused.
-     * @return the {@link org.verapdf.pdfa.metadata.bytestream.ByteStreamId} of
+     * @return the {@link org.openpreservation.bytestreams.ByteStreamId} of
      *         the uploaded file's byte stream serialised according to requested
      *         content type.
      */
@@ -62,7 +62,7 @@ public class ByteStreamResource {
     }
 
     /**
-     * @return the {@link org.verapdf.pdfa.metadata.bytestream.ByteStreamId} of
+     * @return the {@link org.openpreservation.bytestreams} of
      *         an empty (0 byte) byte stream serialised according to requested
      *         content type.
      */

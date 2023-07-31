@@ -5,6 +5,8 @@ package org.verapdf.rest.resources;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
@@ -66,7 +68,7 @@ public class ProfileResource {
 	/**
 	 * @param profileId
 	 *            the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-	 *            3b, 3a, or 3u)
+	 *            3b, 3a, 3u, 4, 4e, 4f or ua1)
 	 * @return a validation profile selected by id
 	 */
 	@GET
@@ -79,16 +81,16 @@ public class ProfileResource {
 	/**
 	 * @param profileId
 	 *            the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-	 *            3b, 3a, or 3u)
+	 *            3b, 3a, 3u, 4, 4e, 4f or ua1)
 	 * @return the {@link java.util.Set} of
-	 *         {@link org.verapdf.pdfa.validation.RuleId}s for the selected
+	 *         {@link org.verapdf.pdfa.validation.profiles.RuleId}s for the selected
 	 *         Validation Profile
 	 */
 	@GET
 	@Path("/{profileId}/ruleids")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public static Set<RuleId> getProfileRules(@PathParam("profileId") String profileId) {
-		Set<RuleId> ids = new HashSet<>();
+		SortedSet<RuleId> ids = new TreeSet<>(new Profiles.RuleIdComparator());
 		for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
 			ids.add(rule.getRuleId());
 		}
@@ -98,12 +100,12 @@ public class ProfileResource {
 	/**
 	 * @param profileId
 	 *            the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-	 *            3b, 3a, or 3u)
+	 *            3b, 3a, 3u, 4, 4e, 4f or ua1)
 	 * @param clause
 	 *            a {@link java.lang.String} identifying the profile clause to
 	 *            return the Rules for
 	 * @return the {@link java.util.Set} of
-	 *         {@link org.verapdf.pdfa.validation.Rule}s for the selected
+	 *         {@link org.verapdf.pdfa.validation.profiles.Rule}s for the selected
 	 *         profile and clause
 	 */
 	@GET
@@ -111,7 +113,7 @@ public class ProfileResource {
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public static Set<Rule> getRulesForClause(@PathParam("profileId") String profileId,
 			@PathParam("clause") String clause) {
-		Set<Rule> rules = new HashSet<>();
+		SortedSet<Rule> rules = new TreeSet<>(new Profiles.RuleComparator());
 		for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
 			if (rule.getRuleId().getClause().equalsIgnoreCase(clause)) {
 				rules.add(rule);
