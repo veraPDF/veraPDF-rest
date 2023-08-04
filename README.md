@@ -20,7 +20,17 @@ following are most used and may prove informative if you are reading the code:
 A good place to get going is the [Dropwizard getting started guide](https://www.dropwizard.io/en/stable/getting-started.html).
 The [Dropwizard core documentation](https://www.dropwizard.io/en/stable/manual/core.html) covers the features used in the code base.
 
-Building and running
+Running DockerHub image
+--------------------
+
+To run the veraPDF rest image from DockerHub:
+```
+docker run -d -p 8080:8080 -p 8081:8081 verapdf/rest:latest
+```
+
+Port 8080 serves both the veraPDF web interface and the veraPDF Rest API. Port 8081 serves the DropWizard diagnostics. 
+
+Building and running locally
 --------------------
 
 ### Docker
@@ -164,3 +174,6 @@ no client application or page, but curl can be used:
 or to obtain the result in XML:
 
     curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b -H "Accept:application/xml"
+
+### Configuration files
+Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the parameters are availavle at https://docs.verapdf.org/cli/config/
