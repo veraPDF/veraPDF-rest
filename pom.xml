@@ -146,6 +146,32 @@
       <artifactId>dropwizard-assets</artifactId>
       <version>${dropwizard.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.smoketurner</groupId>
+      <artifactId>dropwizard-swagger</artifactId>
+      <version>1.3.12-1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.reflections</groupId>
+          <artifactId>reflections</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.10</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.code.findbugs</groupId>
+          <artifactId>annotations</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
     <dependency>
       <groupId>commons-codec</groupId>
