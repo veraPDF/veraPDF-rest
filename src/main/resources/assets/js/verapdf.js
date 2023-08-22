@@ -97,6 +97,8 @@ $(document).ready(function () {
     if (isValid) nextStepWizard.removeAttr('disabled').trigger('click')
   })
 
+  $('#download-results-btn').hide();
+
   $('div.setup-panel div a.btn-primary').trigger('click')
 })
 
@@ -132,6 +134,26 @@ function renderResult () {
     var preBlock = $('<pre>').text(pdfaValidator.result)
     $('#results').append(preBlock)
   }
+  $('#download-results-btn').show();
+}
+
+function downloadResult () {
+  var texts = pdfaValidator.result;
+  var hidden_a = document.createElement('a');
+  switch(outputFormat) {
+    case 'html':  hidden_a.setAttribute('href', 'data:text/html;charset=utf-8,'+ encodeURIComponent(texts));
+      break;
+    case 'xml': hidden_a.setAttribute('href', 'data:application/xml;charset=utf-8,'+ encodeURIComponent(texts));
+      break;
+    case 'json': hidden_a.setAttribute('href', 'data:application/json;charset=utf-8,'+ encodeURIComponent(texts));
+      break;
+    default: hidden_a.setAttribute('href', 'data:text/plain;charset=utf-8,'+ encodeURIComponent(texts));
+      break;
+  }
+
+  hidden_a.setAttribute('download', "validation_results");
+  document.body.appendChild(hidden_a);
+  hidden_a.click();
 }
 
 $(window).on('load', function(){
