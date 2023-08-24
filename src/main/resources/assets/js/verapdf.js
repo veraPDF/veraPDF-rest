@@ -9,6 +9,14 @@ $(document).on('change', '.btn-file :file', function () {
     let rawData = reader.result
     let digest = rusha.digest(rawData)
     input.trigger('fileselect', [numFiles, label, digest])
+
+    let logInfo = numFiles > 1 ? numFiles + ' files selected' : label
+    if (input.length) {
+      $('#filename').val(logInfo)
+    } else {
+      if (logInfo) alert(logInfo)
+    }
+    $('#sha1Hex').val(digest)
   }
   reader.readAsBinaryString(file)
 })
@@ -28,6 +36,7 @@ $(document).ready(function () {
 
     if (input.length) {
       input.val(log)
+      $('.nextBtn').show();
     } else {
       if (log) alert(log)
     }
@@ -36,7 +45,9 @@ $(document).ready(function () {
 })
 
 $(document).ready(function () {
-
+  if($('#filename').val() ===''){
+    $('.nextBtn').hide();
+  }
   let navListItems = $('div.setup-panel div a')
   let allWells = $('.setup-content')
   var allPreviousBtn = $('.previousBtn')
@@ -73,7 +84,8 @@ $(document).ready(function () {
     }
 
     if (isValid) {
-      nextStepWizard.removeAttr('disabled').trigger('click')
+      nextStepWizard.removeAttr('disabled')
+      nextStepWizard[0].click();
     }
     if (curStepBtn === 'configure') {
       callVeraPdfService()
@@ -94,7 +106,10 @@ $(document).ready(function () {
       }
     }
 
-    if (isValid) nextStepWizard.removeAttr('disabled').trigger('click')
+    if (isValid) {
+      nextStepWizard.removeAttr('disabled')
+      nextStepWizard[0].click();
+    }
   })
 
   $('#download-results-btn').hide();
@@ -122,10 +137,17 @@ function callVeraPdfService () {
   var spinHtml = $('#spinner-template').html()
   $('#results').html(spinHtml)
   pdfaValidator.validate(formData, flavour, function () {
-    renderResult()
+
+    $.when(renderResult()).then(showDownloadBtn());
   }, outputFormat)
 }
 
+function showDownloadBtn () {
+  $('#download-results-btn').show();
+ /* if(!$('#results div')[0].hasClass( "alert")){
+
+  }*/
+}
 function renderResult () {
   $('#results').empty()
   if (outputFormat === 'html') {
@@ -134,7 +156,6 @@ function renderResult () {
     var preBlock = $('<pre>').text(pdfaValidator.result)
     $('#results').append(preBlock)
   }
-  $('#download-results-btn').show();
 }
 
 function downloadResult () {
