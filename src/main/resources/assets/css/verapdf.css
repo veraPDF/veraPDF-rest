@@ -127,3 +127,16 @@ input[readonly] {
 .voffset7 { margin-top: 80px; }
 .voffset8 { margin-top: 100px; }
 .voffset9 { margin-top: 150px; }
+
+.form-wrapper {
+  margin-bottom: 15px;
+}
+
+.container .btn-lg, .btn-group-lg>.btn {
+  padding: 6px 12px;
+  font-size: 16px;
+}
+
+#results .alert {
+  margin-top: 20px;
+}

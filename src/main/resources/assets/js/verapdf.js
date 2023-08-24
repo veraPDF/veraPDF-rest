@@ -9,6 +9,14 @@ $(document).on('change', '.btn-file :file', function () {
     let rawData = reader.result
     let digest = rusha.digest(rawData)
     input.trigger('fileselect', [numFiles, label, digest])
+
+    let logInfo = numFiles > 1 ? numFiles + ' files selected' : label
+    if (input.length) {
+      $('#filename').val(logInfo)
+    } else {
+      if (logInfo) alert(logInfo)
+    }
+    $('#sha1Hex').val(digest)
   }
   reader.readAsBinaryString(file)
 })
@@ -28,6 +36,7 @@ $(document).ready(function () {
 
     if (input.length) {
       input.val(log)
+      $('.nextBtn').show();
     } else {
       if (log) alert(log)
     }
@@ -36,7 +45,9 @@ $(document).ready(function () {
 })
 
 $(document).ready(function () {
-
+  if($('#filename').val() ===''){
+    $('.nextBtn').hide();
+  }
   let navListItems = $('div.setup-panel div a')
   let allWells = $('.setup-content')
   var allPreviousBtn = $('.previousBtn')
@@ -62,6 +73,7 @@ $(document).ready(function () {
     var curStep = $(this).closest('.setup-content')
     var curStepBtn = curStep.attr('id')
     var nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children('a')
+    console.log('nextStepWizard',nextStepWizard);
     var curInputs = curStep.find("input[type='text'],input[type='url']")
     var isValid = true
     $('.form-group').removeClass('has-error')
@@ -73,12 +85,14 @@ $(document).ready(function () {
     }
 
     if (isValid) {
-      nextStepWizard.removeAttr('disabled').trigger('click')
+      nextStepWizard.removeAttr('disabled')
+      nextStepWizard[0].click();
     }
     if (curStepBtn === 'configure') {
       callVeraPdfService()
     }
   })
+
 
   allPreviousBtn.click(function () {
     var curStep = $(this).closest('.setup-content')
@@ -94,10 +108,13 @@ $(document).ready(function () {
       }
     }
 
-    if (isValid) nextStepWizard.removeAttr('disabled').trigger('click')
+    if (isValid) {
+      nextStepWizard.removeAttr('disabled')
+      nextStepWizard[0].click();
+    }
   })
 
-  $('div.setup-panel div a.btn-primary').trigger('click')
+  $('div.setup-panel div a.btn-primary').trigger('click');
 })
 
 // Default profile flavour to use for validation
