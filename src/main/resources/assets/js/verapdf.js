@@ -155,3 +155,12 @@ function downloadResult () {
   document.body.appendChild(hidden_a);
   hidden_a.click();
 }
+
+$(window).on('load', function(){
+  $('#filename').val('');
+  $('#sha1Hex').val('');
+  flavour = 'auto';
+  outputFormat = 'html';
+  $("#flavour option:selected").prop("selected", false);
+  $("#outputFormat option:selected").prop("selected", false);
+});
