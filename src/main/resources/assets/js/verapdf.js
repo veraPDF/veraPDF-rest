@@ -133,3 +133,12 @@ function renderResult () {
     $('#results').append(preBlock)
   }
 }
+
+$(window).on('load', function(){
+  $('#filename').val('');
+  $('#sha1Hex').val('');
+  flavour = 'auto';
+  outputFormat = 'html';
+  $("#flavour option:selected").prop("selected", false);
+  $("#outputFormat option:selected").prop("selected", false);
+});
