@@ -73,7 +73,7 @@ There's an "official" docker image that can be grabbed by `docker pull verapdf/r
 Currently it's delivered as a single Maven module, veraPDF-rest.
 
 ### Want to try?
-First clone this project, got to the project directory and then build the Maven project:
+First clone this project, go to the project directory and then build the Maven project:
 
 	git clone https://github.com/veraPDF/veraPDF-rest.git
 	cd veraPDF-rest
@@ -176,4 +176,4 @@ or to obtain the result in XML:
     curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b -H "Accept:application/xml"
 
 ### Configuration files
-Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the parameters are availavle at https://docs.verapdf.org/cli/config/
+Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the parameters are available at https://docs.verapdf.org/cli/config/
