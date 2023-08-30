@@ -148,3 +148,7 @@ input[readonly] {
 table {
   width: 100%;
 }
+
+.error-form-data {
+  color: red;
+}

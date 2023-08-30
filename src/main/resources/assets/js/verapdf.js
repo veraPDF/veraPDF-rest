@@ -1,3 +1,4 @@
+var errorOnLoadType = false;
 $(document).on('change', '.btn-file :file', function () {
   let input = $(this)
   let numFiles = input.get(0).files ? input.get(0).files.length : 1
@@ -6,18 +7,36 @@ $(document).on('change', '.btn-file :file', function () {
   let file = input.get(0).files[0]
   let reader = new FileReader()
   reader.onload = function (e) {
-    let rawData = reader.result
-    let digest = rusha.digest(rawData)
-    input.trigger('fileselect', [numFiles, label, digest])
+    var selectedFile = $('#fileInput')[0].files[0];
+    var allowedTypes = ['application/pdf'];
 
-    let logInfo = numFiles > 1 ? numFiles + ' files selected' : label
-    if (input.length) {
-      $('#filename').val(logInfo)
-    } else {
-      if (logInfo) alert(logInfo)
+    if (!allowedTypes.includes(selectedFile.type)) {
+      $('#filename').val('Invalid file type. Please upload a PDF file.');
+      $('#sha1Hex').val('');
+      $('#filename').addClass("error-form-data");
+      errorOnLoadType = true;
+      $('.nextBtn').hide();
+    }else{
+      if($("#filename").hasClass( "error-form-data" )){
+        $('#filename').removeClass("error-form-data");
+      }
+      let rawData = reader.result
+      let digest = rusha.digest(rawData)
+      input.trigger('fileselect', [numFiles, label, digest])
+
+      let logInfo = numFiles > 1 ? numFiles + ' files selected' : label
+      if (input.length) {
+        $('#filename').val(logInfo)
+      } else {
+        if (logInfo) alert(logInfo)
+      }
+      $('#sha1Hex').val(digest)
+      errorOnLoadType = false;
+      $('.nextBtn').show();
     }
-    $('#sha1Hex').val(digest)
   }
+  $('a[href="#validate"]').attr("disabled","disabled");
+  $('#configure-validator-header').text(`Configure Validator for ${$('#fileInput')[0].files[0].name}`);
   reader.readAsBinaryString(file)
 })
 
@@ -36,7 +55,7 @@ $(document).ready(function () {
 
     if (input.length) {
       input.val(log)
-      $('.nextBtn').show();
+      if (!errorOnLoadType) $('.nextBtn').show();
     } else {
       if (log) alert(log)
     }
@@ -45,7 +64,7 @@ $(document).ready(function () {
 })
 
 $(document).ready(function () {
-  if($('#filename').val() ===''){
+  if($('#fileInput')[0].files.length === 0 ){
     $('.nextBtn').hide();
   }
   let navListItems = $('div.setup-panel div a')
@@ -137,17 +156,18 @@ function callVeraPdfService () {
   var spinHtml = $('#spinner-template').html()
   $('#results').html(spinHtml)
   pdfaValidator.validate(formData, flavour, function () {
-
-    $.when(renderResult()).then(showDownloadBtn());
+    $.when(renderResult()).then(addFileConfigurationToResult()).then((showDownloadBtn()));
   }, outputFormat)
+}
+
+function addFileConfigurationToResult () {
+  $("#result-details").text(`Validation results for ${$('#fileInput')[0].files[0].name} are shown below.`);
 }
 
 function showDownloadBtn () {
   $('#download-results-btn').show();
- /* if(!$('#results div')[0].hasClass( "alert")){
-
-  }*/
 }
+
 function renderResult () {
   $('#results').empty()
   if (outputFormat === 'html') {
