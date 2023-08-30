@@ -16,6 +16,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VeraPdfRestConfiguration extends Configuration {
     private int port;
+    private int maxFileSize;
+
+    @JsonProperty
+    public int getMaxFileSize() {
+        return maxFileSize;
+    }
+
+    @JsonProperty
+    public void setMaxFileSize(int maxFileSize) {
+        this.maxFileSize = maxFileSize;
+    }
 
     /**
      * @return the TCP/IP port used
@@ -33,5 +44,4 @@ public class VeraPdfRestConfiguration extends Configuration {
     public void setPort(int port) {
         this.port = port;
     }
-
 }
