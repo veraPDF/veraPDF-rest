@@ -59,7 +59,7 @@
                 <div class="input-group">
                   <span class="input-group-btn">
                     <span class="btn btn-success btn-file">
-                      Browse&hellip; <input type="file" name="file">
+                      Browse&hellip; <input  id="fileInput" type="file" name="file" accept="application/pdf">
                     </span>
                   </span>
                   <input id="filename" type="text" class="form-control" placeholder="Select a file to upload." required="required" readonly />
@@ -76,7 +76,7 @@
       <div class="row setup-content" id="configure">
         <div class="col-xs-12">
           <div class="col-md-12">
-            <h3>Configure Validator</h3>
+            <h3 id="configure-validator-header">Configure Validator</h3>
             <div class="form-group">
               <label class="control-label">Validation Profile:</label>
               <select id="flavour" class="form-control" onchange="changeFlavour(this.value)">
@@ -113,7 +113,7 @@
           <div class="col-md-12">
             <div class="list-group voffset2">
               <h2 class="list-group-item-heading">Validation Results</h2>
-              <p class="list-group-item-text">Validation results are shown below.</p>
+              <p id="result-details" class="list-group-item-text">Validation results are shown below.</p>
               <div id="results"></div>
                <button id="download-results-btn" class="btn btn-primary btn-lg pull-right" type="button"  onclick = "downloadResult()">Download</button>
             </div>
