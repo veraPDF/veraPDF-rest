@@ -28,7 +28,7 @@ To run the veraPDF rest image from DockerHub:
 docker run -d -p 8080:8080 -p 8081:8081 verapdf/rest:latest
 ```
 
-Port 8080 serves both the veraPDF web interface and the veraPDF Rest API. Port 8081 serves the DropWizard diagnostics. 
+Port 8080 serves both the veraPDF web interface and the veraPDF Rest API. Port 8081 serves the DropWizard diagnostics.
 
 Building and running locally
 --------------------
@@ -199,4 +199,11 @@ curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/1b
 ```
 
 ### Configuration files
-Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the veraPDF parameters are available at https://docs.verapdf.org/cli/config/. Specific verapdf-rest server configuration parameters are located in server.yml.
+Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the veraPDF parameters are available at https://docs.verapdf.org/cli/config/. 
+Specific verapdf-rest server configuration parameters are located in server.yml.
+
+To set the maximum file size of PDF, change maxFileSize in server.yml file or run docker image:
+```
+docker run -d -p 8080:8080 -p 8081:8081 -e VERAPDF_MAX_FILE_SIZE=1 verapdf/rest:latest
+```
+where VERAPDF_MAX_FILE_SIZE is 1 MB. The default maximum file size is 100 MB.

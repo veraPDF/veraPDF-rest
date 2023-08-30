@@ -11,14 +11,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.verapdf.ReleaseDetails;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.VeraPDFException;
+import org.verapdf.exceptions.VeraPDFParserException;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
+import org.verapdf.io.SeekableInputStream;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
@@ -34,6 +35,7 @@ import org.verapdf.processor.app.ConfigManager;
 import org.verapdf.processor.app.ConfigManagerImpl;
 import org.verapdf.processor.app.VeraAppConfig;
 import org.verapdf.processor.reports.BatchSummary;
+import org.verapdf.processor.reports.ItemDetails;
 import org.verapdf.processor.reports.Reports;
 import org.verapdf.processor.reports.ValidationReport;
 
@@ -48,8 +50,6 @@ import java.net.URL;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -58,6 +58,15 @@ public class ValidateResource {
 	// java.security.digest name for the SHA-1 algorithm
 	private static final String SHA1_NAME = "SHA-1"; //$NON-NLS-1$
 	private static final String AUTODETECT_PROFILE = "auto";
+	private static int maxFileSize;
+	private static ValidateResource validateResource;
+
+	public static synchronized ValidateResource getValidateResource() {
+		if (validateResource == null) {
+			validateResource = new ValidateResource();
+		}
+		return validateResource;
+	}
 
 	private static ConfigManager configManager;
 
@@ -123,7 +132,7 @@ public class ValidateResource {
 	                                      @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
 			throws VeraPDFException {
 
-		return validate(uploadedInputStream, profileId, FormatOption.XML);
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, FormatOption.XML);
 	}
 
 	@POST
@@ -147,7 +156,7 @@ public class ValidateResource {
 	                                      @FormDataParam("url") String urlLink) throws VeraPDFException {
 		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
-		return validate(uploadedInputStream, profileId, FormatOption.XML);
+		return validate(uploadedInputStream, urlLink, profileId, FormatOption.XML);
 	}
 
 	/**
@@ -181,7 +190,7 @@ public class ValidateResource {
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
 			throws VeraPDFException {
 
-		return validate(uploadedInputStream, profileId, FormatOption.JSON);
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, FormatOption.JSON);
 	}
 
 	@POST
@@ -195,7 +204,7 @@ public class ValidateResource {
 	                                       @FormDataParam("url") String urlLink) throws VeraPDFException {
 		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
-		return validate(uploadedInputStream, profileId, FormatOption.JSON);
+		return validate(uploadedInputStream, urlLink, profileId, FormatOption.JSON);
 	}
 
 	/**
@@ -225,7 +234,7 @@ public class ValidateResource {
 	                                       @FormDataParam("file") InputStream uploadedInputStream,
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
 			throws VeraPDFException {
-		return validate(uploadedInputStream, profileId, FormatOption.HTML);
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, FormatOption.HTML);
 	}
 
 	@POST
@@ -239,7 +248,7 @@ public class ValidateResource {
 	                                       @FormDataParam("url") String urlLink) throws VeraPDFException {
 		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
-		return validate(uploadedInputStream, profileId, FormatOption.HTML);
+		return validate(uploadedInputStream, urlLink, profileId, FormatOption.HTML);
 	}
 
 	/**
@@ -280,29 +289,27 @@ public class ValidateResource {
 
 	}
 
-	private static InputStream validate(InputStream uploadedInputStream, String profileId, FormatOption formatOption) throws VeraPDFException {
-		File file;
-		try {
-			file = File.createTempFile("cache", "");
-		} catch (IOException exception) {
-			throw new VeraPDFException("IOException creating a temp file", exception); //$NON-NLS-1$
-		}
-		try (OutputStream fos = new FileOutputStream(file);) {
-			IOUtils.copy(uploadedInputStream, fos);
-			uploadedInputStream.close();
-		} catch (IOException excep) {
-			throw new VeraPDFException("IOException creating a temp file", excep); //$NON-NLS-1$
-		}
+	public static void setMaxFileSize(Integer maxFileSize) {
+		ValidateResource.maxFileSize = maxFileSize;
+	}
 
+	private static InputStream validate(InputStream uploadedInputStream, String fileName, String profileId, FormatOption formatOption) throws VeraPDFException {
+		SeekableInputStream seekableInputStream;
+		try {
+			seekableInputStream = SeekableInputStream.getSeekableStream(uploadedInputStream, 1000000 * maxFileSize);
+		} catch (VeraPDFParserException e) {
+			throw new VeraPDFException("Maximum allowed file size exceeded: " + maxFileSize + " MB");
+		} catch (IOException e) {
+			throw new VeraPDFException(e.getMessage());
+		}
 		PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
 		ValidatorConfig validatorConfig = configManager.getValidatorConfig();
 		validatorConfig.setFlavour(flavour);
 		ProcessorConfig config = createProcessorConfig(validatorConfig);
-
 		byte[] outputBytes;
 		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 			VeraAppConfig appConfig = configManager.getApplicationConfig();
-			processFile(file, config, outputStream, appConfig, formatOption);
+			processStream(seekableInputStream, fileName, config, outputStream, appConfig, formatOption);
 			outputBytes = outputStream.toByteArray();
 		} catch (IOException excep) {
 			throw new VeraPDFException("Some Java Exception while validating", excep); //$NON-NLS-1$
@@ -370,15 +377,18 @@ public class ValidateResource {
 		}
 	}
 
-	private static BatchSummary processFile(File file, ProcessorConfig config, OutputStream stream,
-	                                        VeraAppConfig appConfig, FormatOption formatOption)
+	private static BatchSummary processStream(SeekableInputStream inputStream, String fileName, ProcessorConfig config, OutputStream stream,
+	                                          VeraAppConfig appConfig, FormatOption formatOption)
 			throws VeraPDFException, IOException {
-		List<File> files = Arrays.asList(file);
 		BatchSummary summary;
 		try (BatchProcessor processor = ProcessorFactory.fileBatchProcessor(config)) {
-			summary = processor.process(files,
+			summary = processor.process(ItemDetails.fromValues(fileName, inputStream.getStreamLength()), inputStream,
 			                            ProcessorFactory.getHandler(formatOption, appConfig.isVerbose(), stream,
 			                                                        config.getValidatorConfig().isRecordPasses(), appConfig.getWikiPath()));
+		} finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
 		}
 		return summary;
 	}
