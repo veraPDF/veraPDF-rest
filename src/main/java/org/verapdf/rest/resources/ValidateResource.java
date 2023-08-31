@@ -3,33 +3,6 @@
  */
 package org.verapdf.rest.resources;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotSupportedException;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -37,10 +10,10 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.core.ModelParsingException;
 import org.verapdf.core.VeraPDFException;
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.PDFAParser;
 import org.verapdf.pdfa.PDFAValidator;
-import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.results.ValidationResults;
@@ -55,7 +28,20 @@ import org.verapdf.processor.app.VeraAppConfig;
 import org.verapdf.processor.reports.BatchSummary;
 import org.verapdf.processor.reports.Reports;
 import org.verapdf.processor.reports.ValidationReport;
-import org.verapdf.report.HTMLReport;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.io.*;
+import java.net.URL;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -109,6 +95,18 @@ public class ValidateResource {
         return validate(uploadedInputStream, profileId, FormatOption.XML);
     }
 
+    @POST
+    @Path("/url/{profileId}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces({ MediaType.APPLICATION_XML })
+    public static InputStream validateXml(@PathParam("profileId") String profileId,
+                                          @FormDataParam("url") String urlLink)
+            throws VeraPDFException, IOException {
+        InputStream uploadedInputStream = new URL(urlLink).openStream();
+
+        return validate(uploadedInputStream, profileId, FormatOption.XML);
+    }
+
     /**
      * @param profileId
      *                                 the String id of the Validation profile
@@ -138,6 +136,18 @@ public class ValidateResource {
         return validate(uploadedInputStream, profileId, FormatOption.JSON);
     }
 
+    @POST
+    @Path("/url/{profileId}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces({ MediaType.APPLICATION_JSON })
+    public static InputStream validateJson(@PathParam("profileId") String profileId,
+                                          @FormDataParam("url") String urlLink)
+            throws VeraPDFException, IOException {
+        InputStream uploadedInputStream = new URL(urlLink).openStream();
+
+        return validate(uploadedInputStream, profileId, FormatOption.JSON);
+    }
+
     /**
      * @param profileId
      *                                 the String id of the Validation profile
@@ -162,6 +172,18 @@ public class ValidateResource {
             @FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
             throws VeraPDFException {
+        return validate(uploadedInputStream, profileId, FormatOption.HTML);
+    }
+
+    @POST
+    @Path("/url/{profileId}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces({ MediaType.TEXT_HTML })
+    public static InputStream validateHtml(@PathParam("profileId") String profileId,
+                                          @FormDataParam("url") String urlLink)
+            throws VeraPDFException, IOException {
+        InputStream uploadedInputStream = new URL(urlLink).openStream();
+
         return validate(uploadedInputStream, profileId, FormatOption.HTML);
     }
 
