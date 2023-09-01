@@ -155,7 +155,6 @@ table {
 
 #configure-validator-header, #result-details {
   overflow-wrap: anywhere;
-  color: #707070;
-  font-style: italic;
+  font-weight: 600;
   font-size: 0.95em;
 }
