@@ -36,7 +36,7 @@ $(document).on('change', '.btn-file :file', function () {
     }
   }
   $('a[href="#validate"]').attr("disabled","disabled");
-  $('#configure-validator-header').text(`Configure Validator for ${$('#fileInput')[0].files[0].name}`);
+  $('#configure-validator-header').text($('#fileInput')[0].files[0].name);
   reader.readAsBinaryString(file)
 })
 
@@ -151,17 +151,16 @@ function changeOutputFormat (newFormat) {
 
 function callVeraPdfService () {
   var formData = new FormData($('form')[0])
-
-  $('#results').empty()
+  $.when($('#results').empty()).then(addFileConfigurationToResult());
   var spinHtml = $('#spinner-template').html()
   $('#results').html(spinHtml)
   pdfaValidator.validate(formData, flavour, function () {
-    $.when(renderResult()).then(addFileConfigurationToResult()).then((showDownloadBtn()));
+    $.when(renderResult()).then(showDownloadBtn());
   }, outputFormat)
 }
 
 function addFileConfigurationToResult () {
-  $("#result-details").text(`Validation results for ${$('#fileInput')[0].files[0].name} are shown below.`);
+  $("#result-details").text($('#fileInput')[0].files[0].name);
 }
 
 function showDownloadBtn () {
