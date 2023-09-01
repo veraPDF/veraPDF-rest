@@ -152,3 +152,10 @@ table {
 .error-form-data {
   color: red;
 }
+
+#configure-validator-header, #result-details {
+  overflow-wrap: anywhere;
+  color: #707070;
+  font-style: italic;
+  font-size: 0.95em;
+}
