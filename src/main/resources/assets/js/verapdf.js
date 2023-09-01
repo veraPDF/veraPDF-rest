@@ -86,6 +86,7 @@ $(document).ready(function () {
       $target.show()
       $target.find('input:eq(0)').focus()
     }
+    $('#download-results-btn').hide();
   })
 
   allNextBtn.click(function () {
@@ -155,7 +156,7 @@ function callVeraPdfService () {
   var spinHtml = $('#spinner-template').html()
   $('#results').html(spinHtml)
   pdfaValidator.validate(formData, flavour, function () {
-    $.when(renderResult()).then(showDownloadBtn());
+    $.when(renderResult()).done(showDownloadBtn());
   }, outputFormat)
 }
 
