@@ -8,6 +8,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.Info;
+import io.swagger.annotations.License;
+import io.swagger.annotations.SwaggerDefinition;
 import org.verapdf.ReleaseDetails;
 import org.verapdf.rest.environment.Environment;
 import org.verapdf.rest.environment.Environments;
@@ -20,6 +24,15 @@ import org.verapdf.rest.environment.Environments;
  *
  */
 @Path("/api")
+@Api(value = "veraPDF")
+@SwaggerDefinition(info = @Info(
+        description = "Rest API for veraPDF",
+        version = "V0.2.0",
+        title = "veraPDF API",
+        license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0")),
+                   schemes = {SwaggerDefinition.Scheme.HTTP}
+)
+
 public final class ApiResource {
     private static ReleaseDetails buildDetails = ReleaseDetails.addDetailsFromResource(
             ReleaseDetails.APPLICATION_PROPERTIES_ROOT + "rest." + ReleaseDetails.PROPERTIES_EXT);
