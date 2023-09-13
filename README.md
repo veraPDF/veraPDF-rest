@@ -175,5 +175,25 @@ or to obtain the result in XML:
 
     curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b -H "Accept:application/xml"
 
+Validation of PDF given by URL is available as a POST request `http://localhost:8080/api/validate/url/*id*`. To test with curl:
+
+```
+curl -F "url=http://www.pdf995.com/samples/pdf.pdf" localhost:8080/api/validate/url/1b
+```
+
+To validate your local files you need to add folder with files to the docker container. To run the veraPDF rest image
+with your local files run docker image with bind mount `-v /local/path/of/the/folder:/home/folder`. 
+For example, to run the veraPDF rest image from DockerHub with your local files:
+
+```
+docker run -d -p 8080:8080 -p 8081:8081 -v /local/path/of/the/folder:/home/folder verapdf/rest:latest
+```
+ 
+and use curl:
+
+```
+curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/1b
+```
+
 ### Configuration files
 Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the parameters are available at https://docs.verapdf.org/cli/config/
