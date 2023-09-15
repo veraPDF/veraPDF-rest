@@ -1,0 +1,72 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: verapdf-rest-deployment
+  labels:
+    instance: veraPDF-rest
+    part-of : veraPDF
+spec:
+  selector:
+    matchLabels:
+      project: verapdf-rest
+  template:
+    metadata:
+      labels:
+        project: verapdf-rest
+    spec:
+      containers:
+        - name : verapdf-rest
+          image: ghcr.io/verapdf/rest:dev
+          resources:
+            requests:
+              cpu: "250m"
+            limits:
+              cpu: "250m"
+          ports:
+            - containerPort: 8080
+              name         : rest-api-port
+            - containerPort: 8081
+              name         : diagnostic-port
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: verapdf-rest-autoscaling
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: verapdf-rest-deployment
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          averageUtilization: 70
+          type: Utilization
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: verapdf-rest-service
+  labels:
+    instance: veraPDF-rest
+    part-of : veraPDF
+spec:
+  selector:
+    project: verapdf-rest
+  ports:
+    - name      : rest-api-listener
+      protocol  : TCP
+      port      : 8080
+      targetPort: 8080
+
+    - name      : diagnostic-listener
+      protocol  : TCP
+      port      : 8081
+      targetPort: 8081
+  type: LoadBalancer

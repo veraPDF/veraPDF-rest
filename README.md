@@ -213,3 +213,10 @@ To change maximum Java heap size in docker image run:
 ```
 docker run -d -p 8080:8080 -p 8081:8081 -e JAVA_OPTS="-Xmx128M" verapdf/rest:latest
 ```
+
+### Kubernetes
+
+To use veraPDF-rest in as k8s deployment with load balancing and dynamic number of replicas (2 to 4) run the command:
+```
+kubectl apply -f kubernetes.yaml
+```
