@@ -20,7 +20,7 @@ FROM eclipse-temurin:11 as jre-builder
 
 # Create a custom Java runtime
 RUN "$JAVA_HOME/bin/jlink" \
-         --add-modules java.base,java.logging,java.xml,java.management,java.sql,java.desktop \
+         --add-modules java.base,java.logging,java.xml,java.management,java.sql,java.desktop,jdk.crypto.ec \
          --strip-debug \
          --no-man-pages \
          --no-header-files \
@@ -37,6 +37,10 @@ ENV JAVA_OPTS=$JAVA_OPTS
 ARG VERAPDF_REST_VERSION
 ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-0.2.0-SNAPSHOT}
 
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     ssl-cert \
+#     ca-certificates-java \
+#     && rm -rf /var/lib/apt/lists/*
 COPY --from=dev-builder /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 RUN chmod +x /usr/local/bin/dumb-init
 
