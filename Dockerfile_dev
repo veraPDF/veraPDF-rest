@@ -37,10 +37,6 @@ ENV JAVA_OPTS=$JAVA_OPTS
 ARG VERAPDF_REST_VERSION
 ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-0.2.0-SNAPSHOT}
 
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     ssl-cert \
-#     ca-certificates-java \
-#     && rm -rf /var/lib/apt/lists/*
 COPY --from=dev-builder /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 RUN chmod +x /usr/local/bin/dumb-init
 
