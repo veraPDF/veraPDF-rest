@@ -58,6 +58,7 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
                     VeraPdfRestConfiguration configuration) {
                 SwaggerBundleConfiguration config = new SwaggerBundleConfiguration();
                 config.setResourcePackage("org.verapdf.rest.resources");
+                config.setSchemes(new String[]{"https", "http"});
                 return config;
             }
         });
