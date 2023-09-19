@@ -35,6 +35,6 @@ jobs:
           context: .
           push: true
           file: Dockerfile
-          tags: verapdf/rest:dev
+          tags: verapdf-rest:dev
           labels: ${{ steps.meta.outputs.labels }}
           
