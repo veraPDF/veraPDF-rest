@@ -11,10 +11,10 @@ jobs:
     name: Delete old untagged images from ghcr.io
     runs-on: ubuntu-latest
     steps:
-      - name: Delete all PR containers older than a day
+      - name: Delete all PR containers older than a week
         uses: snok/container-retention-policy@v2
         with:
-          image-names: verapdf-rest*
+          image-names: verapdf-rest:pr*
           cut-off: 1 week ago UTC
           account-type: org
           org-name: veraPDF
