@@ -3,18 +3,19 @@
  */
 package org.verapdf.rest.resources;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.verapdf.ReleaseDetails;
+import org.verapdf.rest.environment.Environment;
+import org.verapdf.rest.environment.Environments;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.Info;
-import io.swagger.annotations.License;
-import io.swagger.annotations.SwaggerDefinition;
-import org.verapdf.ReleaseDetails;
-import org.verapdf.rest.environment.Environment;
-import org.verapdf.rest.environment.Environments;
 
 /**
  * API wrapper resource, provides routing for child API resources.
@@ -24,13 +25,14 @@ import org.verapdf.rest.environment.Environments;
  *
  */
 @Path("/api")
-@Api(value = "veraPDF")
-@SwaggerDefinition(info = @Info(
+@Tag(name = "veraPDF")
+@OpenAPIDefinition(info = @Info(
+        title = "veraPDF API",
         description = "Rest API for veraPDF",
         version = "V0.2.0",
-        title = "veraPDF API",
         license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0")),
-                   schemes = {SwaggerDefinition.Scheme.HTTP}
+                   servers = {@Server(url = "https://demo.verapdf.org", description = "default"),
+                              @Server(url = "http://localhost:8080", description = "local")}
 )
 
 public final class ApiResource {
