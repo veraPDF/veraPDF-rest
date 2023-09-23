@@ -82,7 +82,7 @@ First clone this project, go to the project directory and then build the Maven p
 
 To start up the server:
 
-	java -jar target/verapdf-rest-0.2.0-SNAPSHOT.jar server
+	java -jar target/verapdf-rest-0.2.0-SNAPSHOT.jar server server.yml
 
 Go to [localhost:8080/api/info](http://localhost:8080/api/info) to see if the server is running, you should
 see something like:
@@ -166,8 +166,7 @@ The curl call defaults to a JSON representation, to obtain the XML profile:
     curl localhost:8080/api/profiles/1b -H  "Accept:application/xml"
 
 ### Validation services
-Validation is also available as a POST service at `http://localhost:8080/api/validate/*id*`. There's currently
-no client application or page, but curl can be used:
+Validation is also available as a POST request at `http://localhost:8080/api/validate/*id*`. To test with curl:
 
     curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b
 
@@ -196,4 +195,4 @@ curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/1b
 ```
 
 ### Configuration files
-Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the parameters are available at https://docs.verapdf.org/cli/config/
+Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the veraPDF parameters are available at https://docs.verapdf.org/cli/config/. Specific verapdf-rest server configuration parameters are located in server.yml.
