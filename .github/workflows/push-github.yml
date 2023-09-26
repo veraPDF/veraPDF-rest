@@ -6,7 +6,7 @@ on:
         
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: veraPDF/rest
         
 jobs:
   publish:
@@ -35,6 +35,6 @@ jobs:
           context: .
           push: true
           file: Dockerfile
-          tags: ghcr.io/verapdf/verapdf-rest:dev
+          tags: ghcr.io/verapdf/rest:dev
           labels: ${{ steps.meta.outputs.labels }}
           
