@@ -10,7 +10,7 @@ jobs:
     container: ubuntu
     services:
       verarest:
-        image: ghcr.io/verapdf/verapdf-rest:pr-${{ github.event.pull_request.number }}
+        image: ghcr.io/verapdf/rest:pr-${{ github.event.pull_request.number }}
         ports:
           - 8080:8080
     steps:
