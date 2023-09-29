@@ -72,6 +72,9 @@ There's an "official" docker image that can be grabbed by `docker pull verapdf/r
 ### Project structure
 Currently it's delivered as a single Maven module, veraPDF-rest.
 
+### Swagger documentation
+Swagger documentation is available at [localhost:8080/swagger](http://localhost:8080/swagger).
+
 ### Want to try?
 First clone this project, go to the project directory and then build the Maven project:
 
