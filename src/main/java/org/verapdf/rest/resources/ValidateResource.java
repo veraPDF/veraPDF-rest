@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.verapdf.rest.resources;
 
@@ -100,9 +100,8 @@ public class ValidateResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({ MediaType.APPLICATION_XML })
     public static InputStream validateXml(@PathParam("profileId") String profileId,
-                                          @FormDataParam("url") String urlLink)
-            throws VeraPDFException, IOException {
-        InputStream uploadedInputStream = new URL(urlLink).openStream();
+                                          @FormDataParam("url") String urlLink) throws VeraPDFException {
+        InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
         return validate(uploadedInputStream, profileId, FormatOption.XML);
     }
@@ -141,9 +140,8 @@ public class ValidateResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({ MediaType.APPLICATION_JSON })
     public static InputStream validateJson(@PathParam("profileId") String profileId,
-                                          @FormDataParam("url") String urlLink)
-            throws VeraPDFException, IOException {
-        InputStream uploadedInputStream = new URL(urlLink).openStream();
+                                          @FormDataParam("url") String urlLink) throws VeraPDFException {
+        InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
         return validate(uploadedInputStream, profileId, FormatOption.JSON);
     }
@@ -180,9 +178,8 @@ public class ValidateResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({ MediaType.TEXT_HTML })
     public static InputStream validateHtml(@PathParam("profileId") String profileId,
-                                          @FormDataParam("url") String urlLink)
-            throws VeraPDFException, IOException {
-        InputStream uploadedInputStream = new URL(urlLink).openStream();
+                                          @FormDataParam("url") String urlLink) throws VeraPDFException {
+        InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
         return validate(uploadedInputStream, profileId, FormatOption.HTML);
     }
@@ -283,6 +280,18 @@ public class ValidateResource {
                     "No digest algorithm implementation for " +
                             SHA1_NAME + ", check you Java installation.", //$NON-NLS-1$
                     nsaExcep); //$NON-NLS-2$
+        }
+    }
+
+    private static InputStream getInputStreamByUrlLink(String urlLink) throws VeraPDFException {
+        try {
+            return new URL(urlLink).openStream();
+        } catch (IOException e) {
+            if (urlLink.isEmpty()) {
+                throw new VeraPDFException("URL is empty");
+            } else {
+                throw new VeraPDFException("URL is incorrect: " + urlLink);
+            }
         }
     }
 
