@@ -3,9 +3,9 @@
 FROM maven:3.8.6-openjdk-11 as app-builder
 WORKDIR /build
 
-# A specifc git branch, tag or commit to build from, defaults to integration (dev build)
+# A specifc git branch, tag or commit to build from, defaults to master (release build)
 ARG GH_CHECKOUT
-ENV GH_CHECKOUT=${GH_CHECKOUT:-integration}
+ENV GH_CHECKOUT=${GH_CHECKOUT:-master}
 
 # Clone the repo, checkout the revision and build the application
 RUN git clone https://github.com/veraPDF/veraPDF-rest.git

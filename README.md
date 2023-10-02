@@ -76,11 +76,12 @@ Currently it's delivered as a single Maven module, veraPDF-rest.
 Swagger documentation is available at [localhost:8080/swagger](http://localhost:8080/swagger).
 
 ### Want to try?
-First clone this project, go to the project directory and then build the Maven project:
+First clone this project, go to the project directory, checkout to `master` branch for release version or `integration` 
+branch for dev version, and then build the Maven project:
 
 	git clone https://github.com/veraPDF/veraPDF-rest.git
 	cd veraPDF-rest
-	git checkout integration
+	git checkout master
 	mvn clean package
 
 To start up the server:
