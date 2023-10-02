@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<featuresConfig>
+    <enabledFeatures>
+        <feature>ACTION</feature>
+        <feature>FORM_XOBJECT</feature>
+        <feature>INFORMATION_DICTIONARY</feature>
+        <feature>INTERACTIVE_FORM_FIELDS</feature>
+        <feature>LOW_LEVEL_INFO</feature>
+    </enabledFeatures>
+</featuresConfig>

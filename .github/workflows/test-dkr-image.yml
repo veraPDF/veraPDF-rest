@@ -1,0 +1,22 @@
+name: Test Docker deployment
+
+on:
+  workflow_call
+
+jobs:
+  test:
+    name: Deploy and test image
+    runs-on: ubuntu-latest
+    container: ubuntu
+    services:
+      verarest:
+        image: ghcr.io/verapdf/rest:pr-${{ github.event.pull_request.number }}
+        ports:
+          - 8080:8080
+    steps:
+      - name: Install wget 
+        run: apt-get update; apt-get install wget -y
+      - name: Test Profiles endpoint
+        run: wget -O- http://verarest:8080/api/profiles
+      - name: Test 1B profile endpoint
+        run: wget -O- http://verarest:8080/api/profiles/1b

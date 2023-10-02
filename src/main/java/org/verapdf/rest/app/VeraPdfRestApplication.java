@@ -8,12 +8,12 @@ import java.util.EnumSet;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
+import io.federecio.dropwizard.swagger.SwaggerBundle;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.verapdf.rest.resources.ApiResource;
 import org.verapdf.rest.resources.HomePageResource;
 import org.verapdf.rest.resources.ValidationExceptionMapper;
-
-//import com.yunspace.dropwizard.xml.XmlBundle;
 
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
@@ -21,8 +21,6 @@ import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
-import io.federecio.dropwizard.swagger.SwaggerBundle;
-import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
@@ -37,9 +35,9 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
      * with command line args.
      * 
      * @param args
-     *            command line arguments as string array.
+     *             command line arguments as string array.
      * @throws Exception
-     *             passes any exception thrown by run
+     *                   passes any exception thrown by run
      */
     public static void main(String[] args) throws Exception {
         new VeraPdfRestApplication().run(args);
@@ -52,30 +50,32 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
 
     @Override
     public void initialize(Bootstrap<VeraPdfRestConfiguration> bootstrap) {
-        // Dropwizard bundle to handle Jackson XML serialisation
-       // final XmlBundle xmlBundle = new XmlBundle();
-        //bootstrap.addBundle(xmlBundle);
         bootstrap.addBundle(new MultiPartBundle());
-        bootstrap.addBundle(new ViewBundle<VeraPdfRestConfiguration>());
-        bootstrap.addBundle(new SwaggerBundle<VeraPdfRestConfiguration>() {@Override
-			protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(VeraPdfRestConfiguration configuration) {
-			return configuration.swaggerBundleConfiguration;
-		}});
-        
+        bootstrap.addBundle(new ViewBundle<>());
+        bootstrap.addBundle(new SwaggerBundle<VeraPdfRestConfiguration>() {
+            @Override
+            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(
+                    VeraPdfRestConfiguration configuration) {
+                SwaggerBundleConfiguration config = new SwaggerBundleConfiguration();
+                config.setResourcePackage("org.verapdf.rest.resources");
+
+                return config;
+            }
+        });
+
         bootstrap.addBundle(new AssetsBundle("/assets/css", "/css", null, "css")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        bootstrap.addBundle(new AssetsBundle("/assets/img", "/img", null, "img")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-
+        bootstrap.addBundle(new AssetsBundle("/assets/img", "/img", null, "img")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                                                                   // //$NON-NLS-
     }
 
     @Override
     public void run(VeraPdfRestConfiguration configuration,
-            Environment environment) throws Exception {
+            Environment environment) {
         // Create & register our REST resources
-        final ApiResource restApi = new ApiResource();
-        final HomePageResource homePageResource = new HomePageResource();
         final ValidationExceptionMapper vem = new ValidationExceptionMapper();
-        environment.jersey().register(restApi);
-        environment.jersey().register(homePageResource);
+        environment.jersey().register(new ApiResource());
+        environment.jersey().register(new HomePageResource());
         environment.jersey().register(vem);
         // Set up cross domain REST
         setupCORS(environment);

@@ -1,17 +1,14 @@
 # See https://docs.docker.com/engine/userguide/eng-image/multistage-build/
 # First build the app on a maven open jdk 11 container
-FROM maven:3.8.6-openjdk-11 as app-builder
+FROM maven:3.8.6-openjdk-11 as dev-builder
 WORKDIR /build
 
-# A specifc git branch, tag or commit to build from, defaults to master (release build)
-ARG GH_CHECKOUT
-ENV GH_CHECKOUT=${GH_CHECKOUT:-master}
-
-# Clone the repo, checkout the revision and build the application
-RUN git clone https://github.com/veraPDF/veraPDF-rest.git
+# Copy the current dev source branch to a local build dir
+COPY src/ /build/veraPDF-rest/src/
+COPY pom.xml /build/veraPDF-rest/
 
 WORKDIR /build/veraPDF-rest
-RUN git checkout ${GH_CHECKOUT} && mvn clean package
+RUN mvn clean package
 
 # Install dumb-init for process safety
 # https://github.com/Yelp/dumb-init
@@ -40,7 +37,7 @@ ENV JAVA_OPTS=$JAVA_OPTS
 ARG VERAPDF_REST_VERSION
 ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-0.2.0-SNAPSHOT}
 
-COPY --from=app-builder /usr/local/bin/dumb-init /usr/local/bin/dumb-init
+COPY --from=dev-builder /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 RUN chmod +x /usr/local/bin/dumb-init
 
 # Copy the JRE from the previous stage
@@ -54,13 +51,13 @@ RUN useradd --system --user-group --home-dir=/opt/verapdf-rest verapdf-rest
 RUN mkdir --parents /var/opt/verapdf-rest/logs && chown -R verapdf-rest:verapdf-rest /var/opt/verapdf-rest
 
 USER verapdf-rest
-WORKDIR /opt/verapdf-rest
 
+WORKDIR /opt/verapdf-rest
 # Copy the application from the previous stage
-COPY --from=app-builder /build/veraPDF-rest/target/verapdf-rest-${VERAPDF_REST_VERSION}.jar /opt/verapdf-rest/
+COPY --from=dev-builder /build/veraPDF-rest/target/verapdf-rest-${VERAPDF_REST_VERSION}.jar /opt/verapdf-rest/
 # Copy the default configuration file
-COPY --from=app-builder /build/veraPDF-rest/server.yml /var/opt/verapdf-rest/config/
-COPY --from=app-builder /build/veraPDF-rest/config /opt/verapdf-rest/config/
+COPY server.yml /var/opt/verapdf-rest/config/
+COPY config /opt/verapdf-rest/config/
 
 VOLUME /var/opt/verapdf-rest
 EXPOSE 8080

@@ -10,17 +10,27 @@ The services are capable of serving up XML or JSON dependent upon the content ty
 
 ### Technologies
 The project's a Maven managed Java application, the application is based on
-[DropWizard](http://dropwizard.io/index.html), this brings together a set of reliable libraries, the
-following are most used and may prove informative if your reading the code:
+[DropWizard](https://www.dropwizard.io/en/stable/index.html), this brings together a set of reliable libraries, the
+following are most used and may prove informative if you are reading the code:
 
- * [Jetty](http://www.eclipse.org/jetty/) as a lean HTTP server,
- * [Jersey](http://jersey.java.net/) for REST services and associated, and
- * [Jackson](http://jersey.java.net/) for JSON and XML serialisation.
+ * [Jetty](https://www.eclipse.org/jetty/) as a lean HTTP server,
+ * [Jersey](https://jersey.java.net/) for REST services and associated, and
+ * [Jackson](https://github.com/FasterXML/jackson/) for JSON and XML serialisation.
 
-A good place to get going is the [Dropwizard getting started guide](http://dropwizard.io/getting-started.html).
-The [Dropwizard core documentation](http://dropwizard.io/manual/core.html) covers the features used in the code base.
+A good place to get going is the [Dropwizard getting started guide](https://www.dropwizard.io/en/stable/getting-started.html).
+The [Dropwizard core documentation](https://www.dropwizard.io/en/stable/manual/core.html) covers the features used in the code base.
 
-Building and running
+Running DockerHub image
+--------------------
+
+To run the veraPDF rest image from DockerHub:
+```
+docker run -d -p 8080:8080 -p 8081:8081 verapdf/rest:latest
+```
+
+Port 8080 serves both the veraPDF web interface and the veraPDF Rest API. Port 8081 serves the DropWizard diagnostics. 
+
+Building and running locally
 --------------------
 
 ### Docker
@@ -62,17 +72,21 @@ There's an "official" docker image that can be grabbed by `docker pull verapdf/r
 ### Project structure
 Currently it's delivered as a single Maven module, veraPDF-rest.
 
-### Want to try?
-First clone this project, got to the project directory and then build the Maven project:
+### Swagger documentation
+Swagger documentation is available at [localhost:8080/swagger](http://localhost:8080/swagger).
 
-	git clone git@github.com:veraPDF/veraPDF-rest.git
+### Want to try?
+First clone this project, go to the project directory, checkout to `master` branch for release version or `integration` 
+branch for dev version, and then build the Maven project:
+
+	git clone https://github.com/veraPDF/veraPDF-rest.git
 	cd veraPDF-rest
-	git checkout integration
+	git checkout master
 	mvn clean package
 
 To start up the server:
 
-	java -jar target/verapdf-rest-0.1.0-SNAPSHOT.jar server
+	java -jar target/verapdf-rest-0.2.0-SNAPSHOT.jar server server.yml
 
 Go to [localhost:8080/api/info](http://localhost:8080/api/info) to see if the server is running, you should
 see something like:
@@ -136,17 +150,17 @@ Shows some simple information about the server environment on [localhost:8080/ap
     curl localhost:8080/api/info
 
 ### Validation Profile services
-Validation Profiles contain the PDF/A validation tests and their description.  A list of profile details is available
+Validation Profiles contain the PDF/A and PDF/UA validation tests and their description.  A list of profile details is available
 at [localhost:8080/api/profiles/](http://localhost:8080/api/profiles/). To test with curl:
 
     curl localhost:8080/api/profiles
 
-Each profile is identified by a 2 letter code made up the PDF/A version amd level. These are listed at
+Each profile is identified by a letter code made up the PDF/A or PDF/UA version and level. These are listed at
 [localhost:8080/api/profiles/ids/](http://localhost:8080/api/profiles/ids/):
 
     curl localhost:8080/api/profiles/ids
 
-An individual profile can be obtained by ID at http://localhost:8080/api/profiles/*id*, e.g.
+An individual profile can be obtained by ID at `http://localhost:8080/api/profiles/*id*`, e.g.
 [localhost:8080/api/profiles/1b/](http://localhost:8080/api/profiles/1b/):
 
     curl localhost:8080/api/profiles/1b
@@ -155,12 +169,34 @@ The curl call defaults to a JSON representation, to obtain the XML profile:
 
     curl localhost:8080/api/profiles/1b -H  "Accept:application/xml"
 
-### PDF/A Validation services
-PDF/A validation is also available as a POST service at http://localhost:8080/api/validate/*id*. There's currently
-no client application or page, but curl can be used:
+### Validation services
+Validation is also available as a POST request at `http://localhost:8080/api/validate/*id*`. To test with curl:
 
     curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b
 
 or to obtain the result in XML:
 
-    curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b -H  "Accept:application/xml"
+    curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b -H "Accept:application/xml"
+
+Validation of PDF given by URL is available as a POST request `http://localhost:8080/api/validate/url/*id*`. To test with curl:
+
+```
+curl -F "url=http://www.pdf995.com/samples/pdf.pdf" localhost:8080/api/validate/url/1b
+```
+
+To validate your local files you need to add folder with files to the docker container. To run the veraPDF rest image
+with your local files run docker image with bind mount `-v /local/path/of/the/folder:/home/folder`. 
+For example, to run the veraPDF rest image from DockerHub with your local files:
+
+```
+docker run -d -p 8080:8080 -p 8081:8081 -v /local/path/of/the/folder:/home/folder verapdf/rest:latest
+```
+ 
+and use curl:
+
+```
+curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/1b
+```
+
+### Configuration files
+Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the veraPDF parameters are available at https://docs.verapdf.org/cli/config/. Specific verapdf-rest server configuration parameters are located in server.yml.

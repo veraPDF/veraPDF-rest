@@ -1,0 +1,41 @@
+name: Publish image to GitHub Packages
+on:
+  push:
+    branches:
+      - 'integration'
+        
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: veraPDF/rest
+        
+jobs:
+  publish:
+    name: Build and push Docker image to GitHub packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Extract metadata (tags, labels) for GitHub
+        id: meta
+        uses: docker/metadata-action@v2
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          file: Dockerfile
+          build-args: GH_CHECKOUT=integration
+          tags: ghcr.io/verapdf/rest:dev
+          labels: ${{ steps.meta.outputs.labels }}
+          

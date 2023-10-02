@@ -28,9 +28,9 @@
     <div class="jumbotron" role="header">
       <div class="container theme-showcase radialmask" role="header">
         <img class="shadowed" src="/img/veraPDF-logo-400.png">
-        <h1>PDF/A Validation</h1>
+        <h1>PDF/A and PDF/UA Validation</h1>
         <p>
-          Prototype PDF/A validation REST service with client.
+          Prototype PDF/A and PDF/UA validation REST service with client.
         </p>
       </div>
     </div>
@@ -55,29 +55,31 @@
         <div class="col-xs-12">
           <div class="col-md-12">
             <h3>Choose a PDF file to validate.</h3>
-            <div class="input-group">
-              <span class="input-group-btn">
-                <span class="btn btn-success btn-file">
-                  Browse&hellip; <input type="file" name="file">
-                </span>
-              </span>
-              <input id="filename" type="text" class="form-control" placeholder="Select a file to upload." required="required" readonly />
+            <div class="form-wrapper">
+                <div class="input-group">
+                  <span class="input-group-btn">
+                    <span class="btn btn-success btn-file">
+                      Browse&hellip; <input  id="fileInput" type="file" name="file" accept="application/pdf">
+                    </span>
+                  </span>
+                  <input id="filename" type="text" class="form-control" placeholder="Select a file to upload." required="required" readonly />
+                </div>
+                <div class="input-group voffset2">
+                  <span class="input-group-addon">SHA-1: </span>
+                  <input id="sha1Hex" name="sha1Hex" type="text" class="form-control" value="" readonly />
+                </div>
             </div>
-            <div class="input-group voffset2">
-              <span class="input-group-addon">SHA-1: </span>
-              <input id="sha1Hex" name="sha1Hex" type="text" class="form-control" value="" readonly />
-            </div>
-            <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+            <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
           </div>
         </div>
       </div>
       <div class="row setup-content" id="configure">
         <div class="col-xs-12">
           <div class="col-md-12">
-            <h3>Configure PDF/A Validator</h3>
+            <h3>Configure Validator for <span id="configure-validator-header"/></h3>
             <div class="form-group">
               <label class="control-label">Validation Profile:</label>
-              <select class="form-control" onchange="changeFlavour(this.value)">
+              <select id="flavour" class="form-control" onchange="changeFlavour(this.value)">
                 <option value="auto">Autodetect</option>
                 <option value="1b">PDF/A-1b Basic</option>
                 <option value="1a">PDF/A-1a Accessible</option>
@@ -95,22 +97,13 @@
             </div>
             <div class="form-group">
               <label class="control-label">Output Format:</label>
-              <select class="form-control" onchange="changeOutputFormat(this.value)">
+              <select id="outputFormat" class="form-control" onchange="changeOutputFormat(this.value)">
                 <option value="html">HTML</option>
                 <option value="xml">XML</option>
                 <option value="json">JSON</option>
               </select>
             </div>
-            <div class="form-group">
-              <label class="control-label">Extract features:</label>
-              <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> yes
-              </label>
-              <label class="radio-inline">
-                <input type="radio" name="inlineRadioOptions" checked="true" id="inlineRadio2" value="option2"> no
-              </label>
-            </div>
-            <button class="btn btn-primary previousBtn btn-lg pull-left" type="button" >Previous</button>
+            <button class="btn btn-primary previousBtn btn-lg pull-left" id='previousBtn' type="button" >Previous</button>
             <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
           </div>
         </div>
@@ -119,9 +112,10 @@
         <div class="col-xs-12">
           <div class="col-md-12">
             <div class="list-group voffset2">
-              <h2 class="list-group-item-heading">PDF/A Validation Results</h2>
-              <p class="list-group-item-text">Validation results are shown below.</p>
+              <h2 class="list-group-item-heading">Validation Results</h2>
+              <p class="list-group-item-text">Validation results for <span id="result-details"></span> are shown below.</p>
               <div id="results"></div>
+               <button id="download-results-btn" class="btn btn-primary btn-lg pull-right" type="button"  onclick = "downloadResult()">Download</button>
             </div>
           </div>
         </div>

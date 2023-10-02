@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.verapdf</groupId>
     <artifactId>verapdf-parent</artifactId>
-    <version>1.20.1</version>
+    <version>1.25.2</version>
   </parent>
 
   <artifactId>verapdf-rest</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
 
   <name>veraPDF RESTful web services</name>
   <description>JAX-RS web services and client for veraPDF library</description>
@@ -28,17 +28,12 @@
 
   <repositories>
     <repository>
-      <id>vera-pdfbox</id>
-      <name>Vera PDF Box</name>
-      <url>https://artifactory.opf-labs.org/artifactory/vera-pdfbox-local</url>
-    </repository>
-    <repository>
       <snapshots>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
       </snapshots>
       <id>vera-dev</id>
       <name>Vera development</name>
-      <url>https://artifactory.opf-labs.org/artifactory/vera-dev</url>
+      <url>https://artifactory.openpreservation.org/artifactory/vera-dev</url>
     </repository>
     <repository>
       <id>jcenter</id>
@@ -47,9 +42,9 @@
   </repositories>
 
   <properties>
-    <dropwizard.version>1.3.2</dropwizard.version>
+    <dropwizard.version>2.1.7</dropwizard.version>
     <fasterxml.version>2.10.0</fasterxml.version>
-    <verapdf.validation.version>[1.20.0,1.21.0)</verapdf.validation.version>
+    <verapdf.validation.version>[1.24.0,1.25.0)</verapdf.validation.version>
   </properties>
 
   <build>
@@ -87,9 +82,9 @@
             <configuration>
               <transformers>
                 <transformer
-                  implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                 <transformer
-                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>org.verapdf.rest.app.VeraPdfRestApplication</mainClass>
                 </transformer>
               </transformers>
@@ -100,6 +95,12 @@
 
 
     </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
   </build>
 
   <dependencies>
@@ -145,17 +146,22 @@
       <artifactId>dropwizard-assets</artifactId>
       <version>${dropwizard.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.smoketurner</groupId>
+      <artifactId>dropwizard-swagger</artifactId>
+      <version>2.1.4-1</version>
+    </dependency>
 
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.10</version>
+      <version>1.15</version>
     </dependency>
 
     <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>2.7</version>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.7</version>
     </dependency>
 
     <dependency>
@@ -163,12 +169,12 @@
       <artifactId>validation-model</artifactId>
       <version>${verapdf.validation.version}</version>
     </dependency>
-    <dependency>
-    	<groupId>com.smoketurner</groupId>
-    	<artifactId>dropwizard-swagger</artifactId>
-    	<version>1.3.17-1</version>
-	</dependency>
 
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.15.2</version>
+    </dependency>
   </dependencies>
 
 
@@ -207,5 +213,23 @@
       </plugin>
     </plugins>
   </reporting>
+
+  <profiles>
+    <profile>
+      <id>github-rest</id>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>github-rest</id>
+          <name>GitHub Packages</name>
+          <url>https://maven.pkg.github.com/veraPDF/veraPDF-rest</url>
+        </snapshotRepository>
+        <repository>
+          <id>github-rest</id>
+          <name>GitHub Packages</name>
+          <url>https://maven.pkg.github.com/veraPDF/veraPDF-rest</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+  </profiles>
 
 </project>

@@ -127,3 +127,34 @@ input[readonly] {
 .voffset7 { margin-top: 80px; }
 .voffset8 { margin-top: 100px; }
 .voffset9 { margin-top: 150px; }
+
+.form-wrapper {
+  margin-bottom: 15px;
+}
+
+.container .btn-lg {
+  padding: 6px 12px;
+  font-size: 16px;
+}
+
+#results .alert {
+  margin-top: 20px;
+}
+
+#validate .list-group {
+  box-shadow: none;
+}
+
+table {
+  width: 100%;
+}
+
+.error-form-data {
+  color: red;
+}
+
+#configure-validator-header, #result-details {
+  overflow-wrap: anywhere;
+  font-weight: 600;
+  font-size: 0.95em;
+}

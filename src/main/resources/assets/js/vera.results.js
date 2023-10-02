@@ -1,12 +1,13 @@
 /**
-* @namespace JS Encapsulation of information required to render PDF/A validtion results.
+* @namespace JS Encapsulation of information required to render validation results.
 */
 var pdfaValidator = {
   // validation result
   result: null,
   status: null,
   details: null,
-  getDetails: function (callback, contentType = 'json') {
+  release: null,
+  getDetails: function (callback, contentType = "json") {
     $.ajax({
       url: '/api/validate/details/',
       type: 'GET',
@@ -18,7 +19,19 @@ var pdfaValidator = {
       }
     })
   },
-  validate: function (formData, flavour, callback, contentType = 'json') {
+  getRelease: function (callback, contentType = "json") {
+    $.ajax({
+      url: "/api/",
+      type: "GET",
+      success: function (data, textStatus, jqXHR) {
+        console.log(jqXHR)
+        console.log(data)
+        pdfaValidator.release = data;
+        callback()
+      }
+    })
+  },
+  validate: function (formData, flavour, callback, contentType = "json") {
     $.ajax({
       url: '/api/validate/' + flavour + '/',
       type: 'POST',
