@@ -355,7 +355,7 @@ public class ValidateResource {
 		VeraAppConfig veraAppConfig = configManager.getApplicationConfig();
 		return ProcessorFactory.fromValues(validatorConfig, configManager.getFeaturesConfig(),
 		                                   configManager.getPluginsCollectionConfig(), configManager.getFixerConfig(),
-		                                   veraAppConfig.getProcessType().getTasks(), veraAppConfig.getFixesFolder());
+		                                   veraAppConfig.getProcessType().getTasks());
 	}
 
 	private static InputStream getInputStreamByUrlLink(String urlLink) throws VeraPDFException {
