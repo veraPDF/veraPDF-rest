@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.verapdf.rest.app;
 
@@ -10,9 +10,12 @@ import javax.servlet.FilterRegistration;
 
 import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
+import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.verapdf.rest.resources.ApiResource;
 import org.verapdf.rest.resources.HomePageResource;
+import org.verapdf.rest.resources.ValidateResource;
 import org.verapdf.rest.resources.ValidationExceptionMapper;
 
 import io.dropwizard.Application;
@@ -33,7 +36,7 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
     /**
      * Main method for Jetty server application. Simply calls the run method
      * with command line args.
-     * 
+     *
      * @param args
      *             command line arguments as string array.
      * @throws Exception
@@ -62,7 +65,10 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
                 return config;
             }
         });
-
+        bootstrap.setConfigurationSourceProvider(
+                new SubstitutingSourceProvider(bootstrap.getConfigurationSourceProvider(),
+                                               new EnvironmentVariableSubstitutor(false)
+                ));
         bootstrap.addBundle(new AssetsBundle("/assets/css", "/css", null, "css")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         bootstrap.addBundle(new AssetsBundle("/assets/js", "/js", null, "js")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         bootstrap.addBundle(new AssetsBundle("/assets/img", "/img", null, "img")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -74,6 +80,9 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
             Environment environment) {
         // Create & register our REST resources
         final ValidationExceptionMapper vem = new ValidationExceptionMapper();
+        ValidateResource validateResource = ValidateResource.getValidateResource();
+        validateResource.setMaxFileSize(configuration.getMaxFileSize());
+        environment.jersey().register(validateResource);
         environment.jersey().register(new ApiResource());
         environment.jersey().register(new HomePageResource());
         environment.jersey().register(vem);

@@ -26,3 +26,4 @@ logging:
           immediateFlush: true
   appenders:
     - type: console
+maxFileSize: ${VERAPDF_MAX_FILE_SIZE:-100}
