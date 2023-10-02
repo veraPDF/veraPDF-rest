@@ -35,6 +35,7 @@ jobs:
           context: .
           push: true
           file: Dockerfile
+          build-args: GH_CHECKOUT=integration
           tags: ghcr.io/verapdf/rest:dev
           labels: ${{ steps.meta.outputs.labels }}
           

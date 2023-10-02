@@ -36,8 +36,9 @@ import javax.ws.rs.core.MediaType;
 		description = "Rest API for veraPDF",
 		version = "V0.2.0",
 		license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0")),
-                   servers = {@Server(url = "https://demo.verapdf.org", description = "default"),
-                              @Server(url = "http://localhost:8080", description = "local")}
+                   servers = {@Server(url = "https://demo.verapdf.org", description = "default"), 
+						   @Server(url = "https://dev.verapdf-rest.duallab.com", description = "dev"), 
+						   @Server(url = "http://localhost:8080", description = "local")}
 )
 
 public final class ApiResource {
