@@ -207,3 +207,9 @@ To set the maximum file size of PDF, change maxFileSize in server.yml file or ru
 docker run -d -p 8080:8080 -p 8081:8081 -e VERAPDF_MAX_FILE_SIZE=1 verapdf/rest:latest
 ```
 where VERAPDF_MAX_FILE_SIZE is 1 MB. The default maximum file size is 100 MB.
+
+### Maximum heap size
+To change maximum heap size in docker image run:
+```
+docker run -d -p 8080:8080 -p 8081:8081 -e JAVA_OPTS="-Xmx128M" verapdf/rest:latest
+```
