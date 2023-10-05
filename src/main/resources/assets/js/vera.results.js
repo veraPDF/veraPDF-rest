@@ -33,7 +33,7 @@ var pdfaValidator = {
   },
   validate: function (formData, flavour, callback, contentType = "json") {
     $.ajax({
-      url: '/api/validate/' + flavour + '/',
+      url: '/api/validate/sha/' + flavour + '/',
       type: 'POST',
       data: formData,
       dataType: contentType,
