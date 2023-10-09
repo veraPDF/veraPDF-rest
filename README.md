@@ -142,7 +142,7 @@ You can also list the available validation profiles at
 
 Services and curl tests
 -----------------------
-There are a few services that you can test a few with [curl](https://curl.haxx.se/).
+There are a few services that you can test with [curl](https://curl.haxx.se/).
 
 ### API Environment service
 Shows some simple information about the server environment on [localhost:8080/api](http://localhost:8080/api)

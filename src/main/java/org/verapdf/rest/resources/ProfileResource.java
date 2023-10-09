@@ -109,7 +109,7 @@ public class ProfileResource {
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static ValidationProfile getProfile(@Parameter(description = "the String id of the Validation profile " +
-	                                                                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1")
+	                                                                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                           @PathParam("profileId") String profileId) {
 		return DIRECTORY.getValidationProfileById(profileId);
 	}
@@ -134,7 +134,7 @@ public class ProfileResource {
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Set<RuleId> getProfileRules(@Parameter(description = "the String id of the Validation profile " +
-	                                                                   "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1")
+	                                                                   "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                          @PathParam("profileId") String profileId) {
 		SortedSet<RuleId> ids = new TreeSet<>(new Profiles.RuleIdComparator());
 		for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
@@ -166,7 +166,7 @@ public class ProfileResource {
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Set<Rule> getRulesForClause(@Parameter(description = "the string id of the validation profile " +
-	                                                                   "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1")
+	                                                                   "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                          @PathParam("profileId") String profileId,
 	                                          @Parameter(description = "a string identifying the profile clause to return the rules for")
 	                                          @PathParam("clause") String clause) {
