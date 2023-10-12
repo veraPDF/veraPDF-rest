@@ -34,10 +34,9 @@ import org.verapdf.processor.reports.ItemDetails;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import java.io.*;
 import java.net.URL;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -108,7 +107,7 @@ public class ValidateResource {
 					)})})
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_XML})
-	public static InputStream validateXml(@Parameter(description = "the String id of the Validation profile" +
+	public static InputStream validateXml(@Parameter(description = "the String id of the Validation profile " +
 	                                                               "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                      @PathParam("profileId") String profileId,
 	                                      @Parameter(name = "file", schema = @Schema(implementation = File.class),
@@ -117,7 +116,7 @@ public class ValidateResource {
 	                                      @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
 			throws VeraPDFException {
 
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, FormatOption.XML);
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, null, FormatOption.XML);
 	}
 
 	/**
@@ -150,7 +149,7 @@ public class ValidateResource {
 					)})})
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_XML})
-	public static InputStream validateXml(@Parameter(description = "the String id of the Validation profile" +
+	public static InputStream validateXml(@Parameter(description = "the String id of the Validation profile " +
 	                                                               "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                      @PathParam("profileId") String profileId,
 	                                      @Parameter(description = "the hex String representation of the file's SHA-1 hash")
@@ -160,8 +159,7 @@ public class ValidateResource {
 	                                      @FormDataParam("file") InputStream uploadedInputStream,
 	                                      @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
 			throws VeraPDFException {
-		checkSha1Hex(sha1Hex);
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, FormatOption.XML);
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, sha1Hex, FormatOption.XML);
 	}
 
 	@POST
@@ -178,14 +176,14 @@ public class ValidateResource {
 					)})})
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_XML})
-	public static InputStream validateXml(@Parameter(description = "the String id of the Validation profile" +
+	public static InputStream validateXml(@Parameter(description = "the String id of the Validation profile " +
 	                                                               "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                      @PathParam("profileId") String profileId,
 	                                      @Parameter(description = "a URL of PDF to be validated")
 	                                      @FormDataParam("url") String urlLink) throws VeraPDFException {
 		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
-		return validate(uploadedInputStream, urlLink, profileId, FormatOption.XML);
+		return validate(uploadedInputStream, urlLink, profileId, null, FormatOption.XML);
 	}
 
 	/**
@@ -205,7 +203,7 @@ public class ValidateResource {
 	@Path("/{profileId}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_JSON})
-	public static InputStream validateJson(@Parameter(description = "the String id of the Validation profile" +
+	public static InputStream validateJson(@Parameter(description = "the String id of the Validation profile " +
 	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(name = "file", schema = @Schema(implementation = File.class),
@@ -214,7 +212,7 @@ public class ValidateResource {
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
 			throws VeraPDFException {
 
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, FormatOption.JSON);
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, null, FormatOption.JSON);
 	}
 
 	/**
@@ -237,7 +235,7 @@ public class ValidateResource {
 	@Path("/sha/{profileId}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_JSON})
-	public static InputStream validateJson(@Parameter(description = "the String id of the Validation profile" +
+	public static InputStream validateJson(@Parameter(description = "the String id of the Validation profile " +
 	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(description = "the hex String representation of the file's SHA-1 hash")
@@ -247,22 +245,21 @@ public class ValidateResource {
 	                                       @FormDataParam("file") InputStream uploadedInputStream,
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
 			throws VeraPDFException {
-		checkSha1Hex(sha1Hex);
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, FormatOption.JSON);
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, sha1Hex, FormatOption.JSON);
 	}
 
 	@POST
 	@Path("/url/{profileId}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_JSON})
-	public static InputStream validateJson(@Parameter(description = "the String id of the Validation profile" +
+	public static InputStream validateJson(@Parameter(description = "the String id of the Validation profile " +
 	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(description = "a URL of PDF to be validated")
 	                                       @FormDataParam("url") String urlLink) throws VeraPDFException {
 		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
-		return validate(uploadedInputStream, urlLink, profileId, FormatOption.JSON);
+		return validate(uploadedInputStream, urlLink, profileId, null, FormatOption.JSON);
 	}
 
 	/**
@@ -287,7 +284,7 @@ public class ValidateResource {
 	                                       @FormDataParam("file") InputStream uploadedInputStream,
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
 			throws VeraPDFException {
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, FormatOption.HTML);
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, null, FormatOption.HTML);
 	}
 
 	/**
@@ -317,37 +314,30 @@ public class ValidateResource {
 	                                       @FormDataParam("file") InputStream uploadedInputStream,
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader)
 			throws VeraPDFException {
-		checkSha1Hex(sha1Hex);
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, FormatOption.HTML);
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, sha1Hex, FormatOption.HTML);
 	}
 
 	@POST
 	@Path("/url/{profileId}")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.TEXT_HTML})
-	public static InputStream validateHtml(@Parameter(description = "the String id of the Validation profile" +
+	public static InputStream validateHtml(@Parameter(description = "the String id of the Validation profile " +
 	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(description = "a URL of PDF to be validated")
 	                                       @FormDataParam("url") String urlLink) throws VeraPDFException {
 		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
-		return validate(uploadedInputStream, urlLink, profileId, FormatOption.HTML);
+		return validate(uploadedInputStream, urlLink, profileId, null, FormatOption.HTML);
 	}
 
 	public static void setMaxFileSize(Integer maxFileSize) {
 		ValidateResource.maxFileSize = maxFileSize;
 	}
 
-	private static InputStream validate(InputStream uploadedInputStream, String fileName, String profileId, FormatOption formatOption) throws VeraPDFException {
-		SeekableInputStream seekableInputStream;
-		try {
-			seekableInputStream = SeekableInputStream.getSeekableStream(uploadedInputStream, 1000000 * maxFileSize);
-		} catch (VeraPDFParserException e) {
-			throw new VeraPDFException("Maximum allowed file size exceeded: " + maxFileSize + " MB");
-		} catch (IOException e) {
-			throw new VeraPDFException(e.getMessage());
-		}
+	private static InputStream validate(InputStream uploadedInputStream, String fileName, String profileId, 
+										String sha1Hex, FormatOption formatOption) throws VeraPDFException {
+		SeekableInputStream seekableInputStream = createInputStream(uploadedInputStream, sha1Hex);
 		PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
 		ValidatorConfig validatorConfig = configManager.getValidatorConfig();
 		validatorConfig.setFlavour(flavour);
@@ -363,13 +353,22 @@ public class ValidateResource {
 		return new ByteArrayInputStream(outputBytes);
 	}
 
-	private static void checkSha1Hex(String sha1Hex) {
-		MessageDigest sha1 = getDigest();
-		if (sha1Hex != null && sha1Hex.equalsIgnoreCase(Hex.encodeHexString(sha1.digest()))) {
-			throw new NotSupportedException(Response.status(Status.UNSUPPORTED_MEDIA_TYPE)
-			                                        .type(MediaType.TEXT_PLAIN).entity("File does not appear " +
-			                                                                           "to be a PDF.") //$NON-NLS-1$
-			                                        .build());
+	private static SeekableInputStream createInputStream(InputStream uploadedInputStream, String sha1Hex) throws VeraPDFException {
+		InputStream inputStream = uploadedInputStream;
+		if (sha1Hex != null) {
+			MessageDigest sha1 = getDigest();
+			inputStream = new DigestInputStream(uploadedInputStream, sha1);
+		}
+		try {
+			SeekableInputStream seekableInputStream = SeekableInputStream.getSeekableStream(inputStream, 1000000 * maxFileSize);
+			if (sha1Hex != null && !sha1Hex.equalsIgnoreCase(Hex.encodeHexString(((DigestInputStream)inputStream).getMessageDigest().digest()))) {
+				throw new VeraPDFException("Incorrect sha1 value");
+			}
+			return seekableInputStream;
+		} catch (VeraPDFParserException e) {
+			throw new VeraPDFException("Maximum allowed file size exceeded: " + maxFileSize + " MB");
+		} catch (IOException e) {
+			throw new VeraPDFException(e.getMessage());
 		}
 	}
 

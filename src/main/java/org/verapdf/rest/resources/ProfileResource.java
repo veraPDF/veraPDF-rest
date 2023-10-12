@@ -165,7 +165,7 @@ public class ProfileResource {
 			@Schema(implementation = ReleaseDetails.class)
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public static Set<Rule> getRulesForClause(@Parameter(description = "the string id of the validation profile " +
+	public static Set<Rule> getRulesForClause(@Parameter(description = "the String id of the Validation profile " +
 	                                                                   "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
 	                                          @PathParam("profileId") String profileId,
 	                                          @Parameter(description = "a string identifying the profile clause to return the rules for")
