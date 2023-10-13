@@ -198,18 +198,18 @@ and use curl:
 curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/1b
 ```
 
-### Configuration files
-Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the veraPDF parameters are available at https://docs.verapdf.org/cli/config/. 
-Specific verapdf-rest server configuration parameters are located in server.yml.
+### Configuration parameters
+Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the veraPDF parameters are available at https://docs.verapdf.org/cli/config/. Specific verapdf-rest server configuration parameters are located in `server.yml`.
 
-To set the maximum file size of PDF, change maxFileSize in server.yml file or run docker image:
+#### Limiting PDF file size
+To set the maximum file size of PDF, change `maxFileSize` in `server.yml` file or run docker image as:
 ```
 docker run -d -p 8080:8080 -p 8081:8081 -e VERAPDF_MAX_FILE_SIZE=1 verapdf/rest:latest
 ```
-where VERAPDF_MAX_FILE_SIZE is 1 MB. The default maximum file size is 100 MB.
+where VERAPDF_MAX_FILE_SIZE is 1MB. The default maximum PDF file size is 100MB.
 
-### Maximum heap size
-To change maximum heap size in docker image run:
+#### Maximum heap size
+To change maximum Java heap size in docker image run:
 ```
 docker run -d -p 8080:8080 -p 8081:8081 -e JAVA_OPTS="-Xmx128M" verapdf/rest:latest
 ```
