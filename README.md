@@ -69,6 +69,13 @@ verapdf-rest        latest              c69af6445b35        31 seconds ago      
 
 There's an "official" docker image that can be grabbed by `docker pull verapdf/rest:latest`.
 
+### Kubernetes
+
+To use veraPDF-rest in as k8s deployment with load balancing and dynamic number of replicas (2 to 4) run the command:
+```
+kubectl apply -f kubernetes.yaml
+```
+
 ### Project structure
 Currently it's delivered as a single Maven module, veraPDF-rest.
 
@@ -198,8 +205,10 @@ and use curl:
 curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/1b
 ```
 
-### Configuration parameters
-Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the veraPDF parameters are available at https://docs.verapdf.org/cli/config/. Specific verapdf-rest server configuration parameters are located in `server.yml`.
+### veraPDF configuration parameters
+Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the veraPDF parameters are available at https://docs.verapdf.org/cli/config/. 
+
+Additionally, this folder includes `server.yml` which contains [HTTP server configuration parameters](https://www.dropwizard.io/en/stable/manual/configuration.html) and additional parameters described below. 
 
 #### Limiting PDF file size
 To set the maximum file size of PDF, change `maxFileSize` in `server.yml` file or run docker image as:
@@ -214,9 +223,3 @@ To change maximum Java heap size in docker image run:
 docker run -d -p 8080:8080 -p 8081:8081 -e JAVA_OPTS="-Xmx128M" verapdf/rest:latest
 ```
 
-### Kubernetes
-
-To use veraPDF-rest in as k8s deployment with load balancing and dynamic number of replicas (2 to 4) run the command:
-```
-kubectl apply -f kubernetes.yaml
-```
