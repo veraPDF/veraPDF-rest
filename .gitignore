@@ -21,3 +21,12 @@ bin/
 # Ignore IDEA files
 .idea/
 *.iml
+
+# Ignore pytest files
+.pytest_cache
+
+
+# Ignore external libraries
+bats-assert/
+bats-support/
+verapdf/
