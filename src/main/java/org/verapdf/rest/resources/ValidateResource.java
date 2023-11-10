@@ -112,7 +112,7 @@ public class ValidateResource {
 	                                                 style = ParameterStyle.FORM, description = "an InputStream of the PDF to be validated")
 	                                      @FormDataParam("file") InputStream uploadedInputStream,
 	                                      @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, null, FormatOption.XML);
+		return validateFile(uploadedInputStream, contentDispositionHeader, profileId, null, FormatOption.XML);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class ValidateResource {
 	                                                 style = ParameterStyle.FORM, description = "an InputStream of the PDF to be validated")
 	                                      @FormDataParam("file") InputStream uploadedInputStream,
 	                                      @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, sha1Hex, FormatOption.XML);
+		return validateFile(uploadedInputStream, contentDispositionHeader, profileId, sha1Hex, FormatOption.XML);
 	}
 
 	@POST
@@ -175,9 +175,7 @@ public class ValidateResource {
 	                                      @PathParam("profileId") String profileId,
 	                                      @Parameter(description = "a URL of PDF to be validated")
 	                                      @FormDataParam("url") String urlLink) {
-		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
-
-		return validate(uploadedInputStream, urlLink, profileId, null, FormatOption.XML);
+		return validateUrl(urlLink, profileId, FormatOption.XML);
 	}
 
 	/**
@@ -203,7 +201,7 @@ public class ValidateResource {
 	                                                  style = ParameterStyle.FORM, description = "an InputStream of the PDF to be validated")
 	                                       @FormDataParam("file") InputStream uploadedInputStream,
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, null, FormatOption.JSON);
+		return validateFile(uploadedInputStream, contentDispositionHeader, profileId, null, FormatOption.JSON);
 	}
 
 	/**
@@ -234,7 +232,7 @@ public class ValidateResource {
 	                                                  style = ParameterStyle.FORM, description = "an InputStream of the PDF to be validated")
 	                                       @FormDataParam("file") InputStream uploadedInputStream,
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, sha1Hex, FormatOption.JSON);
+		return validateFile(uploadedInputStream, contentDispositionHeader, profileId, sha1Hex, FormatOption.JSON);
 	}
 
 	@POST
@@ -246,9 +244,7 @@ public class ValidateResource {
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(description = "a URL of PDF to be validated")
 	                                       @FormDataParam("url") String urlLink) {
-		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
-
-		return validate(uploadedInputStream, urlLink, profileId, null, FormatOption.JSON);
+		return validateUrl(urlLink, profileId, FormatOption.JSON);
 	}
 
 	/**
@@ -271,7 +267,7 @@ public class ValidateResource {
 	                                                  style = ParameterStyle.FORM, description = "an InputStream of the PDF to be validated")
 	                                       @FormDataParam("file") InputStream uploadedInputStream,
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, null, FormatOption.HTML);
+		return validateFile(uploadedInputStream, contentDispositionHeader, profileId, null, FormatOption.HTML);
 	}
 
 	/**
@@ -299,7 +295,7 @@ public class ValidateResource {
 	                                                  style = ParameterStyle.FORM, description = "an InputStream of the PDF to be validated")
 	                                       @FormDataParam("file") InputStream uploadedInputStream,
 	                                       @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader) {
-		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, sha1Hex, FormatOption.HTML);
+		return validateFile(uploadedInputStream, contentDispositionHeader, profileId, sha1Hex, FormatOption.HTML);
 	}
 
 	@POST
@@ -311,17 +307,35 @@ public class ValidateResource {
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(description = "a URL of PDF to be validated")
 	                                       @FormDataParam("url") String urlLink) {
-		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
-
-		return validate(uploadedInputStream, urlLink, profileId, null, FormatOption.HTML);
+		return validateUrl(urlLink, profileId, FormatOption.HTML);
 	}
 
 	public static void setMaxFileSize(Integer maxFileSize) {
 		ValidateResource.maxFileSize = maxFileSize;
 	}
 
+	private static InputStream validateFile(InputStream uploadedInputStream,
+	                                        FormDataContentDisposition contentDispositionHeader, String profileId,
+	                                       String sha1Hex, FormatOption formatOption) {
+		if (contentDispositionHeader == null) {
+			throw new BadRequestException("File is empty");
+		}
+
+		return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, sha1Hex, formatOption);
+	}
+
+	private static InputStream validateUrl(String urlLink, String profileId, FormatOption formatOption) {
+		InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
+
+		return validate(uploadedInputStream, urlLink, profileId, null, formatOption);
+	}
+
 	private static InputStream validate(InputStream uploadedInputStream, String fileName, String profileId,
 	                                    String sha1Hex, FormatOption formatOption) {
+		if (fileName == null) {
+			throw new BadRequestException("File name is empty");
+		}
+
 		SeekableInputStream seekableInputStream = createInputStream(uploadedInputStream, sha1Hex);
 		PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
 		ValidatorConfig validatorConfig = configManager.getValidatorConfig();
