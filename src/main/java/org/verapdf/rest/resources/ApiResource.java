@@ -70,9 +70,9 @@ public final class ApiResource {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = {
 					@Content(mediaType = "application/json", schema =
-					@Schema(implementation = ReleaseDetails.class)
+					@Schema(implementation = Environment.class)
 					), @Content(mediaType = "application/xml", schema =
-			@Schema(implementation = ReleaseDetails.class)
+			@Schema(implementation = Environment.class)
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Environment getEnvironment() {
