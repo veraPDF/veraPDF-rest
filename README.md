@@ -205,6 +205,13 @@ and use curl:
 curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/1b
 ```
 
+To add file size in validation POST requests you need to send request with header (key `X-File-Size` and value in bytes). 
+For example to use  request `http://localhost:8080/api/validate/url/*id*` with file which size is 300 KB run:
+
+```
+curl -H "X-File-Size: 307200" -F "url=http://www.pdf995.com/samples/pdf.pdf" localhost:8080/api/validate/url/auto 
+```
+
 ### veraPDF configuration parameters
 Configuration parameters are located in `/opt/verapdf-rest/config` folder of the container file system. The details on the veraPDF parameters are available at https://docs.verapdf.org/cli/config/. 
 
