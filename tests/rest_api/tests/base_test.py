@@ -6,4 +6,4 @@ http://localhost:8080/api
 
 
 class BaseClass:
-    ENDPOINT = "https://dev.verapdf-rest.duallab.com/"
+    pass

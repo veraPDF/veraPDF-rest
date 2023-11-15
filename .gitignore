@@ -30,3 +30,5 @@ bin/
 bats-assert/
 bats-support/
 verapdf/
+*.pyc
+*.log

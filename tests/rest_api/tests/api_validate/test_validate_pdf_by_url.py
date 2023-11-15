@@ -1,11 +1,9 @@
 import pytest
 import requests
 
-from tests.rest_api.tests.base_test import BaseClass
-
 
 @pytest.mark.parametrize(
-    "test_url, expected_code, expected_message",
+    "file_url, expected_code, expected_message",
     [
         ("", 400, '"message":"URL is empty"'),
         ("https://abc.qwerty.com", 400, "URL is incorrect: https://abc.qwerty.com"),
@@ -16,9 +14,9 @@ from tests.rest_api.tests.base_test import BaseClass
         ),
     ],
 )
-def test_validate_pdf_with_url(test_url, expected_code, expected_message):
-    url = BaseClass.ENDPOINT + "/api/validate/url/1b"
-    files = {"url": test_url}
+def test_validate_pdf_with_url(file_url, expected_code, expected_message, get_base_url):
+    url = get_base_url + "/api/validate/url/1b"
+    files = {"url": file_url}
     headers = {}
 
     response = requests.post(url, headers=headers, files=files)
