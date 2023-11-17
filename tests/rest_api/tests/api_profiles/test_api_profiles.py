@@ -4,8 +4,9 @@ import re
 
 import requests
 
-from tests.rest_api.model.api_profiles.profile import Profile
+from tests.rest_api.model.api_profiles.profile import Profile, ProfileXMl, ProfilesXMl
 from tests.conftest import get_base_url
+from tests.rest_api.model.api_profiles.profile_rule import ProfileRuleXml
 
 PROFILE_NAMES = sorted(
     (
@@ -53,14 +54,14 @@ def test_profiles_list_check_xml(get_base_url):
     response = requests.get(url, headers=headers)
     assert response.status_code == 200
 
-    decoded = response.content.decode("utf-8")
-    profile_list = json.loads(json.dumps(xmltodict.parse(decoded)))["HashSet"]["item"]
+    profiles_list_xml = response.text
 
-    for prof_item in profile_list:
-        profile_info = Profile(**prof_item)
-        profiles_item_xml_list.append(profile_info.name)
-        assert profile_info.creator == creator
-        assert description.match(profile_info.description)
-        assert dateCreated_regex.match(str(profile_info.dateCreated))
+    profile_list = ProfilesXMl.from_xml(profiles_list_xml)
+
+    for item in profile_list.items:
+        profiles_item_xml_list.append(item.name)
+        assert item.creator == creator
+        assert description.match(item.description)
+        assert dateCreated_regex.match(str(item.dateCreated))
     profiles_item_xml_list.sort()
     assert profiles_item_xml_list == PROFILE_NAMES
