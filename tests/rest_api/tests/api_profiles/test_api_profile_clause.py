@@ -1,6 +1,7 @@
 import pytest
 import requests
 
+from tests.rest_api.tests.base_test import BaseClass
 from tests.conftest import get_base_url
 from tests.rest_api.model.api_profiles.profile_rule import (
     ProfileRule,
@@ -25,14 +26,14 @@ test_data = (
 
 
 @pytest.mark.parametrize(
-    "profile_id, expected_clause, expected_clause_items",
-    test_data,
+    "profile_id, expected_clause",
+    BaseClass.PROFILE_CLAUSE,
 )
 def test_profile_id_clause_check(
-        profile_id, expected_clause, expected_clause_items, get_base_url
+    profile_id, expected_clause, get_base_url
 ):
     response = requests.get(
-        get_base_url + "/api/profiles/" + profile_id + "/" + expected_clause
+        get_base_url + "/api/profiles/" + profile_id + "/" + expected_clause[0]
     )
     assert response.status_code == 200
 
@@ -42,19 +43,17 @@ def test_profile_id_clause_check(
     for item in clause_list:
         item_list.append(ProfileRule(**item))
 
-    assert len(item_list) == expected_clause_items
+    assert len(item_list) == expected_clause[1]
 
     for item in item_list:
-        assert item.ruleId.clause == expected_clause
+        assert item.ruleId.clause == expected_clause[0]
 
 
 @pytest.mark.parametrize(
     "profile_id, expected_clause, expected_clause_items",
     test_data,
 )
-def test_profile_id_clause_xml_check(
-        profile_id, expected_clause, expected_clause_items, get_base_url
-):
+def test_profile_id_clause_xml_check(profile_id, expected_clause, expected_clause_items, get_base_url):
     url = get_base_url + "/api/profiles/" + profile_id + "/" + expected_clause
     headers = {"Accept": "application/xml"}
 
