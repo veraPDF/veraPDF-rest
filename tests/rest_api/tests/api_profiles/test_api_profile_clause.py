@@ -25,11 +25,11 @@ test_data = (
 
 
 @pytest.mark.parametrize(
-    "profile_id, expected_clause, count_items",
+    "profile_id, expected_clause, expected_clause_items",
     test_data,
 )
 def test_profile_id_clause_check(
-    profile_id, expected_clause, count_items, get_base_url
+        profile_id, expected_clause, expected_clause_items, get_base_url
 ):
     response = requests.get(
         get_base_url + "/api/profiles/" + profile_id + "/" + expected_clause
@@ -37,18 +37,23 @@ def test_profile_id_clause_check(
     assert response.status_code == 200
 
     clause_list = response.json()
-    clause_info = ProfileRule(**clause_list[0])
+    item_list = []
 
-    assert clause_info.ruleId.clause == expected_clause
-    assert clause_info.ruleId.testNumber == 1
+    for item in clause_list:
+        item_list.append(ProfileRule(**item))
+
+    assert len(item_list) == expected_clause_items
+
+    for item in item_list:
+        assert item.ruleId.clause == expected_clause
 
 
 @pytest.mark.parametrize(
-    "profile_id, expected_clause, count_items",
+    "profile_id, expected_clause, expected_clause_items",
     test_data,
 )
 def test_profile_id_clause_xml_check(
-    profile_id, expected_clause, count_items, get_base_url
+        profile_id, expected_clause, expected_clause_items, get_base_url
 ):
     url = get_base_url + "/api/profiles/" + profile_id + "/" + expected_clause
     headers = {"Accept": "application/xml"}
@@ -59,5 +64,5 @@ def test_profile_id_clause_xml_check(
     clause_list_xml = response.text
     clause_list = ProfileRuleSXml.from_xml(clause_list_xml)
 
-    assert len(clause_list.items) == count_items
+    assert len(clause_list.items) == expected_clause_items
     assert clause_list.items[0].ruleId.clause == expected_clause

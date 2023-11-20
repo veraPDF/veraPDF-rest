@@ -9,10 +9,10 @@ from tests.rest_api.tests.base_test import BaseClass
 
 class TestProfileRuleids(BaseClass):
     @pytest.mark.parametrize(
-        "profile_id, expected_count_rules",
+        "profile_id, expected_rules_count",
         BaseClass.PROFILE_RULES,
     )
-    def test_ruleids_check(self, profile_id, expected_count_rules, get_base_url):
+    def test_ruleids_check(self, profile_id, expected_rules_count, get_base_url):
         response = requests.get(
             get_base_url + "/api/profiles/" + profile_id + "/ruleids"
         )
@@ -24,13 +24,13 @@ class TestProfileRuleids(BaseClass):
         for item in rules:
             item_list.append(RuleID(**item))
 
-        assert len(item_list) == expected_count_rules
+        assert len(item_list) == expected_rules_count
 
     @pytest.mark.parametrize(
-        "profile_id, expected_count_rules",
+        "profile_id, expected_rules_count",
         BaseClass.PROFILE_RULES,
     )
-    def test_ruleids_xml_check(self, profile_id, expected_count_rules, get_base_url):
+    def test_ruleids_xml_check(self, profile_id, expected_rules_count, get_base_url):
         url = get_base_url + "/api/profiles/" + profile_id + "/ruleids"
         headers = {"Accept": "application/xml"}
 
@@ -40,4 +40,4 @@ class TestProfileRuleids(BaseClass):
         rules_xml = response.text
 
         rules_info = RulesXml.from_xml(rules_xml)
-        assert len(rules_info.items) == expected_count_rules
+        assert len(rules_info.items) == expected_rules_count
