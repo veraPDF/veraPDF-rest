@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from tests.rest_api.model.api_profiles.profile import Profile
+from pydantic_xml import BaseXmlModel, element
+from tests.rest_api.model.api_profiles.profile import Profile, ProfileXMl
 from tests.rest_api.model.api_profiles.profile_variables import ProfileVariables
 from tests.rest_api.model.api_profiles.profile_rule import ProfileRule
 
@@ -14,3 +15,16 @@ class ProfileID(BaseModel):
     tags: List[str] = []
     pdfaflavour: str
     hexSha1Digest: str
+
+
+class ProfileIDXml(
+    BaseXmlModel,
+    tag="ValidationProfileImpl",
+    search_mode="unordered",
+):
+    details: ProfileXMl
+    # rules: List[ProfileRule] = []
+    # variables: List[ProfileVariables]
+    # tags: List[str] = []
+    pdfaflavour: str = element(tag="pdfaflavour")
+    # hexSha1Digest: str
