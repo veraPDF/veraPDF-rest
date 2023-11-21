@@ -37,9 +37,15 @@ class BaseClass:
     PROFILE_LIST = [
         list(itertools.compress(item, [1, 1, 1, 0, 0])) for item in PROFILE_GENERAL
     ]
-    PROFILE_IDS = [
-        list(itertools.compress(item, [1, 0, 0, 0, 0])) for item in PROFILE_GENERAL
-    ]
+    PROFILE_IDS = sorted(
+        [
+            item[0]
+            for item in [
+                list(itertools.compress(item, [1, 0, 0, 0, 0]))
+                for item in PROFILE_GENERAL
+            ]
+        ]
+    )
     PROFILE_NAMES = sorted(
         [
             item[0]
