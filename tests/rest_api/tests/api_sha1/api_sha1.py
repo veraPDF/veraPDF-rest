@@ -1,6 +1,5 @@
 import requests
 
-from tests.conftest import get_base_url
 from tests.rest_api.model.api_sha1.sha1 import Sha1XMl
 
 

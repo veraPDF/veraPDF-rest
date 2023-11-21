@@ -2,7 +2,7 @@ import re
 import requests
 from tests.rest_api.model.api_info.environment import Environment
 from tests.rest_api.model.api_info.environment import EnvironmentXml
-from tests.conftest import get_base_url
+
 
 os_name = re.compile(r".+")
 server_machAddress = re.compile(r"..-..-..-..-..-..")

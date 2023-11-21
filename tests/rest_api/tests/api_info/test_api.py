@@ -1,6 +1,5 @@
 import re
 import requests
-from tests.conftest import get_base_url
 from tests.rest_api.model.api_info.api_endpoint import ApiEndpoint, ApiEndpointXml
 
 

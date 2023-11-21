@@ -2,7 +2,6 @@ import re
 
 import requests
 
-from tests.conftest import get_base_url
 from tests.rest_api.model.api_profiles.profile import Profile, ProfilesXMl
 from tests.rest_api.tests.base_test import BaseClass
 

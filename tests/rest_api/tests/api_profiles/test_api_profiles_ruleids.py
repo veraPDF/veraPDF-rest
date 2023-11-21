@@ -1,7 +1,6 @@
 import pytest
 import requests
 
-from tests.conftest import get_base_url
 from tests.rest_api.model.api_profiles.rule_id import RuleID, RulesXml
 from tests.rest_api.tests.base_test import BaseClass
 

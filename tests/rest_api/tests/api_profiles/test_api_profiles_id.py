@@ -2,7 +2,6 @@ import pytest
 import requests
 
 from tests.rest_api.model.api_profiles.profile_id import ProfileID, ProfileIDXml
-from tests.conftest import get_base_url
 from tests.rest_api.tests.base_test import BaseClass
 
 
