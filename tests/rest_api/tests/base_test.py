@@ -24,6 +24,16 @@ class BaseClass:
         ("4f", "PDFA_4_F", "PDF/A-4F validation profile", 108, ("6.2.4.2", 3)),
         ("ua1", "PDFUA_1", "PDF/UA-1 validation profile", 103, ("7.18.8", 1)),
     )
+
+    FLAVOURS_LIST = sorted(
+        [
+            item[0]
+            for item in [
+                list(itertools.compress(item, [0, 1, 0, 0, 0]))
+                for item in PROFILE_GENERAL
+            ]
+        ]
+    )
     PROFILE_LIST = [
         list(itertools.compress(item, [1, 1, 1, 0, 0])) for item in PROFILE_GENERAL
     ]
@@ -43,6 +53,9 @@ class BaseClass:
         list(itertools.compress(item, [1, 0, 0, 1, 0])) for item in PROFILE_GENERAL
     ]
 
-    PROFILE_CLAUSE = ([
-        list(itertools.compress(item, [1, 0, 0, 0, 1])) for item in PROFILE_GENERAL
-    ])
+    PROFILE_CLAUSE = []
+    for i in list(
+        ([list(itertools.compress(item, [1, 0, 0, 0, 1])) for item in PROFILE_GENERAL])
+    ):
+        x, (y, z) = i
+        PROFILE_CLAUSE.append([x, y, z])
