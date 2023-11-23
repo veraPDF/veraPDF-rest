@@ -8,6 +8,7 @@ import itertools
 
 class BaseClass:
     CREATOR = "veraPDF Consortium"
+    FILE_TO_PARSE = "./tests/Resources/a.pdf"
     PROFILE_GENERAL = (
         # 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1
         # profile_id, pdfaflavour, profile_name, profile_rule_count, clause & clause items

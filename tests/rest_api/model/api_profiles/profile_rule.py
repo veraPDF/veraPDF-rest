@@ -1,7 +1,7 @@
 from typing import List
 
 from pydantic import BaseModel
-from pydantic_xml import BaseXmlModel, element, RootXmlModel
+from pydantic_xml import BaseXmlModel, element
 
 from tests.rest_api.model.api_profiles.rule_id import RuleID, RuleIDXml
 

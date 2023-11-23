@@ -21,7 +21,7 @@ def test_api_validate_details_check(profile_id, expected_profile_name, get_base_
     }
 
     files = {
-        "file": ("a.pdf", open("./tests/Resources/a.pdf", "rb"), "application/pdf"),
+        "file": ("a.pdf", open(BaseClass.FILE_TO_PARSE, "rb"), "application/pdf"),
     }
 
     response = requests.post(url, headers=headers, files=files)
@@ -50,7 +50,7 @@ def test_api_validate_details_xml_check(
     }
 
     files = {
-        "file": ("a.pdf", open("./tests/Resources/a.pdf", "rb"), "application/pdf"),
+        "file": ("a.pdf", open(BaseClass.FILE_TO_PARSE, "rb"), "application/pdf"),
     }
 
     response = requests.post(url, headers=headers, files=files)
@@ -78,7 +78,7 @@ def test_api_validate_details_html_check(
     }
 
     files = {
-        "file": ("a.pdf", open(".//tests/Resources/a.pdf", "rb"), "application/pdf"),
+        "file": ("a.pdf", open(BaseClass.FILE_TO_PARSE, "rb"), "application/pdf"),
     }
     parser = etree.HTMLParser()
 
