@@ -32,3 +32,4 @@ bats-support/
 verapdf/
 *.pyc
 *.log
+tests/Options/CLI.code-workspace

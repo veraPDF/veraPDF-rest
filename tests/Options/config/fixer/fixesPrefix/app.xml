@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<appConfig type="FIX" format="XML" isVerbose="false">
+    <fixerFolder>/tmp/123</fixerFolder>
+    <wikiPath>https://github.com/veraPDF/veraPDF-validation-profiles/wiki/</wikiPath>
+    <policyFile></policyFile>
+</appConfig>

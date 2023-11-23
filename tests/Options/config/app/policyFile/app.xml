@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<appConfig type="POLICY" format="XML" isVerbose="false">
+    <fixerFolder>/home/test</fixerFolder>
+    <wikiPath>https://github.com/veraPDF/veraPDF-validation-profiles/wiki/</wikiPath>
+    <policyFile>None.sch</policyFile>
+</appConfig>

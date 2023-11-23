@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<featuresConfig>
+    <enabledFeatures>
+        <feature>ACTION</feature>
+        <feature>ANNOTATION</feature>
+        <feature>COLORSPACE</feature>
+        <feature>DOCUMENT_SECURITY</feature>
+        <feature>EMBEDDED_FILE</feature>
+        <feature>EXT_G_STATE</feature>
+        <feature>FONT</feature>
+        <feature>FORM_XOBJECT</feature>
+        <feature>ICCPROFILE</feature>
+        <feature>IMAGE_XOBJECT</feature>
+        <feature>INFORMATION_DICTIONARY</feature>
+        <feature>INTERACTIVE_FORM_FIELDS</feature>
+        <feature>LOW_LEVEL_INFO</feature>
+        <feature>METADATA</feature>
+        <feature>OUTLINES</feature>
+        <feature>OUTPUTINTENT</feature>
+        <feature>PAGE</feature>
+        <feature>PATTERN</feature>
+        <feature>POSTSCRIPT_XOBJECT</feature>
+        <feature>PROPERTIES</feature>
+        <feature>SHADING</feature>
+        <feature>SIGNATURE</feature>
+    </enabledFeatures>
+</featuresConfig>
