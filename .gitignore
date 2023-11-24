@@ -34,3 +34,4 @@ verapdf/
 *.log
 tests/Options/CLI.code-workspace
 tests/tests.code-workspace
+*.xml

@@ -46,5 +46,11 @@ jobs:
         run: |
           cd ./tests    
           echo dir: $(ls ./)
-          pytest -s -v --base_url=http://localhost:8080 > results.txt
-          echo $(cat results.txt)
+          pytest -s -v --base_url=http://localhost:8080  --junit-xml=./target/report.xml 
+
+      - name: Generating report
+        uses: actions/upload-artifact@v1
+        if: success() || failure()
+        with:
+          name: Results
+          path: "./target"
