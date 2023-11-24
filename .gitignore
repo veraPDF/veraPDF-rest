@@ -36,3 +36,4 @@ tests/Options/CLI.code-workspace
 tests/tests.code-workspace
 *.xml
 *.html
+*.css
