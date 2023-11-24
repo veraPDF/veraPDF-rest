@@ -18,7 +18,7 @@ jobs:
           - 8080:8080
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Install wget
         run: apt-get update; apt-get install wget -y
       - name: Test Profiles endpoint
@@ -37,12 +37,14 @@ jobs:
           apt-get install python3-pip -y 
           
           pip install -r requirements.txt
-          echo pip list 
+          echo $(pip list)
 
 
           echo pwd: $PWD
 
       - name: Running rest-api tests ...
-        run:  
+        run: |
           cd ./tests    
-          pytest -s -v --base_url=http://localhost:8080 
+          echo dir: $(ls ./)
+          pytest -s -v --base_url=http://localhost:8080 > results.txt
+          echo $(cat results.txt)
