@@ -34,7 +34,7 @@ jobs:
 
       - name: Running rest-api tests ...
         run: |
-          mkdir results    
+          mkdir ./results    
           echo dir: $(ls ./)
           pytest --base_url=http://verarest:8080  -s -v  --html=./results/report.html  ./tests/
 
