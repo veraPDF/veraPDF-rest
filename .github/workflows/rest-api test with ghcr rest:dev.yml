@@ -18,6 +18,12 @@ jobs:
           - 8080:8080
     steps:
       - uses: actions/checkout@v3
+      - name: Install wget
+        run: apt-get update; apt-get install wget -y
+      - name: Test Profiles endpoint
+        run: wget -O- http://verarest:8080/api/profiles
+      - name: Test 1B profile endpoint
+        run: wget -O- http://verarest:8080/api/profiles/1b
 
       - name: Preparing Linux packages(Python and more ...)
         if: runner.os == 'Linux'
@@ -38,7 +44,7 @@ jobs:
         run: |
           mkdir results    
           echo dir: $(ls ./)
-          pytest -s -v  --html=./results/report.html  ./tests/
+          pytest --base_url=http://verarest:8080  -s -v  --html=./results/report.html  ./tests/
 
       - name: Generating report
         uses: actions/upload-artifact@v1
