@@ -35,7 +35,7 @@ jobs:
           apt-get update -y
           apt-get install python3 -y
           apt-get install python3-pip -y 
-          
+
           pip install -r requirements.txt
           echo $(pip list)
 
@@ -44,10 +44,9 @@ jobs:
 
       - name: Running rest-api tests ...
         run: |
-          cd ./tests
           mkdir results    
           echo dir: $(ls ./)
-          pytest -s -v --base_url=http://localhost:8080  --junit-xml=./results/report.xml 
+          pytest -s -v --base_url=http://localhost:8080  --html=./results/report.html
 
       - name: Generating report
         uses: actions/upload-artifact@v1
