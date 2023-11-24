@@ -1,0 +1,45 @@
+name: Rest-api test call with ghcr.io/verapdf/rest:dev
+
+on:
+  schedule:
+    - cron: "05 04 * * *"
+  push:
+    branches: ["Create-rest-api-tests"]
+
+jobs:
+  test:
+    name: Rest-api test running
+    runs-on: ubuntu-latest
+    container: ubuntu
+    services:
+      verarest:
+        image: ghcr.io/verapdf/rest:dev
+        ports:
+          - 8080:8080
+    steps:
+      - name: Install wget
+        run: apt-get update; apt-get install wget -y
+      - name: Test Profiles endpoint
+        run: wget -O- http://verarest:8080/api/profiles
+      - name: Test 1B profile endpoint
+        run: wget -O- http://verarest:8080/api/profiles/1b
+
+      - name: Preparing Linux packages(veraPDF, Python and more ...)
+        if: runner.os == 'Linux'
+        run: |
+          echo pwd: $PWD
+          echo dir: $(ls ./)
+
+          sudo apt update -y
+          sudo apt install python3 -y
+          sudo apt install python3-pip -y 
+
+          pip install pipenv
+          pipenv shell
+          echo pipenv --dev
+          echo pwd: $PWD
+
+      - name: Running rest-api tests ...
+        run:  
+          cd ./tests    
+          pytest -s -v --base_url=http://localhost:8080 
