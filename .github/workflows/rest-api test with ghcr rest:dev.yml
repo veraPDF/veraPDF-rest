@@ -33,10 +33,11 @@ jobs:
           apt-get update -y
           apt-get install python3 -y
           apt-get install python3-pip -y 
+          
+          pip install -r requirements.txt
+          echo pip list 
 
-          pip install pipenv
-          pipenv shell
-          echo pipenv --dev
+
           echo pwd: $PWD
 
       - name: Running rest-api tests ...
