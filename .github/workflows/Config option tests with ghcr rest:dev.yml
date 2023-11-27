@@ -13,15 +13,14 @@ jobs:
       - name: Checkout the branch
         uses: actions/checkout@v4
         with:
-          ref: Create-rest-api-tests
+          ref: integration
       
       - name: Build and run Docker Image
         run: |
           docker build -t verapdf-rest:latest . && docker run -d -p 8080:8080 -p 8081:8081 verapdf-rest:latest
       
       
-      - name: Check Docker Container
-        id: check  
+      - name: Check Docker Container 
         run: |
           docker images
           docker ps
@@ -51,7 +50,7 @@ jobs:
         run: |
           echo pwd: $PWD
           echo dir: $(ls ./)
-          ./bats/bin/bats -r ./Options --print-output-on-failure  --report-formatter junit --output ./results 
+          ./bats/bin/bats -r ./Options --show-output-of-passing-tests  --print-output-on-failure  --report-formatter junit --output ./results 
 
       - name: Generating report
         uses: actions/upload-artifact@v1
