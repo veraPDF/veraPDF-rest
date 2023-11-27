@@ -50,7 +50,11 @@ jobs:
           echo pwd: $PWD
           echo dir: $(ls ./)
           ./bats/bin/bats -r ./Options --report-formatter junit --output ./results 
-          docker logs $(docker ps | grep "rest:" | awk '{print $1}') > ./results/docker_logs.log
+      - name: Checking docker logs ... 
+        run: | 
+          echo $(docker ps | grep "rest:" | awk '{print $1}')
+          echo $(docker logs $(docker ps | grep "rest:" | awk '{print $1}'))
+          docker logs $(docker ps | grep "rest:" | awk '{print $1}') > ./results/docker.log 2 > ./results/docker.err
 
       - name: Generating report
         uses: actions/upload-artifact@v1
