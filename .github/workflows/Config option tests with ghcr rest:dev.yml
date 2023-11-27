@@ -29,16 +29,17 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           echo pwd: $PWD
-          echo $(whoami)
+          echo whoami: $(whoami)
           mkdir ./results
           echo dir: $(ls ./)
+
+          cd $PWD/tests
+          echo pwd: $PWD
 
           sudo apt-get update -y
           sudo apt install git -y
 
           git --version
-
-          cd ./tests
 
           echo "Adding: bats-core.git, bats-support.git and bats-assert.git"
           git clone https://github.com/bats-core/bats-core.git ./bats
