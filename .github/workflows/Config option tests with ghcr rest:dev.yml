@@ -6,21 +6,24 @@ on:
   push:
 
 jobs:
-  test:
-    name: Config option tests running in Docker container
+  build:
     runs-on: ubuntu-latest
-    container: ubuntu
-    services:
-      verarest:
-        image: ghcr.io/verapdf/rest:dev
-        ports:
-          - 8080:8080
+
     steps:
-      - uses: actions/checkout@v3
-
-
-      - name: Check Docker Container 
+      - name: Checkout the branch
+        uses: actions/checkout@v3
+      
+      - name: Build Docker Image
+        run: |
+          docker build -t verapdf-rest:latest . && docker run -d -p 8080:8080 -p 8081:8081 verapdf-rest:latest
+      
+      - name: Start Testapp Container
+        run: docker run -d -p 8080:8080 verapdf-rest:latest
+      
+      - name: Check Docker Container
+        id: check  
         run: docker ps
+
 
       - name: Preparing Linux packages(Docker, Bats-core and more ...)
         if: runner.os == 'Linux'
