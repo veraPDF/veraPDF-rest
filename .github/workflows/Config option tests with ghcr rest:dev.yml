@@ -11,7 +11,9 @@ jobs:
 
     steps:
       - name: Checkout the branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          ref: Create-rest-api-tests
       
       - name: Build and run Docker Image
         run: |
