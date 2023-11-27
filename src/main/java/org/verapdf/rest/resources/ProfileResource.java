@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.verapdf.ReleaseDetails;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
 import org.verapdf.pdfa.validation.profiles.*;
 
@@ -46,9 +45,9 @@ public class ProfileResource {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = {
 					@Content(mediaType = "application/json", schema =
-					@Schema(implementation = ReleaseDetails.class)
+					@Schema(implementation = ProfileDetails.class)
 					), @Content(mediaType = "application/xml", schema =
-			@Schema(implementation = ReleaseDetails.class)
+			@Schema(implementation = ProfileDetails.class)
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Set<ProfileDetails> getProfileDetails() {
@@ -64,9 +63,9 @@ public class ProfileResource {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = {
 					@Content(mediaType = "application/json", schema =
-					@Schema(implementation = ReleaseDetails.class)
+					@Schema(implementation = String.class)
 					), @Content(mediaType = "application/xml", schema =
-			@Schema(implementation = ReleaseDetails.class)
+			@Schema(implementation = String.class)
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Set<String> getProfileIds() {
@@ -82,9 +81,9 @@ public class ProfileResource {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = {
 					@Content(mediaType = "application/json", schema =
-					@Schema(implementation = ReleaseDetails.class)
+					@Schema(implementation = PDFAFlavour.class)
 					), @Content(mediaType = "application/xml", schema =
-			@Schema(implementation = ReleaseDetails.class)
+			@Schema(implementation = PDFAFlavour.class)
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Set<PDFAFlavour> getFlavours() {
@@ -103,9 +102,9 @@ public class ProfileResource {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = {
 					@Content(mediaType = "application/json", schema =
-					@Schema(implementation = ReleaseDetails.class)
+					@Schema(implementation = ValidationProfile.class)
 					), @Content(mediaType = "application/xml", schema =
-			@Schema(implementation = ReleaseDetails.class)
+			@Schema(implementation = ValidationProfile.class)
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static ValidationProfile getProfile(@Parameter(description = "the String id of the Validation profile " +
@@ -128,9 +127,9 @@ public class ProfileResource {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = {
 					@Content(mediaType = "application/json", schema =
-					@Schema(implementation = ReleaseDetails.class)
+					@Schema(implementation = RuleId.class)
 					), @Content(mediaType = "application/xml", schema =
-			@Schema(implementation = ReleaseDetails.class)
+			@Schema(implementation = RuleId.class)
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Set<RuleId> getProfileRules(@Parameter(description = "the String id of the Validation profile " +
@@ -160,9 +159,9 @@ public class ProfileResource {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = {
 					@Content(mediaType = "application/json", schema =
-					@Schema(implementation = ReleaseDetails.class)
+					@Schema(implementation = Rule.class)
 					), @Content(mediaType = "application/xml", schema =
-			@Schema(implementation = ReleaseDetails.class)
+			@Schema(implementation = Rule.class)
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Set<Rule> getRulesForClause(@Parameter(description = "the String id of the Validation profile " +

@@ -14,7 +14,6 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.openpreservation.bytestreams.ByteStreamId;
 import org.openpreservation.bytestreams.ByteStreams;
-import org.verapdf.ReleaseDetails;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -52,11 +51,11 @@ public class ByteStreamResource {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = {
 					@Content(mediaType = "application/xml", schema =
-					@Schema(implementation = ReleaseDetails.class)),
+					@Schema(implementation = ByteStreamId.class)),
 					@Content(mediaType = "application/json", schema =
-					@Schema(implementation = ReleaseDetails.class)),
+					@Schema(implementation = ByteStreamId.class)),
 					@Content(mediaType = "text/xml", schema =
-					@Schema(implementation = ReleaseDetails.class))
+					@Schema(implementation = ByteStreamId.class))
 			})})
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
@@ -88,11 +87,11 @@ public class ByteStreamResource {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "OK", content = {
 					@Content(mediaType = "application/xml", schema =
-					@Schema(implementation = ReleaseDetails.class)),
+					@Schema(implementation = ByteStreamId.class)),
 					@Content(mediaType = "application/json", schema =
-					@Schema(implementation = ReleaseDetails.class)),
+					@Schema(implementation = ByteStreamId.class)),
 					@Content(mediaType = "text/xml", schema =
-					@Schema(implementation = ReleaseDetails.class))
+					@Schema(implementation = ByteStreamId.class))
 			})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,
 	           MediaType.TEXT_XML})
