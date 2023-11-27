@@ -25,16 +25,12 @@ jobs:
           docker ps
 
 
-      - name: Preparing Linux packages(Docker, Bats-core and more ...)
+      - name: Preparing Linux packages(Bats-core and more ...)
         if: runner.os == 'Linux'
+        working-directory: ./tests
         run: |
-          echo pwd: $PWD
           echo whoami: $(whoami)
           mkdir ./results
-          echo dir: $(ls ./)
-
-          cd $PWD/tests
-          echo pwd: $PWD
 
           sudo apt-get update -y
           sudo apt install git -y
@@ -49,6 +45,7 @@ jobs:
           ./bats/bin/bats -v
 
       - name: Config option ... running tests
+        working-directory: ./tests
         run: |
           echo pwd: $PWD
           echo dir: $(ls ./)
@@ -59,4 +56,4 @@ jobs:
         if: success() || failure()
         with:
           name: Results
-          path: "./results"
+          path: "./tests/results"
