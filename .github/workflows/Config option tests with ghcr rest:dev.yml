@@ -13,16 +13,14 @@ jobs:
       - name: Checkout the branch
         uses: actions/checkout@v3
       
-      - name: Build Docker Image
+      - name: Build and run Docker Image
         run: |
           docker build -t verapdf-rest:latest . && docker run -d -p 8080:8080 -p 8081:8081 verapdf-rest:latest
       
-      - name: Start Testapp Container
-        run: docker run -d -p 8080:8080 verapdf-rest:latest
       
       - name: Check Docker Container
         id: check  
-        run: docker ps
+        run: docker images
 
 
       - name: Preparing Linux packages(Docker, Bats-core and more ...)
