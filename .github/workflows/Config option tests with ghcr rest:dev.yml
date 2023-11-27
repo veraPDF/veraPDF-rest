@@ -22,27 +22,31 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           echo pwd: $PWD
+          mkdir ./results
           echo dir: $(ls ./)
 
           apt-get update -y
           apt install git -y
-          mkdir ./results
 
           git --version
+          
+          docker -v
+          docker ps
 
-          echo "Adding submodules: bats-core.git, bats-support.git and bats-assert.git"
+          cd ./tests
+
+          echo "Adding: bats-core.git, bats-support.git and bats-assert.git"
           git clone https://github.com/bats-core/bats-core.git ./bats
           git clone https://github.com/bats-core/bats-support.git ./bats-support
           git clone https://github.com/bats-core/bats-assert.git ./bats-assert
 
           ./bats/bin/bats -v
 
-          echo pwd: $PWD
-
-      - name: Config option tests ...
+      - name: Config option ... running tests
         run: |
-           echo dir: $(ls ./)
-           ./bats/bin/bats -r ./Options --output ./results
+          echo pwd: $PWD
+          echo dir: $(ls ./)
+          ./bats/bin/bats -r ./Options --output ./results
 
       - name: Generating report
         uses: actions/upload-artifact@v1
