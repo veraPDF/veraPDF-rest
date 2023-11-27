@@ -49,7 +49,8 @@ jobs:
         run: |
           echo pwd: $PWD
           echo dir: $(ls ./)
-          ./bats/bin/bats -r ./Options --output ./results
+          ./bats/bin/bats -r ./Options -report-formatter junit --output ./results 
+          docker logs $(docker ps | grep "rest:" | awk '{print $1}') > docker_logs.log
 
       - name: Generating report
         uses: actions/upload-artifact@v1
