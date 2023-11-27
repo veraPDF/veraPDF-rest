@@ -31,16 +31,18 @@ jobs:
           git --version
 
           echo "Adding submodules: bats-core.git, bats-support.git and bats-assert.git"
-          git submodule add https://github.com/bats-core/bats-core.git ./bats
-          git submodule add https://github.com/bats-core/bats-support.git ./bats-support
-          git submodule add https://github.com/bats-core/bats-assert.git ./bats-assert
+          git clone https://github.com/bats-core/bats-core.git ./bats
+          git clone https://github.com/bats-core/bats-support.git ./bats-support
+          git clone https://github.com/bats-core/bats-assert.git ./bats-assert
+
+          ./bats/bin/bats -v
 
           echo pwd: $PWD
 
       - name: Config option tests ...
         run: |
            echo dir: $(ls ./)
-           ./bats-core/bin/bats -r ./Options --output ./results
+           ./bats/bin/bats -r ./Options --output ./results
 
       - name: Generating report
         uses: actions/upload-artifact@v1
