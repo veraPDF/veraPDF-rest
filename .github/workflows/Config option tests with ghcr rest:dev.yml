@@ -29,11 +29,12 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           echo pwd: $PWD
+          echo $(whoami)
           mkdir ./results
           echo dir: $(ls ./)
 
-          apt-get update -y
-          apt install git -y
+          sudo apt-get update -y
+          sudo apt install git -y
 
           git --version
 
