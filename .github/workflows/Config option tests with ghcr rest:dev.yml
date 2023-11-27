@@ -1,0 +1,50 @@
+name: Config option tests - ghcr.io/verapdf/rest:dev
+
+on:
+  schedule:
+    - cron: "05 04 * * *"
+  push:
+
+jobs:
+  test:
+    name: Config option tests running in Docker container
+    runs-on: ubuntu-latest
+    container: ubuntu
+    services:
+      verarest:
+        image: ghcr.io/verapdf/rest:dev
+        ports:
+          - 8080:8080
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Preparing Linux packages(Bats-core and more ...)
+        if: runner.os == 'Linux'
+        run: |
+          echo pwd: $PWD
+          echo dir: $(ls ./)
+
+          apt-get update -y
+          sudo apt install git
+          mkdir ./results
+
+          git --version
+
+          echo "Adding submodules: bats-core.git, bats-support.git and bats-assert.git"
+          git submodule add https://github.com/bats-core/bats-core.git ./bats
+          git submodule add https://github.com/bats-core/bats-support.git ./bats-support
+          git submodule add https://github.com/bats-core/bats-assert.git ./bats-assert
+
+          echo pwd: $PWD
+
+      - name: Config option tests ...
+        run: |
+           echo dir: $(ls ./)
+           ./bats-core/bin/bats -r ./Options --output ./results
+
+      - name: Generating report
+        uses: actions/upload-artifact@v1
+        if: success() || failure()
+        with:
+          name: Results
+          path: "./results"
