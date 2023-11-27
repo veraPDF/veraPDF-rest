@@ -20,7 +20,9 @@ jobs:
       
       - name: Check Docker Container
         id: check  
-        run: docker images
+        run: |
+          docker images
+          docker ps
 
 
       - name: Preparing Linux packages(Docker, Bats-core and more ...)
