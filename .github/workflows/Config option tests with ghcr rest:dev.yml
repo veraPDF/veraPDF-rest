@@ -25,7 +25,7 @@ jobs:
           echo dir: $(ls ./)
 
           apt-get update -y
-          sudo apt install git
+          apt install git
           mkdir ./results
 
           git --version

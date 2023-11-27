@@ -1,5 +1,5 @@
 setup_suite() {
-  echo -e "Srarting tests ... \n" >&3
+  echo -e "Starting tests ... \n" >&3
 }
 
 
