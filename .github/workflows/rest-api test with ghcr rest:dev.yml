@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    name: Rest-api tests running
+    name: Rest-api tests running in Docker container
     runs-on: ubuntu-latest
     container: ubuntu
     services:

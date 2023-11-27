@@ -12,8 +12,8 @@ class BaseClass:
     PROFILE_GENERAL = (
         # 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1
         # profile_id, pdfaflavour, profile_name, profile_rule_count, clause & clause items
-        ("1b", "PDFA_1_B", "PDF/A-1B validation profile", 127, ("6.7.3", 8)),
-        ("1a", "PDFA_1_A", "PDF/A-1A validation profile", 133, ("6.1.7", 3)),
+        ("1b", "PDFA_1_B", "PDF/A-1B validation profile", 128, ("6.7.3", 8)),
+        ("1a", "PDFA_1_A", "PDF/A-1A validation profile", 134, ("6.1.7", 3)),
         ("2b", "PDFA_2_B", "PDF/A-2B validation profile", 143, ("6.2.11.3.1", 1)),
         ("2a", "PDFA_2_A", "PDF/A-2A validation profile", 151, ("6.7.3.4", 2)),
         ("2u", "PDFA_2_U", "PDF/A-2U validation profile", 145, ("6.2.11.3.1", 1)),

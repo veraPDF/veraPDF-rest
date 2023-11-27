@@ -1,13 +1,11 @@
 from typing import List
 
-from pydantic_xml import BaseXmlModel, element
+from pydantic import BaseModel
 
-from tests.rest_api.model.api_validate_details.job import JobXml, JobsXml
+from tests.rest_api.model.api_validate_details.summary import BatchSummary
+from tests.rest_api.model.api_validate_details.job import Job
 
 
-class ReportXml(
-    BaseXmlModel,
-    search_mode="unordered",
-):
-    pass
-    # jobs: JobsXml = element(tag='jobs')
+class Report(BaseModel):
+    batchSummary: BatchSummary
+    jobs: List[Job]

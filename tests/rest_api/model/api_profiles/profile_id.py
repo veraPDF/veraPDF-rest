@@ -10,9 +10,9 @@ from typing import List, Optional
 
 class ProfileID(BaseModel):
     details: Profile
-    rules: List[ProfileRule] = []
+    rules: List[ProfileRule]
     variables: List[ProfileVariables]
-    tags: List[str] = []
+    tags: List[str]
     pdfaflavour: str
     hexSha1Digest: str
 

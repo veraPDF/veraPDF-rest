@@ -2,6 +2,7 @@ import pytest
 import requests
 
 from tests.conftest import get_base_url
+from tests.rest_api.model.api_validate_details.result import Report, Result
 from tests.rest_api.tests.base_test import BaseClass
 
 
@@ -70,5 +71,8 @@ def test_validate_pdf_with_pass_url(file_url, expected_code, profile_id, get_bas
 
     response = requests.post(url=url, headers=headers, files=files)
 
-    assert response.status_code == expected_code
-    assert file_url == response.json()["report"]["jobs"][0]["itemDetails"]["name"]
+    result = Result(**response.json())
+    assert result.report.batchSummary.totalJobs == 1
+    assert result.report.jobs[0].logs.logs[0].level == "WARNING"
+    assert result.report.jobs[0].logs.logs[0].occurrences == 1
+    assert "a.pdf" in result.report.jobs[0].logs.logs[0].message
