@@ -12,7 +12,7 @@ setup() {
 
 teardown() {
     docker cp $DOCKER_CONTAINER:/opt/verapdf-rest/config/validator.xml $BATS_TEST_TMPDIR
-    cat $BATS_TEST_TMPDIR/validator.xml
+    cat $BATS_TEST_TMPDIR/validator.xml >&3
 
     echo -e "\nOutput ...: \n\n" >&3
     echo $output >&3
@@ -23,7 +23,6 @@ teardown() {
 @test "--maxFails, Sets maximum amount of failed checks, maxFails=1" {
 
     run curl -F "file=@$PROJECT_ROOT/Resources/veraPDFPDFAConformanceCheckerGUI.pdf" localhost:8080/api/validate/1b -H "Accept:application/xml"
-    echo "Status: $status" >&3
     assert_output --partial 'failedRules="1"'
 
     [ "$status" -eq 0 ]

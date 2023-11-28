@@ -13,7 +13,7 @@ _common_setup() {
 
 remove_verapdf_config_files() {
     echo -e "Removing files ... " >&3
-    echo -e $(docker exec -it --user=root $DOCKER_CONTAINER ls -la /opt/verapdf-rest/config/) >&3
+    echo -e $(docker exec -i --user=root $DOCKER_CONTAINER ls -la /opt/verapdf-rest/config/) >&3
 
     docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/features.xml
     docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/fixer.xml
@@ -24,6 +24,6 @@ remove_verapdf_config_files() {
     echo -e "Removing files ... Done\n" >&3
 
     echo -e "Files in the container before the test ... " >&3
-    echo -e $(docker exec -it --user=root $DOCKER_CONTAINER ls -la /opt/verapdf-rest/config/) >&3
+    echo -e $(docker exec -i --user=root $DOCKER_CONTAINER ls -la /opt/verapdf-rest/config/) >&3
     echo -e "\n" >&3
 }
