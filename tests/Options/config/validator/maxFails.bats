@@ -5,20 +5,19 @@ setup() {
     load "$PROJECT_ROOT/tools/test_helper/common-setup.bash"
     _common_setup
 
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/features.xml
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/fixer.xml
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/plugins.xml
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/validator.xml
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/app.xml
+    remove_verapdf_config_files
 
     docker cp $BATS_TEST_DIRNAME/maxFails/validator* $DOCKER_CONTAINER:/opt/verapdf-rest/config
 }
 
 teardown() {
     docker cp $DOCKER_CONTAINER:/opt/verapdf-rest/config/validator.xml $BATS_TEST_TMPDIR
-    cat $BATS_TEST_TMPDIR/validator.xml #out to console validator.xml to see options set after test >&3
+    cat $BATS_TEST_TMPDIR/validator.xml
 
-    echo -e "Done ..." >&3
+    echo -e "\nOutput ...: \n\n" >&3
+    echo $output >&3
+
+    echo -e "\nDone ..." >&3
 }
 
 @test "--maxFails, Sets maximum amount of failed checks, maxFails=1" {

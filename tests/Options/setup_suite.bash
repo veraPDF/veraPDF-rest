@@ -8,6 +8,6 @@ setup_suite() {
 teardown_suite() {
   echo -e "\nEnding tests ... \n" >&3
 
-  docker logs $DOCKER_ID >&3
+  # docker logs $DOCKER_ID >&3
   docker logs $DOCKER_ID > ./results/container.log 2>&1
 }

@@ -5,11 +5,7 @@ setup() {
     load "$PROJECT_ROOT/tools/test_helper/common-setup.bash"
     _common_setup
 
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/features.xml
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/fixer.xml
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/plugins.xml
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/validator.xml
-    docker exec --user=root $DOCKER_CONTAINER rm -rf /opt/verapdf-rest/config/app.xml
+    remove_verapdf_config_files
 
     docker cp $BATS_TEST_DIRNAME/features/app.xml $DOCKER_CONTAINER:/opt/verapdf-rest/config/app.xml
     docker cp $BATS_TEST_DIRNAME/features/features.xml $DOCKER_CONTAINER:/opt/verapdf-rest/config/features.xml
@@ -18,9 +14,12 @@ setup() {
 
 teardown() {
     docker cp $DOCKER_CONTAINER:/opt/verapdf-rest/config/app.xml $BATS_TEST_TMPDIR
-    cat $BATS_TEST_TMPDIR/app.xml >&3 #out to console to see options set after test >&3
+    cat $BATS_TEST_TMPDIR/app.xml >&3 
 
-    echo -e "Done ..." >&3
+    echo -e "\nOutput ...: \n\n" >&3
+    echo $output >&3
+
+    echo -e "\nDone ..." >&3
 }
 
 @test "--features, The default processing model for the GUI, features=VALIDATE_EXTRACT" {
