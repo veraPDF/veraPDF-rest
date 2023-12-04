@@ -93,7 +93,7 @@ public class ProfileResource {
 	/**
 	 * @param profileId
 	 *            the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-	 *            3b, 3a, 3u, 4, 4e, 4f or ua1)
+	 *            3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
 	 * @return a validation profile selected by id
 	 */
 	@GET
@@ -108,7 +108,7 @@ public class ProfileResource {
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static ValidationProfile getProfile(@Parameter(description = "the String id of the Validation profile " +
-	                                                                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                           @PathParam("profileId") String profileId) {
 		return DIRECTORY.getValidationProfileById(profileId);
 	}
@@ -116,7 +116,7 @@ public class ProfileResource {
 	/**
 	 * @param profileId
 	 *            the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-	 *            3b, 3a, 3u, 4, 4e, 4f or ua1)
+	 *            3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
 	 * @return the {@link java.util.Set} of
 	 *         {@link org.verapdf.pdfa.validation.profiles.RuleId}s for the selected
 	 *         Validation Profile
@@ -133,7 +133,7 @@ public class ProfileResource {
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Set<RuleId> getProfileRules(@Parameter(description = "the String id of the Validation profile " +
-	                                                                   "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                                   "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                          @PathParam("profileId") String profileId) {
 		SortedSet<RuleId> ids = new TreeSet<>(new Profiles.RuleIdComparator());
 		for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
@@ -145,7 +145,7 @@ public class ProfileResource {
 	/**
 	 * @param profileId
 	 *            the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-	 *            3b, 3a, 3u, 4, 4e, 4f or ua1)
+	 *            3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
 	 * @param clause
 	 *            a {@link java.lang.String} identifying the profile clause to
 	 *            return the Rules for
@@ -165,7 +165,7 @@ public class ProfileResource {
 			)})})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public static Set<Rule> getRulesForClause(@Parameter(description = "the String id of the Validation profile " +
-	                                                                   "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                                   "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                          @PathParam("profileId") String profileId,
 	                                          @Parameter(description = "a string identifying the profile clause to return the rules for")
 	                                          @PathParam("clause") String clause) {
