@@ -85,7 +85,7 @@ public class ValidateResource {
 	 * @param profileId
 	 *                                 the String id of the Validation profile
 	 *                                 (auto, 1b, 1a, 2b, 2a, 2u,
-	 *                                 3b, 3a, 3u, 4, 4e, 4f or ua1)
+	 *                                 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
 	 * @param uploadedInputStream
 	 *                                 a {@link java.io.InputStream} to the PDF to
 	 *                                 be validated
@@ -108,7 +108,7 @@ public class ValidateResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_XML})
 	public static InputStream validateXml(@Parameter(description = "the String id of the Validation profile " +
-	                                                               "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                               "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                      @PathParam("profileId") String profileId,
 	                                      @Parameter(name = "file", schema = @Schema(implementation = File.class),
 	                                                 style = ParameterStyle.FORM, description = "an InputStream of the PDF to be validated")
@@ -123,7 +123,7 @@ public class ValidateResource {
 	 * @param profileId
 	 *                                 the String id of the Validation profile
 	 *                                 (auto, 1b, 1a, 2b, 2a, 2u,
-	 *                                 3b, 3a, 3u, 4, 4e, 4f or ua1)
+	 *                                 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
 	 * @param sha1Hex
 	 *                                 the hex String representation of the file's
 	 *                                 SHA-1 hash
@@ -149,7 +149,7 @@ public class ValidateResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_XML})
 	public static InputStream validateXml(@Parameter(description = "the String id of the Validation profile " +
-	                                                               "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                               "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                      @PathParam("profileId") String profileId,
 	                                      @Parameter(description = "the hex String representation of the file's SHA-1 hash")
 	                                      @FormDataParam("sha1Hex") String sha1Hex,
@@ -177,7 +177,7 @@ public class ValidateResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_XML})
 	public static InputStream validateXml(@Parameter(description = "the String id of the Validation profile " +
-	                                                               "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                               "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                      @PathParam("profileId") String profileId,
 	                                      @Parameter(description = "a URL of PDF to be validated")
 	                                      @FormDataParam("url") String urlLink,
@@ -190,7 +190,7 @@ public class ValidateResource {
 	 * @param profileId
 	 *                                 the String id of the Validation profile
 	 *                                 (auto, 1b, 1a, 2b, 2a, 2u,
-	 *                                 3b, 3a, 3u, 4, 4e, 4f or ua1)
+	 *                                 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
 	 * @param uploadedInputStream
 	 *                                 a {@link java.io.InputStream} to the PDF to
 	 *                                 be validated
@@ -203,7 +203,7 @@ public class ValidateResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_JSON})
 	public static InputStream validateJson(@Parameter(description = "the String id of the Validation profile " +
-	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(name = "file", schema = @Schema(implementation = File.class),
 	                                                  style = ParameterStyle.FORM, description = "an InputStream of the PDF to be validated")
@@ -218,7 +218,7 @@ public class ValidateResource {
 	 * @param profileId
 	 *                                 the String id of the Validation profile
 	 *                                 (auto, 1b, 1a, 2b, 2a, 2u,
-	 *                                 3b, 3a, 3u, 4, 4e, 4f or ua1)
+	 *                                 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
 	 * @param sha1Hex
 	 *                                 the hex String representation of the file's
 	 *                                 SHA-1 hash
@@ -234,7 +234,7 @@ public class ValidateResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_JSON})
 	public static InputStream validateJson(@Parameter(description = "the String id of the Validation profile " +
-	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(description = "the hex String representation of the file's SHA-1 hash")
 	                                       @FormDataParam("sha1Hex") String sha1Hex,
@@ -253,7 +253,7 @@ public class ValidateResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.APPLICATION_JSON})
 	public static InputStream validateJson(@Parameter(description = "the String id of the Validation profile " +
-	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(description = "a URL of PDF to be validated")
 	                                       @FormDataParam("url") String urlLink,
@@ -266,7 +266,7 @@ public class ValidateResource {
 	 * @param profileId
 	 *                                 the String id of the Validation profile
 	 *                                 (auto, 1b, 1a, 2b, 2a, 2u,
-	 *                                 3b, 3a, 3u, 4, 4e, 4f or ua1)
+	 *                                 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
 	 * @param uploadedInputStream
 	 *                                 a {@link java.io.InputStream} to the PDF to
 	 *                                 be validated
@@ -291,7 +291,7 @@ public class ValidateResource {
 	 * @param profileId
 	 *                                 the String id of the Validation profile
 	 *                                 (auto, 1b, 1a, 2b, 2a, 2u,
-	 *                                 3b, 3a, 3u, 4, 4e, 4f or ua1)
+	 *                                 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
 	 * @param sha1Hex
 	 *                                 the hex String representation of the file's
 	 *                                 SHA-1 hash
@@ -322,7 +322,7 @@ public class ValidateResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces({MediaType.TEXT_HTML})
 	public static InputStream validateHtml(@Parameter(description = "the String id of the Validation profile " +
-	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1)")
+	                                                                "(auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)")
 	                                       @PathParam("profileId") String profileId,
 	                                       @Parameter(description = "a URL of PDF to be validated")
 	                                       @FormDataParam("url") String urlLink,
