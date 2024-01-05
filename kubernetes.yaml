@@ -14,14 +14,19 @@ spec:
       labels:
         project: verapdf-rest
     spec:
+      terminationGracePeriodSeconds: 300
       containers:
         - name : verapdf-rest
           image: ghcr.io/verapdf/rest:dev
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sleep", "300"]
           resources:
             requests:
               cpu: "250m"
             limits:
-              cpu: "250m"
+              cpu: "2000m"
           ports:
             - containerPort: 8080
               name         : rest-api-port
