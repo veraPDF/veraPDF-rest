@@ -1,0 +1,71 @@
+name: Options tests with build rest:dev
+
+on:
+  schedule:
+    - cron: "05 04 * * *"
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the branch
+        uses: actions/checkout@v3
+
+      - name: Build and run Docker Image
+        run: |
+          docker build  --build-arg  GH_CHECKOUT=integration -t  ghcr.io/verapdf/rest:dev . && docker run --user root -d -p 8080:8080 -p 8081:8081  -e VERAPDF_MAX_FILE_SIZE=1  -v /tmp:/home/Res_tmp ghcr.io/verapdf/rest:dev
+          echo whoami: $(docker inspect $(docker ps -q) --format '{{.Config.User}} {{.Name}}')
+
+      - name: Check Docker Container
+        run: |
+          docker images
+          docker ps
+
+      - name: Preparing Linux packages(Bats-core and more ...)
+        if: runner.os == 'Linux'
+        working-directory: ./tests
+        run: |
+          echo whoami: $(whoami)
+          mkdir ./results
+
+          sudo apt-get update -y
+          sudo apt install git -y
+
+          sudo apt-get install python3 -y
+          sudo apt-get install python3-pip -y
+
+          sudo pip install junit2html
+
+          echo $(pip list)
+
+          git --version
+
+          echo "Adding: bats-core.git, bats-support.git and bats-assert.git"
+          git clone https://github.com/bats-core/bats-core.git ./bats
+          git clone https://github.com/bats-core/bats-support.git ./bats-support
+          git clone https://github.com/bats-core/bats-assert.git ./bats-assert
+
+          ./bats/bin/bats -v
+
+      - name: Running tests ... Options
+        working-directory: ./tests
+        run: |
+          echo pwd: $PWD
+          echo dir: $(ls ./)
+          ./bats/bin/bats -r ./Options --show-output-of-passing-tests  --print-output-on-failure  --report-formatter junit --output ./results
+
+      - name: Generating report
+        if: always()
+        working-directory: ./tests/results
+        run: |
+          echo pwd: $PWD
+          junit2html report.xml --report-matrix report.html
+
+      - name: Uploading report
+        uses: actions/upload-artifact@v1
+        if: success() || failure()
+        with:
+          name: Results
+          path: "./tests/results"
