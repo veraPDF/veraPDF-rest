@@ -10,7 +10,7 @@ The services are capable of serving up XML or JSON dependent upon the content ty
 
 ### Technologies
 The project's a Maven managed Java application, the application is based on
-[DropWizard](https://www.dropwizard.io/en/stable/index.html), this brings together a set of reliable libraries, the
+[Dropwizard](https://www.dropwizard.io/en/stable/index.html), this brings together a set of reliable libraries, the
 following are most used and may prove informative if you are reading the code:
 
  * [Jetty](https://www.eclipse.org/jetty/) as a lean HTTP server,
@@ -230,3 +230,5 @@ To change maximum Java heap size in docker image run:
 docker run -d -p 8080:8080 -p 8081:8081 -e JAVA_OPTS="-Xmx128M" verapdf/rest:latest
 ```
 
+#### Additional configuration parameters
+See [Dropwizard Configuration Reference](https://www.dropwizard.io/en/stable/manual/configuration.html) for overview of available configuration parameters such as controlling the number of threads, queue size and others. 
