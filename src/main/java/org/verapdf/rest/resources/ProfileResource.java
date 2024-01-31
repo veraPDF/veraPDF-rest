@@ -92,7 +92,7 @@ public class ProfileResource {
     /**
      * @param profileId
      *                  the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-     *                  3b, 3a, 3u, 4, 4e, 4f or ua1)
+     *                  3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
      * @return a validation profile selected by id
      */
     @GET
@@ -136,7 +136,7 @@ public class ProfileResource {
     public static Set<RuleId> getProfileRules(
             @Parameter(description = "The String id of the Validation profile that the rule IDs should be retrieved from, "
                     +
-                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f or ua1") @PathParam("profileId") String profileId) {
+                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2") @PathParam("profileId") String profileId) {
         SortedSet<RuleId> ids = new TreeSet<>(new Profiles.RuleIdComparator());
         for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
             ids.add(rule.getRuleId());
