@@ -33,11 +33,11 @@ var pdfaValidator = {
   },
   validate: function (formData, flavour, callback, contentType = "json") {
     $.ajax({
-      beforeSend: function (xhrObj) {
-        let headerpt1 = (contentType === "html") ? "text/" : "application/"
+      beforeSend(xhrObj) {
+        let headerpt1 = (contentType === "html") ? "text/" : "application/";
         xhrObj.setRequestHeader("Accept", headerpt1 + contentType);
       },
-      url: '/api/validate/' + flavour + '/',
+      url: "/api/validate/" + flavour + "/",
       type: 'POST',
       data: formData,
       dataType: contentType,
