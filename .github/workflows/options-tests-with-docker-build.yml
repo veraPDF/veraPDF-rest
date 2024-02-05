@@ -1,9 +1,11 @@
-name: Options tests with build rest:dev
+name: Options tests with docker build
 
 on:
   schedule:
-    - cron: "05 04 * * *"
+    - cron: "05 09 * * 1"
   push:
+    branches:
+      - 'integration'
 
 jobs:
   build:
@@ -15,7 +17,7 @@ jobs:
 
       - name: Build and run Docker Image
         run: |
-          docker build  --build-arg  GH_CHECKOUT=integration -t  ghcr.io/verapdf/rest:dev . && docker run --user root -d -p 8080:8080 -p 8081:8081  -e VERAPDF_MAX_FILE_SIZE=1  -v /tmp:/home/Res_tmp ghcr.io/verapdf/rest:dev
+          docker build  --build-arg  GH_CHECKOUT=integration -t  rest:dev . && docker run --user root -d -p 8080:8080 -p 8081:8081  -e VERAPDF_MAX_FILE_SIZE=1  -v /tmp:/home/Res_tmp rest:dev
           echo whoami: $(docker inspect $(docker ps -q) --format '{{.Config.User}} {{.Name}}')
 
       - name: Check Docker Container
@@ -69,3 +71,23 @@ jobs:
         with:
           name: Results
           path: "./tests/results"
+
+      - name: Notify slack tests succeeded
+        if: success()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel_id: C03E3JJGLQL
+          status: SUCCESS
+          color: good
+
+      - name: Notify slack tests failed
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel_id: C03E3JJGLQL
+          status: FAILED
+          color: danger          
