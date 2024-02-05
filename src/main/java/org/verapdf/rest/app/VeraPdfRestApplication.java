@@ -80,8 +80,8 @@ public class VeraPdfRestApplication extends Application<VeraPdfRestConfiguration
             Environment environment) {
         // Create & register our REST resources
         final ValidationExceptionMapper vem = new ValidationExceptionMapper();
-        ValidateResource validateResource = ValidateResource.getValidateResource();
-        validateResource.setMaxFileSize(configuration.getMaxFileSize());
+        ValidateResource validateResource = new ValidateResource();
+        ValidateResource.setMaxFileSize(configuration.getMaxFileSize());
         environment.jersey().register(validateResource);
         environment.jersey().register(new ApiResource());
         environment.jersey().register(new HomePageResource());
