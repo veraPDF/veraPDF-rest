@@ -38,4 +38,29 @@ jobs:
           build-args: GH_CHECKOUT=integration
           tags: ghcr.io/verapdf/rest:dev
           labels: ${{ steps.meta.outputs.labels }}
+
+  test:
+    name: Test Docker image
+    needs: [ publish ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+
+      - name: Run rest-api-tests-with-docker-image
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.WORKFLOW_TOKEN }}
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+             owner: 'veraPDF',
+             repo: 'veraPDF-rest',
+             workflow_id: 'rest-api-tests-with-docker-image.yml',
+             ref: 'integration'
+            })
+
           
