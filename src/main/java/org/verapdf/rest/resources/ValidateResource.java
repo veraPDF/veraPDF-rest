@@ -49,14 +49,6 @@ public class ValidateResource {
 	private static final int CONVERTER_MB_TO_B = 1_048_576;
 	private static int maxFileSize;
 	private static final String MAX_ALLOWED_FILE_SIZE = "Maximum allowed file size exceeded: %d MB";
-	private static ValidateResource validateResource;
-
-	public static synchronized ValidateResource getValidateResource() {
-		if (validateResource == null) {
-			validateResource = new ValidateResource();
-		}
-		return validateResource;
-	}
 
 	private static ConfigManager configManager;
 
