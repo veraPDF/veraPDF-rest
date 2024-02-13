@@ -65,4 +65,4 @@ COPY --from=app-builder /build/veraPDF-rest/config /opt/verapdf-rest/config/
 VOLUME /var/opt/verapdf-rest
 EXPOSE 8080
 
-ENTRYPOINT dumb-init java "$JAVA_OPTS" -Djava.awt.headless=true -jar /opt/verapdf-rest/verapdf-rest-${VERAPDF_REST_VERSION}.jar server /var/opt/verapdf-rest/config/server.yml
+ENTRYPOINT dumb-init java $JAVA_OPTS -Djava.awt.headless=true -jar /opt/verapdf-rest/verapdf-rest-${VERAPDF_REST_VERSION}.jar server /var/opt/verapdf-rest/config/server.yml
