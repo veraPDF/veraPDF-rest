@@ -27,7 +27,7 @@ def test_api_validate_sha_profileid_check(
     }
 
     response = requests.post(
-        get_base_url + "/api/validate/sha/" + profile_id, headers=headers, files=files
+        get_base_url + "/api/validate/" + profile_id, headers=headers, files=files
     )
 
     assert response.status_code == 200
@@ -60,7 +60,7 @@ def test_api_validate_sha_profileid_xml_check(
     }
 
     response = requests.post(
-        get_base_url + "/api/validate/sha/" + profile_id, headers=headers, files=files
+        get_base_url + "/api/validate/" + profile_id, headers=headers, files=files
     )
 
     assert response.status_code == 200
@@ -81,7 +81,7 @@ def test_api_validate_sha_profileid_xml_check(
 def test_api_validate_sha_profileid_html_check(
     profile_id, expected_profile_name, get_base_url
 ):
-    url = get_base_url + "/api/validate/sha/" + profile_id
+    url = get_base_url + "/api/validate/" + profile_id
     headers = {
         "accept": "text/html",
         # requests won't add a boundary if this header is set when you pass files=
