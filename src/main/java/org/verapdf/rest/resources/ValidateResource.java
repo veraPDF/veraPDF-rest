@@ -65,7 +65,7 @@ public class ValidateResource {
             "must be one of: (auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2). " +
             "Selecting 'auto' allows the validator to detect and apply the appropriate specification from the PDF metadata.";
     private static final String PARAM_FILE_SIZE_DESC = "the size of the PDF to be validated in bytes, read from the request header.";
-    private static final String VALIDATION_OP_DESC = "against the selected PDF Specification/Validaton profile and return a report comprising the valdiation results.";
+    private static final String VALIDATION_OP_DESC = "against the selected PDF Specification/Validation profile and return a report comprising the validation results.";
     // java.security.digest name for the SHA-1 algorithm
     private static final String SHA1_NAME = "SHA-1"; //$NON-NLS-1$
     private static final String FILE_SIZE_HEADER = "X-File-Size";
