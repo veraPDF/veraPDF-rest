@@ -58,7 +58,7 @@ public final class ApiResource {
      */
     @GET
     @Path("/info")
-    @Operation(summary = "Returns relavent server information, such as JDK version, OS, etc.")
+    @Operation(summary = "Returns relevant server information, such as JDK version, OS, etc.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Server environment details successfully returned.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Environment.class)),

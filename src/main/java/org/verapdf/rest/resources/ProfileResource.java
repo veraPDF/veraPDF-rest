@@ -134,9 +134,9 @@ public class ProfileResource {
             }) })
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public static Set<RuleId> getProfileRules(
-            @Parameter(description = "The String id of the Validation profile that the rule IDs should be retrieved from, "
+            @Parameter(description = "The String id of the Validation profile that the rule IDs should be retrieved from "
                     +
-                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2") @PathParam("profileId") String profileId) {
+                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)") @PathParam("profileId") String profileId) {
         SortedSet<RuleId> ids = new TreeSet<>(new Profiles.RuleIdComparator());
         for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
             ids.add(rule.getRuleId());
@@ -168,7 +168,7 @@ public class ProfileResource {
             }) })
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public static Set<Rule> getRulesForClause(@Parameter(description = "The string id of the validation profile " +
-            "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2") @PathParam("profileId") String profileId,
+            "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)") @PathParam("profileId") String profileId,
             @Parameter(description = "A string identifying the profile clause to return the rules for.") @PathParam("clause") String clause) {
         SortedSet<Rule> rules = new TreeSet<>(new Profiles.RuleComparator());
         for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
