@@ -64,7 +64,7 @@ public class ProfileResource {
      */
     @GET
     @Path("/ids")
-    @Operation(summary = "Get the set of IDs for the supported validation profiles.")
+    @Operation(summary = "Gets the set of IDs for the supported validation profiles.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The set of validation profile IDs was returned successfully.", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = String.class))),
@@ -108,8 +108,8 @@ public class ProfileResource {
             }) })
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public static ValidationProfile getProfile(
-            @Parameter(description = "The String ID of the Validation profile to retrieve, " +
-                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2") @PathParam("profileId") String profileId) {
+            @Parameter(description = "The String ID of the Validation profile to retrieve " +
+                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)") @PathParam("profileId") String profileId) {
         return DIRECTORY.getValidationProfileById(profileId);
     }
 
@@ -157,7 +157,7 @@ public class ProfileResource {
      */
     @GET
     @Path("/{profileId}/{clause}")
-    @Operation(summary = "Get the set of rules for the selected profile and clause")
+    @Operation(summary = "Gets the set of rules for the selected profile and clause")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Rule.class))),
