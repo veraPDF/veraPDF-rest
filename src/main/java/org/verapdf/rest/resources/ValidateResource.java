@@ -62,7 +62,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
  */
 public class ValidateResource {
     private static final String PARAM_PROFILE_DESC = "the String id of the PDF Specification to validate against. " +
-            "must be one of: (auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2). " +
+            "Possible values: auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2. " +
             "Selecting 'auto' allows the validator to detect and apply the appropriate specification from the PDF metadata.";
     private static final String PARAM_FILE_SIZE_DESC = "the size of the PDF to be validated in bytes, read from the request header.";
     private static final String VALIDATION_OP_DESC = "against the selected PDF Specification/Validation profile and return a report comprising the validation results.";
@@ -82,7 +82,7 @@ public class ValidateResource {
 
     @GET
     @Path("/details")
-    @Operation(summary = "Get component details")
+    @Operation(summary = "Gets component details")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ComponentDetails.class)),
@@ -133,7 +133,7 @@ public class ValidateResource {
 
     @POST
     @Path("/url/{profileId}")
-    @Operation(summary = "Validate PDF located at the supplied URL " + VALIDATION_OP_DESC)
+    @Operation(summary = "Validates PDF located at the supplied URL " + VALIDATION_OP_DESC)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/xml", schema = @Schema(implementation = BatchSummary.class)),
