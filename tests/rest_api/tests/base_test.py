@@ -24,7 +24,7 @@ class BaseClass:
         ("4e", "PDFA_4_E", "PDF/A-4E validation profile", 108, ("6.1.6.2", 1)),
         ("4f", "PDFA_4_F", "PDF/A-4F validation profile", 108, ("6.2.4.2", 3)),
         ("ua1", "PDFUA_1", "PDF/UA-1 validation profile", 104, ("7.18.8", 1)),
-        ("ua2", "PDFUA_2", "PDF/UA-2 validation profile", 91, ("5", 5)),
+        ("ua2", "PDFUA_2", "PDF/UA-2 validation profile", 90, ("5", 5)),
     )
 
     FLAVOURS_LIST = sorted(
