@@ -109,7 +109,7 @@ public class ValidateResource {
      */
     @POST
     @Path("/{profileId}")
-    @Operation(summary = "Validate the uploaded file " + VALIDATION_OP_DESC)
+    @Operation(summary = "Validates the uploaded file " + VALIDATION_OP_DESC)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/xml", schema = @Schema(implementation = BatchSummary.class)),
