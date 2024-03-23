@@ -95,8 +95,6 @@ public class ValidateResource {
     /**
      * @param profileId
      *                                 the String id of the Validation profile
-     *                                 (auto, 1b, 1a, 2b, 2a, 2u,
-     *                                 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
      * @param sha1Hex
      *                                 the hex String representation of the file's
      *                                 SHA-1 hash
