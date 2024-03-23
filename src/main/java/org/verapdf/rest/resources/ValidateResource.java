@@ -115,7 +115,7 @@ public class ValidateResource {
                     @Content(mediaType = "text/html", schema = @Schema(implementation = BatchSummary.class)) }) })
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
-    public static Response validateXml(
+    public static Response validate(
             @Parameter(description = PARAM_PROFILE_DESC) @PathParam("profileId") String profileId,
             @Parameter(description = "the hex String representation of the file's SHA-1 hash", required = false, allowEmptyValue = true) @FormDataParam("sha1Hex") String sha1Hex,
             @Parameter(name = "file", schema = @Schema(implementation = File.class), style = ParameterStyle.FORM, description = "a PDF file uploaded to be validated") @FormDataParam("file") InputStream uploadedInputStream,
@@ -139,7 +139,7 @@ public class ValidateResource {
                     @Content(mediaType = "text/html", schema = @Schema(implementation = BatchSummary.class)) }) })
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
-    public static Response validateXml(
+    public static Response validate(
             @Parameter(description = PARAM_PROFILE_DESC) @PathParam("profileId") String profileId,
             @Parameter(description = "a URL that resolves to PDF resource to be validated") @FormDataParam("url") String urlLink,
             @Parameter(name = FILE_SIZE_HEADER, description = PARAM_FILE_SIZE_DESC) @HeaderParam(FILE_SIZE_HEADER) Integer fileSize,
