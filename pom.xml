@@ -166,7 +166,7 @@
 
     <dependency>
       <groupId>org.verapdf</groupId>
-      <artifactId>validation-model</artifactId>
+      <artifactId>validation-model-arlington</artifactId>
       <version>${verapdf.validation.version}</version>
     </dependency>
 

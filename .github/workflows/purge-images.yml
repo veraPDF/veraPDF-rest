@@ -19,6 +19,6 @@ jobs:
           account-type: org
           org-name: veraPDF
           keep-at-least: 1
-          skip-tags: dev
+          skip-tags: dev, arlington
           untagged-only: false
           token: ${{ secrets.PAT }}

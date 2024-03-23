@@ -36,6 +36,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
  */
 @Singleton
 public class ProfileResource {
+    
+    public static final String PROFILE_ID_PARAMETER_DESCRIPTION = "The String ID of the Validation profile " +
+            "(arlington1.0, arlington1.1, arlington1.2, arlington1.3, arlington1.4, arlington1.5, arlington1.6, arlington1.7, arlington2.0)";
+    
     private static final ProfileDirectory DIRECTORY = Profiles.getVeraProfileDirectory();
     private static final Set<ProfileDetails> DETAILS = new HashSet<>();
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VeraPDF | REST Client</title>
+  <title>Arlington PDF model checker | REST Client</title>
 
   <!-- Bootstrap -->
   <!-- Latest compiled and minified CSS -->
@@ -27,10 +27,10 @@
   <div class="container theme-showcase" role="main">
     <div class="jumbotron" role="header">
       <div class="container theme-showcase radialmask" role="header">
-        <img class="shadowed" src="/img/veraPDF-logo-400.png">
-        <h1>PDF/A and PDF/UA Validation</h1>
+        <img class="shadowed" src="/img/arlington-vera-logo.png">
+        <h1>Arlington PDF model checker</h1>
         <p>
-          Prototype PDF/A and PDF/UA validation REST service with web client
+          Prototype Arlington PDF model checker REST service with web client
         </p>
       </div>
     </div>
@@ -46,7 +46,7 @@
         </div>
         <div class="stepwizard-step">
           <a href="#validate" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
-          <p>Validate</p>
+          <p>Checking</p>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
       <div class="row setup-content" id="choose">
         <div class="col-xs-12">
           <div class="col-md-12">
-            <h3>Choose a PDF file to validate.</h3>
+            <h3>Choose a PDF file to checking.</h3>
             <div class="form-wrapper">
                 <div class="input-group">
                   <span class="input-group-btn">
@@ -81,19 +81,15 @@
               <label class="control-label">Validation Profile:</label>
               <select id="flavour" class="form-control" onchange="changeFlavour(this.value)">
                 <option value="auto">Autodetect</option>
-                <option value="1b">PDF/A-1b Basic</option>
-                <option value="1a">PDF/A-1a Accessible</option>
-                <option value="2b">PDF/A-2b Basic</option>
-                <option value="2a">PDF/A-2a Accessible</option>
-                <option value="2u">PDF/A-2u Unicode</option>
-                <option value="3b">PDF/A-3b Basic</option>
-                <option value="3a">PDF/A-3a Accessible</option>
-                <option value="3u">PDF/A-3u Unicode</option>
-                <option value="4">PDF/A-4 Basic</option>
-                <option value="4e">PDF/A-4e Engineering</option>
-                <option value="4f">PDF/A-4f EmbeddedFiles</option>
-                <option value="ua1">PDF/UA-1</option>
-                <option value="ua2">PDF/UA-2</option>
+                <option value="arlington1.0">Arlington 1.0</option>
+                <option value="arlington1.1">Arlington 1.1</option>
+                <option value="arlington1.2">Arlington 1.2</option>
+                <option value="arlington1.3">Arlington 1.3</option>
+                <option value="arlington1.4">Arlington 1.4</option>
+                <option value="arlington1.5">Arlington 1.5</option>
+                <option value="arlington1.6">Arlington 1.6</option>
+                <option value="arlington1.7">Arlington 1.7</option>
+                <option value="arlington2.0">Arlington 2.0</option>
               </select>
             </div>
             <div class="form-group">
@@ -124,41 +120,18 @@
     </form>
       <div>
           <h4>Disclaimer</h4>
-          <p>This demo service is based on the offical veraPDF Docker image <a href="https://hub.docker.com/r/verapdf/rest" target="_blank">veraPDF/rest</a> and is 
+          <p>This demo service is based on the offical Arlington PDF model checker Docker image <a href="https://hub.docker.com/r/verapdf/rest" target="_blank">veraPDF/rest</a> and is 
           only intended to be used for testing. More details on the configuration of this service and tweaking its parameters for production use can be found at 
-          <a href="https://github.com/verapdf/verapdf-rest" target="_blank">https://github.com/verapdf/verapdf-rest</a>.</p>
-          <h4>Supported validation profiles</h4>
+          <a href="https://github.com/verapdf/verapdf-rest" target="_blank">https://github.com/veraPDF/veraPDF-rest/tree/arlington</a>.</p>
+          <h4>Supported profiles</h4>
           <ul>
-            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000318.shtml">PDF/A</a></li>
-              <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000125.shtml">PDF/A-1
-                  - PDF 1.4</a> |
-                  <a href="/api/profiles/1b" target="_blank">1b Basic</a> |
-                  <a href="/api/profiles/1a" target="_blank">1a Accessible</a>
-              </li>
-            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000319.shtml">PDF/A-2
-                 - PDF 1.7</a> |
-                <a href="/api/profiles/2b" target="_blank">2b Basic</a> |
-                <a href="/api/profiles/2a" target="_blank">2a Accessible</a> |
-                <a href="/api/profiles/2u" target="_blank">2u Unicode</a>
-            </li>
-            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000360.shtml">PDF/A-3
-                - PDF 1.7 with embedded files</a> |
-                <a href="/api/profiles/3b" target="_blank">3b Basic</a> |
-                <a href="/api/profiles/3a" target="_blank">3a Accessible</a> |
-                <a href="/api/profiles/3u" target="_blank">3u Unicode</a>
-            </li>
-            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000532.shtml">PDF/A-4
-                - PDF 2.0</a> |
-                <a href="/api/profiles/4" target="_blank">4</a> |
-                <a href="/api/profiles/4e" target="_blank">4e Engineering</a> |
-                <a href="/api/profiles/4f" target="_blank">4f EmbeddedFiles</a>
-            </li>
-            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000350.shtml">PDF/UA-1</a> |
-                <a href="/api/profiles/ua1" target="_blank">ua1</a>
-            </li>
-            <li><a target="_blank" href="https://www.iso.org/standard/82278.html">PDF/UA-2</a> |
-                <a href="/api/profiles/ua2" target="_blank">ua2</a>
-            </li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000030.shtml">PDF</a></li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000316.shtml">PDF 1.0 - 1.3</a></li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000122.shtml">PDF 1.4</a></li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000123.shtml">PDF 1.5</a></li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000276.shtml">PDF 1.6</a></li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000277.shtml">PDF 1.7</a></li>
+            <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000474.shtml">PDF 2.0</a></li>
           </ul>
       </div>
       <div id="footer">
@@ -176,7 +149,7 @@
   </script>
   <script id="spinner-template" type="text/html">
     <div class="alert alert-info" role="alert">
-      <p class="text-center"><span class="fa fa-refresh fa-spin fa-2x"></span> Uploading and validating.</p>
+      <p class="text-center"><span class="fa fa-refresh fa-spin fa-2x"></span> Uploading and checking.</p>
     </div>
   </script>
 

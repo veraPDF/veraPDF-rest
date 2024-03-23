@@ -2,7 +2,7 @@ name: Publish image to GitHub Packages
 on:
   push:
     branches:
-      - 'integration'
+      - 'arlington'
         
 env:
   REGISTRY: ghcr.io
@@ -35,8 +35,8 @@ jobs:
           context: .
           push: true
           file: Dockerfile
-          build-args: GH_CHECKOUT=integration
-          tags: ghcr.io/verapdf/rest:dev
+          build-args: GH_CHECKOUT=arlington
+          tags: ghcr.io/verapdf/rest:arlington
           labels: ${{ steps.meta.outputs.labels }}
 
   test:
@@ -50,17 +50,3 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
-
-      - name: Run rest-api-tests-with-docker-image
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.WORKFLOW_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-             owner: 'veraPDF',
-             repo: 'veraPDF-rest',
-             workflow_id: 'rest-api-tests-with-docker-image.yml',
-             ref: 'integration'
-            })
-
-          
