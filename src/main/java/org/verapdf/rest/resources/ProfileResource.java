@@ -3,16 +3,10 @@
  */
 package org.verapdf.rest.resources;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import javax.inject.Singleton;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 import org.verapdf.pdfa.flavours.PDFAFlavour;
@@ -36,6 +30,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
  */
 @Singleton
 public class ProfileResource {
+    
+    public static final String PROFILE_ID_PARAMETER_DESCRIPTION = "The String ID of the Validation profile " +
+            "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)";
+    
+    public static final String PROFILE_NOT_FOUND_MESSAGE = "The requested profile was not found";
     private static final ProfileDirectory DIRECTORY = Profiles.getVeraProfileDirectory();
     private static final Set<ProfileDetails> DETAILS = new HashSet<>();
 
@@ -91,8 +90,7 @@ public class ProfileResource {
 
     /**
      * @param profileId
-     *                  the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-     *                  3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
+     *                  the String id of the Validation profile
      * @return a validation profile selected by id
      */
     @GET
@@ -102,21 +100,23 @@ public class ProfileResource {
             @ApiResponse(responseCode = "200", description = "The requested profile was found and returned.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ValidationProfile.class)),
                     @Content(mediaType = "application/xml", schema = @Schema(implementation = ValidationProfile.class)) }),
-            @ApiResponse(responseCode = "404", description = "The requested profile was not found", content = {
+            @ApiResponse(responseCode = "404", description = PROFILE_NOT_FOUND_MESSAGE, content = {
                     @Content(mediaType = "application/json"),
                     @Content(mediaType = "application/xml")
             }) })
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public static ValidationProfile getProfile(
-            @Parameter(description = "The String ID of the Validation profile to retrieve " +
-                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)") @PathParam("profileId") String profileId) {
-        return DIRECTORY.getValidationProfileById(profileId);
+            @Parameter(description = PROFILE_ID_PARAMETER_DESCRIPTION) @PathParam("profileId") String profileId) {
+        try {
+            return DIRECTORY.getValidationProfileById(profileId);
+        } catch (NoSuchElementException e) {
+            throw new NotFoundException(PROFILE_NOT_FOUND_MESSAGE);
+        }
     }
 
     /**
      * @param profileId
-     *                  the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-     *                  3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
+     *                  the String id of the Validation profile
      * @return the {@link java.util.Set} of
      *         {@link org.verapdf.pdfa.validation.profiles.RuleId}s for the selected
      *         Validation Profile
@@ -128,26 +128,27 @@ public class ProfileResource {
             @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RuleId.class))),
                     @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = RuleId.class))) }),
-            @ApiResponse(responseCode = "404", description = "The requested profile was not found.", content = {
+            @ApiResponse(responseCode = "404", description = PROFILE_NOT_FOUND_MESSAGE, content = {
                     @Content(mediaType = "application/json"),
                     @Content(mediaType = "application/xml")
             }) })
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public static Set<RuleId> getProfileRules(
-            @Parameter(description = "The String id of the Validation profile that the rule IDs should be retrieved from "
-                    +
-                    "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)") @PathParam("profileId") String profileId) {
+            @Parameter(description = PROFILE_ID_PARAMETER_DESCRIPTION) @PathParam("profileId") String profileId) {
         SortedSet<RuleId> ids = new TreeSet<>(new Profiles.RuleIdComparator());
-        for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
-            ids.add(rule.getRuleId());
+        try {
+            for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
+                ids.add(rule.getRuleId());
+            }
+        } catch (NoSuchElementException e) {
+            throw new NotFoundException(PROFILE_NOT_FOUND_MESSAGE);
         }
         return ids;
     }
 
     /**
      * @param profileId
-     *                  the String id of the Validation profile (1b, 1a, 2b, 2a, 2u,
-     *                  3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)
+     *                  the String id of the Validation profile
      * @param clause
      *                  a {@link java.lang.String} identifying the profile clause to
      *                  return the Rules for
@@ -162,19 +163,22 @@ public class ProfileResource {
             @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Rule.class))),
                     @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Rule.class))) }),
-            @ApiResponse(responseCode = "404", description = "The requested profile was not found", content = {
+            @ApiResponse(responseCode = "404", description = PROFILE_NOT_FOUND_MESSAGE, content = {
                     @Content(mediaType = "application/json"),
                     @Content(mediaType = "application/xml")
             }) })
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public static Set<Rule> getRulesForClause(@Parameter(description = "The string id of the validation profile " +
-            "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)") @PathParam("profileId") String profileId,
+    public static Set<Rule> getRulesForClause(@Parameter(description = PROFILE_ID_PARAMETER_DESCRIPTION) @PathParam("profileId") String profileId,
             @Parameter(description = "A string identifying the profile clause to return the rules for.") @PathParam("clause") String clause) {
         SortedSet<Rule> rules = new TreeSet<>(new Profiles.RuleComparator());
-        for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
-            if (rule.getRuleId().getClause().equalsIgnoreCase(clause)) {
-                rules.add(rule);
+        try {
+            for (Rule rule : DIRECTORY.getValidationProfileById(profileId).getRules()) {
+                if (rule.getRuleId().getClause().equalsIgnoreCase(clause)) {
+                    rules.add(rule);
+                }
             }
+        } catch (NoSuchElementException e) {
+            throw new NotFoundException(PROFILE_NOT_FOUND_MESSAGE);
         }
         return rules;
     }
