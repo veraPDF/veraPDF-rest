@@ -155,9 +155,10 @@ function callVeraPdfService () {
   $.when($('#results').empty()).then(addFileConfigurationToResult());
   var spinHtml = $('#spinner-template').html()
   $('#results').html(spinHtml)
+  var selectedFile = $('#fileInput')[0].files[0];
   pdfaValidator.validate(formData, flavour, function () {
     $.when(renderResult()).done(showDownloadBtn());
-  }, outputFormat)
+  }, outputFormat, selectedFile.size)
 }
 
 function addFileConfigurationToResult () {
