@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<appConfig type="VALIDATE_EXTRACT" format="XML" isVerbose="false">
+    <fixerFolder>/tmp/bats-run-7DQP9j/test/3</fixerFolder>
+    <wikiPath>https://baseURL.com/wiki/</wikiPath>
+    <policyFile></policyFile>
+</appConfig>

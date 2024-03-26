@@ -30,7 +30,7 @@
         <img class="shadowed" src="/img/veraPDF-logo-400.png">
         <h1>PDF/A and PDF/UA Validation</h1>
         <p>
-          Prototype PDF/A and PDF/UA validation REST service with client.
+          Prototype PDF/A and PDF/UA validation REST service with web client
         </p>
       </div>
     </div>
@@ -93,6 +93,7 @@
                 <option value="4e">PDF/A-4e Engineering</option>
                 <option value="4f">PDF/A-4f EmbeddedFiles</option>
                 <option value="ua1">PDF/UA-1</option>
+                <option value="ua2">PDF/UA-2</option>
               </select>
             </div>
             <div class="form-group">
@@ -122,7 +123,11 @@
       </div>
     </form>
       <div>
-          <h4>Validation Profile Information</h4>
+          <h4>Disclaimer</h4>
+          <p>This demo service is based on the official veraPDF Docker image <a href="https://hub.docker.com/r/verapdf/rest" target="_blank">veraPDF/rest</a> and is 
+          only intended to be used for testing. More details on the configuration of this service and tweaking its parameters for production use can be found at 
+          <a href="https://github.com/verapdf/verapdf-rest" target="_blank">https://github.com/verapdf/verapdf-rest</a>.</p>
+          <h4>Supported validation profiles</h4>
           <ul>
             <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000318.shtml">PDF/A</a></li>
               <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000125.shtml">PDF/A-1
@@ -150,6 +155,9 @@
             </li>
             <li><a target="_blank" href="https://www.loc.gov/preservation/digital/formats/fdd/fdd000350.shtml">PDF/UA-1</a> |
                 <a href="/api/profiles/ua1" target="_blank">ua1</a>
+            </li>
+            <li><a target="_blank" href="https://www.iso.org/standard/82278.html">PDF/UA-2</a> |
+                <a href="/api/profiles/ua2" target="_blank">ua2</a>
             </li>
           </ul>
       </div>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<featuresConfig>
+    <enabledFeatures>
+        <feature>INFORMATION_DICTIONARY</feature>
+    </enabledFeatures>
+</featuresConfig>

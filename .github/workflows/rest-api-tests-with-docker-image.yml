@@ -1,0 +1,66 @@
+name: Rest-api tests - ghcr.io/verapdf/rest:dev
+
+on:
+  schedule:
+    - cron: "05 09 * * 1"
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Rest-api tests running in Docker container
+    runs-on: ubuntu-latest
+    container: ubuntu
+    services:
+      verarest:
+        image: ghcr.io/verapdf/rest:dev
+        ports:
+          - 8080:8080
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Preparing Linux packages(Python and more ...)
+        if: runner.os == 'Linux'
+        run: |
+          echo pwd: $PWD
+          echo dir: $(ls ./)
+
+          apt-get update -y
+          apt-get install python3 -y
+          apt-get install python3-pip -y
+
+          pip install -r requirements.txt
+          echo $(pip list)
+          echo pwd: $PWD
+
+      - name: Running rest-api tests ...
+        run: |
+          mkdir ./results    
+          echo dir: $(ls ./)
+          pytest --base_url=http://verarest:8080  --html=./results/report.html  ./tests/
+
+      - name: Generating report
+        uses: actions/upload-artifact@v1
+        if: success() || failure()
+        with:
+          name: Results
+          path: "./results"
+
+      - name: Notify slack tests succeeded
+        if: success()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel_id: C03E3JJGLQL
+          status: SUCCESS
+          color: good
+
+      - name: Notify slack tests failed
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel_id: C03E3JJGLQL
+          status: FAILED
+          color: danger
