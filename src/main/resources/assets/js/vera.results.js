@@ -31,7 +31,7 @@ var pdfaValidator = {
       }
     })
   },
-  validate: function (formData, flavour, callback, contentType = "json") {
+  validate: function (formData, flavour, callback, contentType = "json", fileSize) {
     $.ajax({
       url: '/api/validate/sha/' + flavour + '/',
       type: 'POST',
@@ -39,6 +39,9 @@ var pdfaValidator = {
       dataType: contentType,
       contentType: false,
       processData: false,
+      headers: {
+        "X-File-Size": fileSize
+      },
       success: function (data, textStatus, jqXHR) {
         pdfaValidator.result = jqXHR.responseText
         callback()
