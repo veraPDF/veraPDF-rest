@@ -32,7 +32,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class ProfileResource {
     
     public static final String PROFILE_ID_PARAMETER_DESCRIPTION = "The String ID of the Validation profile " +
-            "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2)";
+            "(1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1, ua2, wt1r or wt1a)";
     
     public static final String PROFILE_NOT_FOUND_MESSAGE = "The requested profile was not found";
     private static final ProfileDirectory DIRECTORY = Profiles.getVeraProfileDirectory();
