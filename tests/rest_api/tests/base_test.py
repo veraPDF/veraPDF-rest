@@ -10,7 +10,7 @@ class BaseClass:
     CREATOR = "veraPDF Consortium"
     FILE_TO_PARSE = "./tests/Resources/a.pdf"
     PROFILE_GENERAL = (
-        # 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2
+        # 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1, ua2, wt1a or wt1r
         # profile id, pdfa flavour, profile name, profile rule count, clause & clause items
         ("1b", "PDFA_1_B", "PDF/A-1B validation profile", 128, ("6.7.3", 8)),
         ("1a", "PDFA_1_A", "PDF/A-1A validation profile", 134, ("6.1.7", 3)),
@@ -25,6 +25,8 @@ class BaseClass:
         ("4f", "PDFA_4_F", "PDF/A-4F validation profile", 108, ("6.2.4.2", 3)),
         ("ua1", "PDFUA_1", "PDF/UA-1 validation profile", 104, ("7.18.8", 1)),
         ("ua2", "PDFUA_2", "PDF/UA-2 + Tagged PDF validation profile", 1744, ("5", 5)),
+        ("wt1a", "WTPDF_1_0_ACCESSIBILITY", "WTPDF 1.0 Accessibility validation profile", 86, ("5", 5)),
+        ("wt1r", "WTPDF_1_0_REUSE", "WTPDF 1.0 Reuse validation profile", 73, ("5", 5)),
     )
 
     FLAVOURS_LIST = sorted(

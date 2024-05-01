@@ -266,8 +266,7 @@ public class ValidateResource {
     }
 
     private static BatchSummary processStream(SeekableInputStream inputStream, String fileName, ProcessorConfig config,
-            OutputStream stream,
-            VeraAppConfig appConfig, FormatOption formatOption)
+            OutputStream stream, VeraAppConfig appConfig, FormatOption formatOption)
             throws IOException {
         BatchSummary summary;
         try (BatchProcessor processor = ProcessorFactory.fileBatchProcessor(config)) {
