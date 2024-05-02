@@ -13,10 +13,11 @@ import java.net.URL;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.InternalServerErrorException;
@@ -61,6 +62,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
  */
 public class ValidateResource {
+
+    private static final Logger LOGGER = Logger.getLogger(ValidateResource.class.getCanonicalName());
+
     private static final String PARAM_PROFILE_DESC = "the String id of the PDF Specification to validate against. " +
             "Possible values: auto, arlington1.0, arlington1.1, arlington1.2, arlington1.3, arlington1.4, arlington1.5, arlington1.6, arlington1.7, arlington2.0. " +
             "Selecting 'auto' allows the validator to detect and apply the appropriate specification from the PDF metadata.";
@@ -152,7 +156,13 @@ public class ValidateResource {
     }
 
     public static void setMaxFileSize(Integer maxFileSize) {
-        ValidateResource.maxFileSize = maxFileSize;
+        int maxValue = Integer.MAX_VALUE / CONVERTER_MB_TO_B;
+        if (maxFileSize < maxValue && maxFileSize > 0) {
+            maxValue = maxFileSize;
+        } else {
+            LOGGER.log(Level.WARNING, "Incorrect value of maxFileSize parameter. maxFileSize set to " + maxValue);
+        }
+        ValidateResource.maxFileSize = maxValue;
     }
 
     private static InputStream validateFile(InputStream uploadedInputStream,
