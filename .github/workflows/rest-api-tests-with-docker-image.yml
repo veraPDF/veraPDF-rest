@@ -28,7 +28,7 @@ jobs:
           apt-get install python3 -y
           apt-get install python3-pip -y
 
-          pip install -r requirements.txt
+          -H pip install -r requirements.txt
           echo $(pip list)
           echo pwd: $PWD
 
