@@ -28,7 +28,7 @@ jobs:
           apt-get install python3 -y
           apt-get install python3-pip -y
 
-          apt install python3.12-venv
+          apt install -y python3.12-venv
           python3 -m venv .venv
           source .venv/bin/activate
           python3 -m pip install -r requirements.txt
