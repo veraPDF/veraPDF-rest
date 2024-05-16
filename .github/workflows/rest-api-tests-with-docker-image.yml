@@ -34,6 +34,8 @@ jobs:
           python3 -m venv .venv
           echo . .venv/bin/activate
           . .venv/bin/activate
+          echo which python
+          which python
           echo python3 -m pip install -r requirements.txt
           python3 -m pip install -r requirements.txt
           echo $(pip list)
