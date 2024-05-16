@@ -29,7 +29,9 @@ jobs:
           apt-get install python3-pip -y
           echo install python3-venv -y
           apt-get install python3-venv -y
-
+          
+          echo #!/bin/bash
+          #!/bin/bash
           echo python3 -m venv .venv
           python3 -m venv .venv
           echo source .venv/bin/activate
