@@ -32,7 +32,9 @@ jobs:
 
           echo python3 -m venv .venv
           python3 -m venv .venv
+          echo source .venv/bin/activate
           source .venv/bin/activate
+          echo python3 -m pip install -r requirements.txt
           python3 -m pip install -r requirements.txt
           echo $(pip list)
           echo pwd: $PWD
