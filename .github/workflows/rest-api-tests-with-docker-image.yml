@@ -45,6 +45,8 @@ jobs:
         run: |
           mkdir ./results    
           echo dir: $(ls ./)
+          echo which python
+          which python
           pytest --base_url=http://verarest:8080  --html=./results/report.html  ./tests/
 
       - name: Generating report
