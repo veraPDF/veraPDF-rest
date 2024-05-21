@@ -8,6 +8,7 @@ on:
 
 jobs:
   purge-images:
+    if: github.repository == 'veraPDF/veraPDF-rest'
     name: Delete old untagged images from ghcr.io
     runs-on: ubuntu-latest
     steps:

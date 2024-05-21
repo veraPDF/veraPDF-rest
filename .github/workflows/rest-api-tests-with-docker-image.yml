@@ -7,6 +7,7 @@ on:
 
 jobs:
   test:
+    if: github.repository == 'veraPDF/veraPDF-rest'
     name: Rest-api tests running in Docker container
     runs-on: ubuntu-latest
     container: ubuntu
