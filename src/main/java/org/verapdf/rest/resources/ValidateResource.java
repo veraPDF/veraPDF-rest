@@ -121,7 +121,7 @@ public class ValidateResource {
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
     public static Response validate(
             @Parameter(description = PARAM_PROFILE_DESC) @PathParam("profileId") String profileId,
-            @Parameter(description = "the hex String representation of the file's SHA-1 hash", required = false, allowEmptyValue = true) @FormDataParam("sha1Hex") String sha1Hex,
+            @Parameter(description = "the hex String representation of the file's SHA-1 hash. If this is submitted it will be checked against the SHA1 value calculated from the uploaded file.", required = false, allowEmptyValue = true) @FormDataParam("sha1Hex") String sha1Hex,
             @Parameter(name = "file", schema = @Schema(implementation = File.class), style = ParameterStyle.FORM, description = "a PDF file uploaded to be validated") @FormDataParam("file") InputStream uploadedInputStream,
             @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader,
             @Parameter(name = FILE_SIZE_HEADER, description = PARAM_FILE_SIZE_DESC) @HeaderParam(FILE_SIZE_HEADER) Integer fileSize,
@@ -221,7 +221,9 @@ public class ValidateResource {
                     CONVERTER_MB_TO_B * maxFileSize);
             if (sha1Hex != null && !sha1Hex.equalsIgnoreCase(
                     Hex.encodeHexString(((DigestInputStream) inputStream).getMessageDigest().digest()))) {
-                throw new BadRequestException("Incorrect sha1 value");
+                throw new BadRequestException(String.format(
+                        "Calculated SHA1 value %s does not match the provided value %s",
+                        Hex.encodeHexString(((DigestInputStream) inputStream).getMessageDigest().digest()), sha1Hex));
             }
             return seekableInputStream;
         } catch (VeraPDFParserException e) {
