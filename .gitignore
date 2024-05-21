@@ -28,7 +28,7 @@ bin/
 # Ignore external libraries
 bats-assert/
 bats-support/
-verapdf/
+./verapdf/
 *.pyc
 *.log
 *.html
