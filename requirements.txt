@@ -23,7 +23,7 @@ pytest==7.4.3
 pytest-html==4.1.1
 pytest-metadata==3.0.0
 python-stdnum==1.19
-requests==2.31.0
+requests==2.32.0
 soupsieve==2.5
 tomli==2.0.1
 typing-extensions==4.8.0
