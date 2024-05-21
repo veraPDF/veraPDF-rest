@@ -9,6 +9,7 @@ env:
 
 jobs:
   push_to_registry:
+    if: github.repository == 'veraPDF/veraPDF-rest'
     name: Build and push Docker image to GitHub packages
     runs-on: ubuntu-latest
 
