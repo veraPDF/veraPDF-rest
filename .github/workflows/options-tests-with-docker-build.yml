@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    if: github.repository == 'veraPDF/veraPDF-rest'
     runs-on: ubuntu-latest
 
     steps:
