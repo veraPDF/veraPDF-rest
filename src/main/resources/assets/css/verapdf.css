@@ -16,10 +16,10 @@ body {
 }
 
 .jumbotron img {
-  padding: 0px;
+  padding: 0;
   float: left;
   width: 200px;
-  margin: 20px 10px 0 0;
+  margin: 0 10px 0 0;
 }
 
 .shadowed {
@@ -157,4 +157,75 @@ table {
   overflow-wrap: anywhere;
   font-weight: 600;
   font-size: 0.95em;
+}
+
+.header-for-name {
+  display: flex;
+  align-items: flex-start;
+}
+
+.header-for-name h1{
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+@media screen and (max-width: 1200px) {
+  .header-for-name {
+    position: relative;
+  }
+
+  .header-for-name h1 {
+    margin-bottom: 40px;
+  }
+
+  .header-for-name p {
+    position: absolute;
+    left: 0;
+    bottom: -20px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .header-for-name {
+    margin-bottom: 10px;
+  }
+
+  .header-for-name p {
+    bottom: -35px;
+  }
+  .header-for-name h1 {
+    margin-bottom: 50px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .header-for-name h1 {
+    margin-bottom: 80px;
+  }
+
+  .header-for-name p {
+    bottom: -35px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .jumbotron .container {
+    padding-left: 20px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .header-for-name {
+    flex-direction: column;
+  }
+
+  .header-for-name h1 {
+    margin-top: 10px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .header-for-name h1 {
+    margin-bottom: 100px;
+  }
 }
