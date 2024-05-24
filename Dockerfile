@@ -36,9 +36,9 @@ FROM debian:bullseye-slim
 # Set for additional arguments passed to the java run command, no default
 ARG JAVA_OPTS
 ENV JAVA_OPTS=$JAVA_OPTS
-# Specify the veraPDF REST version if you want to (to be used in build automation), default is 1.25.1
+# Specify the veraPDF REST version if you want to (to be used in build automation), default is 1.26.1
 ARG VERAPDF_REST_VERSION
-ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-1.25.1}
+ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-1.26.1}
 
 COPY --from=app-builder /usr/local/bin/dumb-init /usr/local/bin/dumb-init
 RUN chmod +x /usr/local/bin/dumb-init
