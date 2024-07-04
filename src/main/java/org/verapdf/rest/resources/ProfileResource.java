@@ -79,7 +79,7 @@ public class ProfileResource {
      */
     @GET
     @Path("/flavours")
-    @Operation(summary = "Returns the set of supported PDF/A and PDF/UA flavours supported by the server.")
+    @Operation(summary = "Returns the set of supported flavours supported by the server.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The set of supported flavours was returned successfully.", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = PDFAFlavour.class))),

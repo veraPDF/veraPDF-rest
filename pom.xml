@@ -9,7 +9,7 @@
     <version>1.27.1</version>
   </parent>
 
-  <artifactId>verapdf-rest</artifactId>
+  <artifactId>verapdf-rest-arlington</artifactId>
   <version>1.27.1</version>
 
   <name>veraPDF RESTful web services</name>
