@@ -37,7 +37,7 @@ jobs:
           push: true
           file: Dockerfile
           build-args: GH_CHECKOUT=arlington
-          tags: ghcr.io/verapdf/rest:arlington
+          tags: ghcr.io/verapdf/arlington:dev
           labels: ${{ steps.meta.outputs.labels }}
 
   test:
