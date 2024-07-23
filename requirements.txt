@@ -20,6 +20,7 @@ pydantic-core==2.10.1
 pydantic-xml==2.4.0
 pydentic==0.0.1.dev3
 pytest==7.4.3
+pytest-base-url==2.1.0
 pytest-html==4.1.1
 pytest-metadata==3.0.0
 python-stdnum==1.19
