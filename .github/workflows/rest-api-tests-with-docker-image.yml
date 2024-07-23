@@ -28,19 +28,26 @@ jobs:
           apt-get update -y
           apt-get install python3 -y
           apt-get install python3-pip -y
-
-          apt install -y python3-venv
+          echo install python3-venv -y
+          apt-get install python3-venv -y
+          
+          echo python3 -m venv .venv
           python3 -m venv .venv
-          source .venv/bin/activate
+          echo . .venv/bin/activate
+          . .venv/bin/activate
+          echo which python
+          which python
+          echo python3 -m pip install -r requirements.txt
           python3 -m pip install -r requirements.txt
           echo $(pip list)
           echo pwd: $PWD
-
-      - name: Running rest-api tests ...
-        run: |
-          mkdir ./results    
+          mkdir ./results 
+          echo $(pip list)
           echo dir: $(ls ./)
-          pytest --base_url=http://verarest:8080  --html=./results/report.html  ./tests/
+          echo $(which python)
+          echo $(pytest --version)
+          pytest --base_url=http://verarest:8080 --html=./results/report.html ./tests/
+          echo $(ls ./results/)
 
       - name: Generating report
         uses: actions/upload-artifact@v1
