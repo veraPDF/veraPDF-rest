@@ -6,7 +6,7 @@ from tests.rest_api.model.api_validate_details.api_validate_details import (
     ApiValidateDetails,
 )
 
-details_version = re.compile(r"\d\.\d\d\.\d\d\d")
+details_version = re.compile(r"\d.\d\d.\d+")
 
 
 def test_api_validate_details_check(get_base_url):
