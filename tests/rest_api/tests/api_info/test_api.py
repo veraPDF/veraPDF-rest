@@ -5,7 +5,7 @@ from tests.rest_api.model.api_info.api_endpoint import ApiEndpoint, ApiEndpointX
 
 VERAPDF_REST_ID = "verapdf-rest"
 buildDate_regex = re.compile(r"^[0-9]+$")
-version_regex = re.compile(r"^[0-9]\.[0-9]\.[0-9]-SNAPSHOT")
+version_regex = re.compile(r"^[0-9]\.[0-9][0-9]\.[0-9]")
 
 
 def test_api_check(get_base_url):
