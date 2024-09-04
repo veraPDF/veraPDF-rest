@@ -30,6 +30,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          build-args: GH_CHECKOUT=arlington-master
           push: true
           tags: verapdf/arlington:latest,verapdf/arlington:v1.26.1
           labels: ${{ steps.meta.outputs.labels }}
