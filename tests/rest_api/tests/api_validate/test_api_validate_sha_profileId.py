@@ -36,7 +36,7 @@ def test_api_validate_sha_profileid_check(
 
     assert sha1_info["report"]["jobs"][0]["itemDetails"]["name"] == "a.pdf"
     assert (
-        sha1_info["report"]["jobs"][0]["validationResult"]["profileName"]
+        sha1_info["report"]["jobs"][0]["validationResult"][0]["profileName"]
         == expected_profile_name
     )
 
