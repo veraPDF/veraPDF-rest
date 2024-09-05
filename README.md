@@ -1,12 +1,16 @@
-veraPDF-rest
+veraPDF Arlington
 =========================
 
-*Dropwizard based veraPDF REST Services*
+*Dropwizard based REST Service for veraPDF implementation of the PDF Arlington model*
 
 Introduction
 ------------
-This represents a development prototype, there's little in the way of exception handling and unit testing.
-The services are capable of serving up XML or JSON dependent upon the content type requested.
+
+The [PDF Arlington Model](https://github.com/pdf-association/arlington-pdf-model) covers the requirements of PDF object model as specified in ISO 32000-2:2020 (PDF 2.0, including [resolved errata](https://pdf-issues.pdfa.org/)) as well as _some_ (but not all!) aspects from earlier Adobe PDF references and various extensions (identified by the predicate `fn:Extension(...)`). 
+
+veraPDF adds the support for this model by translating TSV files into its own validation profile based on [veraPDF formal grammar](https://docs.verapdf.org/validation/rules/) for validation rules. See the [veraPDF GitHub repository for Arlington](https://github.com/veraPDF/veraPDF-arlington-tools) for the implementation details.
+
+The image provides validation services that receive PDF in the request and are capable of serving up XML or JSON dependent upon the content type requested.
 
 ### Technologies
 The project's a Maven managed Java application, the application is based on
@@ -25,7 +29,7 @@ Running DockerHub image
 
 To run the veraPDF rest image from DockerHub:
 ```
-docker run -d -p 8080:8080 -p 8081:8081 verapdf/rest:latest
+docker run -d -p 8080:8080 -p 8081:8081 verapdf/arlington:latest
 ```
 
 Port 8080 serves both the veraPDF web interface and the veraPDF Rest API. Port 8081 serves the DropWizard diagnostics.
@@ -41,7 +45,7 @@ the entire build tool-chain.
 Tested lightly:
 
 ```
-docker build -t verapdf-rest:latest . && docker run -d -p 8080:8080 -p 8081:8081 verapdf-rest:latest
+docker build -t verapdf-arlington:latest . && docker run -d -p 8080:8080 -p 8081:8081 verapdf-arlington:latest
 ```
 
 If you encounter an error during docker run about "Can't set cookie dm_task_set_cookie failed", try:
@@ -50,7 +54,7 @@ If you encounter an error during docker run about "Can't set cookie dm_task_set_
 sudo dmsetup udevcomplete_all
 ```
 
-The built verapdf-rest image is notable smaller than just the base Maven image even before you consider the
+The built verapdf-arlington image is notable smaller than just the base Maven image even before you consider the
 downloaded dependencies so the multi-stage build is definitely worthwhile:
 
 ```
@@ -67,33 +71,23 @@ anything which would be easier on Ubuntu:
 verapdf-rest        latest              c69af6445b35        31 seconds ago      103MB
 ```
 
-There's an "official" docker image that can be grabbed by `docker pull verapdf/rest:latest`.
-
-### Kubernetes
-
-To use veraPDF-rest in as k8s deployment with load balancing and dynamic number of replicas (2 to 4) run the command:
-```
-kubectl apply -f kubernetes.yaml
-```
-
-### Project structure
-Currently it's delivered as a single Maven module, veraPDF-rest.
+There's an "official" docker image that can be grabbed by `docker pull verapdf/arlington:latest`.
 
 ### Swagger documentation
 Swagger documentation is available at [localhost:8080/swagger](http://localhost:8080/swagger).
 
 ### Want to try?
-First clone this project, go to the project directory, checkout to `master` branch for release version or `integration` 
+First clone this project, go to the project directory, checkout to `arlington-master` branch for release version or `arlington` 
 branch for dev version, and then build the Maven project:
 
 	git clone https://github.com/veraPDF/veraPDF-rest.git
 	cd veraPDF-rest
-	git checkout master
+	git checkout arlington-master
 	mvn clean package
 
 To start up the server:
 
-	java -jar target/verapdf-rest-1.26.1.jar server server.yml
+	java -jar target/verapdf-rest-arlington-1.26.1.jar server server.yml
 
 Go to [localhost:8080/api/info](http://localhost:8080/api/info) to see if the server is running, you should
 see something like:
@@ -121,29 +115,17 @@ You can also list the available validation profiles at
 [localhost:8080/api/profiles](http://localhost:8080/api/profiles):
 
     <Set>
-      <item>
-        <dateCreated>1456384991133</dateCreated>
+        <item>
+        <name>Arlington PDF 1.4 profile</name>
+        <description>Rules against PDF 1.4 Specification</description>
         <creator>veraPDF Consortium</creator>
-        <name>PDF/A-1A validation profile</name>
-        <description>Validation rules against ISO 19005-1:2005, Cor.1:2007 and Cor.2:2011</description>
+        <dateCreated>1653331528872</dateCreated>
       </item>
       <item>
-        <dateCreated>1456480484892</dateCreated>
+        <name>Arlington PDF 1.7 profile</name>
+        <description>Rules against PDF 1.7 Specification</description>
         <creator>veraPDF Consortium</creator>
-        <name>PDF/A-2B validation profile</name>
-        <description>Validation rules against ISO 19005-2:2011</description>
-      </item>
-      <item>
-        <dateCreated>1456480579375</dateCreated>
-        <creator>veraPDF Consortium</creator>
-        <name>PDF/A-3B validation profile</name>
-        <description>Validation rules against ISO 19005-3:2012</description>
-      </item>
-      <item>
-      <dateCreated>1456385033982</dateCreated>
-      <creator>veraPDF Consortium</creator>
-      <name>PDF/A-1B validation profile</name>
-      <description>Validation rules against ISO 19005-1:2005, Cor.1:2007 and Cor.2:2011</description>
+        <dateCreated>1653331528872</dateCreated>
       </item>
     </Set>
 
@@ -157,52 +139,54 @@ Shows some simple information about the server environment on [localhost:8080/ap
     curl localhost:8080/api/info
 
 ### Validation Profile services
-Validation Profiles contain the PDF/A and PDF/UA validation tests and their description.  A list of profile details is available
+Validation Profiles contain the validation tests for specific PDF versions and their description.  A list of profile details is available
 at [localhost:8080/api/profiles/](http://localhost:8080/api/profiles/). To test with curl:
 
     curl localhost:8080/api/profiles
 
-Each profile is identified by a letter code made up the PDF/A or PDF/UA version and level. These are listed at
+Each profile is identified by a prefix `arlington` concatenated with the PDF version: `arlington1.1`, `arlington1.2` and so on. These are listed at
 [localhost:8080/api/profiles/ids/](http://localhost:8080/api/profiles/ids/):
 
     curl localhost:8080/api/profiles/ids
 
 An individual profile can be obtained by ID at `http://localhost:8080/api/profiles/*id*`, e.g.
-[localhost:8080/api/profiles/1b/](http://localhost:8080/api/profiles/1b/):
+[localhost:8080/api/profiles/1b/](http://localhost:8080/api/profiles/arlington2.0/):
 
-    curl localhost:8080/api/profiles/1b
+    curl localhost:8080/api/profiles/arlington2.0
 
 The curl call defaults to a JSON representation, to obtain the XML profile:
 
-    curl localhost:8080/api/profiles/1b -H  "Accept:application/xml"
+    curl localhost:8080/api/profiles/arlington2.0 -H  "Accept:application/xml"
+	
+A special profile ID `auto` is reserved for the automatic selection of the Arlington profile based on the version specified in the PDF document. This will default to `arlington1.4` for any PDF version prior or equal to 1.4, to `arlington1.7` for PDF versions from 1.5 to 1.7, and to `arlington2.0` for PDFs declaring version 2.0.
 
 ### Validation services
 Validation is also available as a POST request at `http://localhost:8080/api/validate/*id*`. To test with curl:
 
-    curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b
+    curl -F "file=@samples/pdf.pdf" localhost:8080/api/validate/arlington1.7
 
 or to obtain the result in XML:
 
-    curl -F "file=@veraPDF-corpus/PDF_A-1b/6.1 File structure/6.1.12 Implementation limits/veraPDF test suite 6-1-12-t01-fail-a.pdf" localhost:8080/api/validate/1b -H "Accept:application/xml"
+    curl -F "file=@samples/pdf.pdf" localhost:8080/api/validate/arlington1.7 -H "Accept:application/xml"
 
 Validation of PDF given by URL is available as a POST request `http://localhost:8080/api/validate/url/*id*`. To test with curl:
 
 ```
-curl -F "url=http://www.pdf995.com/samples/pdf.pdf" localhost:8080/api/validate/url/1b
+curl -F "url=http://www.pdf995.com/samples/pdf.pdf" localhost:8080/api/validate/url/arlington1.7
 ```
 
-To validate your local files you need to add folder with files to the docker container. To run the veraPDF rest image
+To validate your local files you need to add folder with files to the docker container. To run the veraPDF Arlington image
 with your local files run docker image with bind mount `-v /local/path/of/the/folder:/home/folder`. 
-For example, to run the veraPDF rest image from DockerHub with your local files:
+For example, to run the veraPDF Arlington image from DockerHub with your local files:
 
 ```
-docker run -d -p 8080:8080 -p 8081:8081 -v /local/path/of/the/folder:/home/folder verapdf/rest:latest
+docker run -d -p 8080:8080 -p 8081:8081 -v /local/path/of/the/folder:/home/folder verapdf/arlington:latest
 ```
  
 and use curl:
 
 ```
-curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/1b
+curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/arlington1.7
 ```
 
 To add file size in validation POST requests you need to send request with header (key `X-File-Size` and value in bytes). 
@@ -220,14 +204,14 @@ Additionally, this folder includes `server.yml` which contains [HTTP server conf
 #### Limiting PDF file size
 To set the maximum file size of PDF, change `maxFileSize` in `server.yml` file or run docker image as:
 ```
-docker run -d -p 8080:8080 -p 8081:8081 -e VERAPDF_MAX_FILE_SIZE=1 verapdf/rest:latest
+docker run -d -p 8080:8080 -p 8081:8081 -e VERAPDF_MAX_FILE_SIZE=1 verapdf/arlington:latest
 ```
 where VERAPDF_MAX_FILE_SIZE is 1MB. The default maximum PDF file size is 100MB.
 
 #### Maximum heap size
 To change maximum Java heap size in docker image run:
 ```
-docker run -d -p 8080:8080 -p 8081:8081 -e JAVA_OPTS="-Xmx128M" verapdf/rest:latest
+docker run -d -p 8080:8080 -p 8081:8081 -e JAVA_OPTS="-Xmx128M" verapdf/arlington:latest
 ```
 
 #### Additional configuration parameters
