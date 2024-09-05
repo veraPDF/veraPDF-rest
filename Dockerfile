@@ -8,7 +8,7 @@ WORKDIR /build
 
 # A specifc git branch, tag or commit to build from, defaults to master (release build)
 ARG GH_CHECKOUT
-ENV GH_CHECKOUT=${GH_CHECKOUT:-arlington}
+ENV GH_CHECKOUT=${GH_CHECKOUT:-arlington-master}
 
 # Clone the repo, checkout the revision and build the application
 RUN git clone https://github.com/veraPDF/veraPDF-rest.git
