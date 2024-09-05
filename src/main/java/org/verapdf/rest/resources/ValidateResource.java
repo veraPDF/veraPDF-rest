@@ -208,7 +208,7 @@ public class ValidateResource {
     private static SeekableInputStream createInputStream(InputStream uploadedInputStream, String sha1Hex,
             Integer fileSize) {
         InputStream inputStream = uploadedInputStream;
-        if (sha1Hex != null) {
+        if (sha1Hex != null && !sha1Hex.isEmpty()) {
             MessageDigest sha1 = getDigest();
             inputStream = new DigestInputStream(uploadedInputStream, sha1);
         }
@@ -219,7 +219,7 @@ public class ValidateResource {
         try {
             SeekableInputStream seekableInputStream = SeekableInputStream.getSeekableStream(inputStream,
                     CONVERTER_MB_TO_B * maxFileSize);
-            if (sha1Hex != null && !sha1Hex.equalsIgnoreCase(
+            if (sha1Hex != null && !sha1Hex.isEmpty() && !sha1Hex.equalsIgnoreCase(
                     Hex.encodeHexString(((DigestInputStream) inputStream).getMessageDigest().digest()))) {
                 throw new BadRequestException(String.format(
                         "Calculated SHA1 value %s does not match the provided value %s",
