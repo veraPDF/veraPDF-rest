@@ -30,7 +30,7 @@ def test_api_validate_details_check(profile_id, expected_profile_name, get_base_
 
     assert "a.pdf" in (details["report"]["jobs"][0]["itemDetails"]["name"])
     assert (
-        details["report"]["jobs"][0]["validationResult"]["profileName"]
+        details["report"]["jobs"][0]["validationResult"][0]["profileName"]
         == expected_profile_name
     )
 
