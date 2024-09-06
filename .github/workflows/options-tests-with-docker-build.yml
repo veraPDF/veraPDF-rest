@@ -32,6 +32,8 @@ jobs:
         run: |
           echo whoami: $(whoami)
           mkdir ./results
+          
+          set -ex && apk --no-cache add sudo
 
           sudo apk update -y
           sudo apk add git -y
