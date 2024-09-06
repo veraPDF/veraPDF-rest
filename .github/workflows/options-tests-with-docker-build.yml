@@ -33,11 +33,11 @@ jobs:
           echo whoami: $(whoami)
           mkdir ./results
 
-          sudo apt-get update -y
-          sudo apt install git -y
+          sudo apk update -y
+          sudo apk add git -y
 
-          sudo apt-get install python3 -y
-          sudo apt-get install python3-pip -y
+          sudo apk add python3 -y
+          sudo apk add python3-pip -y
 
           sudo pip install junit2html
 
