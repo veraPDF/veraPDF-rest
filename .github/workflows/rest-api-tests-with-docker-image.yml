@@ -25,11 +25,11 @@ jobs:
           echo pwd: $PWD
           echo dir: $(ls ./)
 
-          apk update -y
-          apk add python3 -y
-          apk add python3-pip -y
+          apt-get update -y
+          apt-get install python3 -y
+          apt-get install python3-pip -y
           echo install python3-venv -y
-          apk add python3-venv -y
+          apt-get install python3-venv -y
           
           echo python3 -m venv .venv
           python3 -m venv .venv
