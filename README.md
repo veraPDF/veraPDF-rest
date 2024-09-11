@@ -8,9 +8,9 @@ Introduction
 
 The [PDF Arlington Model](https://github.com/pdf-association/arlington-pdf-model) covers the requirements of PDF object model as specified in ISO 32000-2:2020 (PDF 2.0, including [resolved errata](https://pdf-issues.pdfa.org/)) as well as _some_ (but not all!) aspects from earlier Adobe PDF references and various extensions (identified by the predicate `fn:Extension(...)`). 
 
-veraPDF adds the support for this model by translating TSV files into its own validation profile based on [veraPDF formal grammar](https://docs.verapdf.org/validation/rules/) for validation rules. See the [veraPDF GitHub repository for Arlington](https://github.com/veraPDF/veraPDF-arlington-tools) for the implementation details.
+veraPDF adds the support for this model by translating TSV files into its own profile syntax based on [veraPDF formal grammar](https://docs.verapdf.org/validation/rules/) for veraPDF rules. See the [veraPDF GitHub repository for Arlington](https://github.com/veraPDF/veraPDF-arlington-tools) for the implementation details.
 
-The image provides validation services that receive PDF in the request and are capable of serving up XML or JSON dependent upon the content type requested.
+The image provides services that receive PDF in the request, perform its check against a specified Arlington profile and serve up XML or JSON dependent upon the content type requested.
 
 ### Technologies
 The project's a Maven managed Java application, the application is based on
@@ -111,7 +111,7 @@ see something like:
 		</server>
 	</Environment>
 
-You can also list the available validation profiles at
+You can also list the available Arlington profiles at
 [localhost:8080/api/profiles](http://localhost:8080/api/profiles):
 
     <Set>
@@ -138,8 +138,8 @@ Shows some simple information about the server environment on [localhost:8080/ap
 
     curl localhost:8080/api/info
 
-### Validation Profile services
-Validation Profiles contain the validation tests for specific PDF versions and their description.  A list of profile details is available
+### Arlington profile services
+Arlington profile contain collections of checks for a specific PDF version and their descriptions.  A list of profile details is available
 at [localhost:8080/api/profiles/](http://localhost:8080/api/profiles/). To test with curl:
 
     curl localhost:8080/api/profiles
@@ -160,8 +160,8 @@ The curl call defaults to a JSON representation, to obtain the XML profile:
 	
 A special profile ID `auto` is reserved for the automatic selection of the Arlington profile based on the version specified in the PDF document. This will default to `arlington1.4` for any PDF version prior or equal to 1.4, to `arlington1.7` for PDF versions from 1.5 to 1.7, and to `arlington2.0` for PDFs declaring version 2.0.
 
-### Validation services
-Validation is also available as a POST request at `http://localhost:8080/api/validate/*id*`. To test with curl:
+### Performing checks
+Executing the check of a PDF against a specific Arlington profile is available as a POST request at `http://localhost:8080/api/validate/*id*`. To test with curl:
 
     curl -F "file=@samples/pdf.pdf" localhost:8080/api/validate/arlington1.7
 
@@ -169,13 +169,13 @@ or to obtain the result in XML:
 
     curl -F "file=@samples/pdf.pdf" localhost:8080/api/validate/arlington1.7 -H "Accept:application/xml"
 
-Validation of PDF given by URL is available as a POST request `http://localhost:8080/api/validate/url/*id*`. To test with curl:
+One can check a PDF given by URL as a POST request `http://localhost:8080/api/validate/url/*id*`. To test with curl:
 
 ```
 curl -F "url=http://www.pdf995.com/samples/pdf.pdf" localhost:8080/api/validate/url/arlington1.7
 ```
 
-To validate your local files you need to add folder with files to the docker container. To run the veraPDF Arlington image
+To check your local files you need to add folder with files to the docker container. To run the veraPDF Arlington image
 with your local files run docker image with bind mount `-v /local/path/of/the/folder:/home/folder`. 
 For example, to run the veraPDF Arlington image from DockerHub with your local files:
 
@@ -189,7 +189,7 @@ and use curl:
 curl -F "url=file:///home/folder/pdf.pdf" localhost:8080/api/validate/url/arlington1.7
 ```
 
-To add file size in validation POST requests you need to send request with header (key `X-File-Size` and value in bytes). 
+To limit PDF file size in the POST requests you need to send request with header (key `X-File-Size` and value in bytes). 
 For example to use  request `http://localhost:8080/api/validate/url/*id*` with file which size is 300 KB run:
 
 ```
