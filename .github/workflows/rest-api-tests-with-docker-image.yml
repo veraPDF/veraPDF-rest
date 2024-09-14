@@ -50,7 +50,7 @@ jobs:
           echo $(ls ./results/)
 
       - name: Generating report
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: Results
