@@ -67,7 +67,7 @@ jobs:
           junit2html report.xml --report-matrix report.html
 
       - name: Uploading report
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: Results
