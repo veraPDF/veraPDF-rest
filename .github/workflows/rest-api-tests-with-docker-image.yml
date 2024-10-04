@@ -1,4 +1,4 @@
-name: Rest-api tests - ghcr.io/verapdf/rest:dev
+name: Rest-api tests - ghcr.io/verapdf/rest:latest
 
 on:
   schedule:
@@ -13,7 +13,7 @@ jobs:
     container: ubuntu
     services:
       verarest:
-        image: ghcr.io/verapdf/rest:dev
+        image: ghcr.io/verapdf/rest:latest
         ports:
           - 8080:8080
     steps:
