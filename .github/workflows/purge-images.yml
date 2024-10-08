@@ -15,7 +15,7 @@ jobs:
       - name: Delete all PR containers older than a week
         uses: snok/container-retention-policy@v2
         with:
-          image-names: rest arlington
+          image-names: rest, arlington
           cut-off: 1 week ago UTC
           account-type: org
           org-name: veraPDF
