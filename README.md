@@ -93,7 +93,7 @@ branch for dev version, and then build the Maven project:
 
 To start up the server:
 
-	java -jar target/verapdf-rest-1.26.1.jar server server.yml
+	java -jar target/verapdf-rest-1.26.5.jar server server.yml
 
 Go to [localhost:8080/api/info](http://localhost:8080/api/info) to see if the server is running, you should
 see something like:
