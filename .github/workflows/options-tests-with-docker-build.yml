@@ -32,7 +32,6 @@ jobs:
         run: |
           echo whoami: $(whoami)
           mkdir ./results
-          
           sudo apt-get update -y
           sudo apt install git -y
 
