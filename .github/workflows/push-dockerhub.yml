@@ -32,5 +32,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: verapdf/rest:latest,verapdf/rest:v1.26.1
+          tags: verapdf/rest:latest,verapdf/rest:v1.28.1
           labels: ${{ steps.meta.outputs.labels }}
