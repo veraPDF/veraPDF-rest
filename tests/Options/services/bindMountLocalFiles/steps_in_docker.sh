@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 ls -la /home/
-apt-get update
-apt-get install curl -y
+apk update
+apk add --no-cache curl
 cd /home/Res_tmp/
 echo -e "\n"
 

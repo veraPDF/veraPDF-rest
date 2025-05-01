@@ -1,4 +1,4 @@
-name: Rest-api tests - ghcr.io/verapdf/rest:dev
+name: Rest-api tests - ghcr.io/verapdf/rest:latest
 
 on:
   schedule:
@@ -13,7 +13,7 @@ jobs:
     container: ubuntu
     services:
       verarest:
-        image: ghcr.io/verapdf/rest:dev
+        image: ghcr.io/verapdf/rest:latest
         ports:
           - 8080:8080
     steps:
@@ -41,17 +41,16 @@ jobs:
           python3 -m pip install -r requirements.txt
           echo $(pip list)
           echo pwd: $PWD
-
-      - name: Running rest-api tests ...
-        run: |
-          mkdir ./results    
+          mkdir ./results 
+          echo $(pip list)
           echo dir: $(ls ./)
-          echo which python
-          which python
-          pytest --base_url=http://verarest:8080  --html=./results/report.html  ./tests/
+          echo $(which python)
+          echo $(pytest --version)
+          pytest --base_url=http://verarest:8080 --html=./results/report.html ./tests/
+          echo $(ls ./results/)
 
       - name: Generating report
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: Results

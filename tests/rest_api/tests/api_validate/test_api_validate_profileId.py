@@ -30,7 +30,7 @@ def test_api_validate_details_check(profile_id, expected_profile_name, get_base_
 
     assert "a.pdf" in (details["report"]["jobs"][0]["itemDetails"]["name"])
     assert (
-        details["report"]["jobs"][0]["validationResult"]["profileName"]
+        details["report"]["jobs"][0]["validationResult"][0]["profileName"]
         == expected_profile_name
     )
 
@@ -87,7 +87,7 @@ def test_api_validate_details_html_check(
     html = page.content.decode("utf-8")
     tree = etree.parse(StringIO(html), parser=parser)
     file = tree.xpath('//*[@id="table1"]//tr[1]//td[2]/text()')[0]
-    profile = tree.xpath('//*[@id="table1"]//tr[2]//td[2]/text()')[0]
+    profile = tree.xpath('//*[@id="table1"]//tr[2]//td[2]/a[1]/text()')[0]
 
     assert file == "a.pdf"
     assert profile == expected_profile_name

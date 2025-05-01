@@ -1,5 +1,6 @@
 name: Publish image to GitHub Packages
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'integration'
@@ -37,7 +38,7 @@ jobs:
           push: true
           file: Dockerfile
           build-args: GH_CHECKOUT=integration
-          tags: ghcr.io/verapdf/rest:dev
+          tags: ghcr.io/verapdf/rest:latest
           labels: ${{ steps.meta.outputs.labels }}
 
   test:

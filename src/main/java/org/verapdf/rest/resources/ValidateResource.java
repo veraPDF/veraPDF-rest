@@ -66,7 +66,7 @@ public class ValidateResource {
     private static final Logger LOGGER = Logger.getLogger(ValidateResource.class.getCanonicalName());
 
     private static final String PARAM_PROFILE_DESC = "the String id of the PDF Specification to validate against. " +
-            "Possible values: auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1 or ua2. " +
+            "Possible values: auto, 1b, 1a, 2b, 2a, 2u, 3b, 3a, 3u, 4, 4e, 4f, ua1, ua2, wt1a or wt1r. " +
             "Selecting 'auto' allows the validator to detect and apply the appropriate specification from the PDF metadata.";
     private static final String PARAM_FILE_SIZE_DESC = "the size of the PDF to be validated in bytes, read from the request header.";
     private static final String VALIDATION_OP_DESC = "against the selected PDF Specification/Validation profile and return a report comprising the validation results.";
@@ -208,7 +208,7 @@ public class ValidateResource {
     private static SeekableInputStream createInputStream(InputStream uploadedInputStream, String sha1Hex,
             Integer fileSize) {
         InputStream inputStream = uploadedInputStream;
-        if (sha1Hex != null) {
+        if (sha1Hex != null && !sha1Hex.isEmpty()) {
             MessageDigest sha1 = getDigest();
             inputStream = new DigestInputStream(uploadedInputStream, sha1);
         }
@@ -219,7 +219,7 @@ public class ValidateResource {
         try {
             SeekableInputStream seekableInputStream = SeekableInputStream.getSeekableStream(inputStream,
                     CONVERTER_MB_TO_B * maxFileSize);
-            if (sha1Hex != null && !sha1Hex.equalsIgnoreCase(
+            if (sha1Hex != null && !sha1Hex.isEmpty() && !sha1Hex.equalsIgnoreCase(
                     Hex.encodeHexString(((DigestInputStream) inputStream).getMessageDigest().digest()))) {
                 throw new BadRequestException(String.format(
                         "Calculated SHA1 value %s does not match the provided value %s",
@@ -266,8 +266,7 @@ public class ValidateResource {
     }
 
     private static BatchSummary processStream(SeekableInputStream inputStream, String fileName, ProcessorConfig config,
-            OutputStream stream,
-            VeraAppConfig appConfig, FormatOption formatOption)
+            OutputStream stream, VeraAppConfig appConfig, FormatOption formatOption)
             throws IOException {
         BatchSummary summary;
         try (BatchProcessor processor = ProcessorFactory.fileBatchProcessor(config)) {
