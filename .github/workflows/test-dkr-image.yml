@@ -15,7 +15,7 @@ jobs:
           - 8080:8080
     steps:
       - name: Install wget 
-        run: apk update; apk add wget -y
+        run: apt-get update; apt-get install wget -y
       - name: Test Profiles endpoint
         run: wget -O- http://verarest:8080/api/profiles
       - name: Test 1B profile endpoint
