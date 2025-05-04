@@ -32,8 +32,8 @@ import javax.ws.rs.core.MediaType;
 @Path("/api")
 @Tag(name = "veraPDF")
 @OpenAPIDefinition(info = @Info(title = "veraPDF API", description = "A REST service API for veraPDF", version = "V1.28.1", license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0")), servers = {
-        @Server(url = "https://demo.verapdf.org", description = "default"),
-        @Server(url = "https://dev.verapdf-rest.duallab.com", description = "dev"),
+        @Server(url = "https://arlington.verapdf.org", description = "default"),
+        @Server(url = "https://dev.arlington.duallab.com", description = "dev"),
         @Server(url = "http://localhost:8080", description = "local") })
 
 public final class ApiResource {
