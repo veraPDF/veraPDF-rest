@@ -1,8 +1,9 @@
 name: Publish Docker image
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ arlington-master ]
+    branches: [ master ]
 
 jobs:
   push_to_registry:
@@ -23,14 +24,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: verapdf/arlington
+          images: verapdf/rest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
           file: ./Dockerfile
-          build-args: GH_CHECKOUT=arlington-master
           push: true
-          tags: verapdf/arlington:latest,verapdf/arlington:v1.26.1
+          tags: verapdf/rest:latest,verapdf/rest:v1.28.1
           labels: ${{ steps.meta.outputs.labels }}

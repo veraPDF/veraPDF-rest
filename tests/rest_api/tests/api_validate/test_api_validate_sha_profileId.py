@@ -36,7 +36,7 @@ def test_api_validate_sha_profileid_check(
 
     assert sha1_info["report"]["jobs"][0]["itemDetails"]["name"] == "a.pdf"
     assert (
-        sha1_info["report"]["jobs"][0]["validationResult"]["profileName"]
+        sha1_info["report"]["jobs"][0]["validationResult"][0]["profileName"]
         == expected_profile_name
     )
 
@@ -103,7 +103,7 @@ def test_api_validate_sha_profileid_html_check(
     tree = etree.parse(StringIO(html), parser=parser)
 
     file = tree.xpath('//*[@id="table1"]//tr[1]//td[2]/text()')[0]
-    profile = tree.xpath('//*[@id="table1"]//tr[2]//td[2]/text()')[0]
+    profile = tree.xpath('//*[@id="table1"]//tr[2]//td[2]/a[1]/text()')[0]
 
     assert file == "a.pdf"
     assert profile == expected_profile_name

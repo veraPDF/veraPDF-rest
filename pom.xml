@@ -6,11 +6,11 @@
   <parent>
     <groupId>org.verapdf</groupId>
     <artifactId>verapdf-parent</artifactId>
-    <version>1.26.1</version>
+    <version>1.28.1</version>
   </parent>
 
   <artifactId>verapdf-rest-arlington</artifactId>
-  <version>1.26.1</version>
+  <version>1.28.1</version>
 
   <name>veraPDF RESTful web services</name>
   <description>JAX-RS web services and client for veraPDF library</description>
@@ -44,7 +44,7 @@
   <properties>
     <dropwizard.version>2.1.7</dropwizard.version>
     <fasterxml.version>2.10.0</fasterxml.version>
-    <verapdf.validation.version>[1.26.0,1.27.0)</verapdf.validation.version>
+    <verapdf.validation.version>[1.28.0,1.29.0)</verapdf.validation.version>
   </properties>
 
   <build>
@@ -161,7 +161,7 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.7</version>
+      <version>2.14.0</version>
     </dependency>
 
     <dependency>
