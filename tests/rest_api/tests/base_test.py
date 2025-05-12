@@ -24,9 +24,9 @@ class BaseClass:
         ("4e", "PDFA_4_E", "PDF/A-4E validation profile", 109, ("6.1.6.2", 1)),
         ("4f", "PDFA_4_F", "PDF/A-4F validation profile", 109, ("6.2.4.2", 3)),
         ("ua1", "PDFUA_1", "PDF/UA-1 validation profile", 106, ("7.18.8", 1)),
-        ("ua2", "PDFUA_2", "PDF/UA-2 + Tagged PDF validation profile", 1724, ("5", 5)),
-        ("wt1a", "WTPDF_1_0_ACCESSIBILITY", "WTPDF 1.0 Accessibility validation profile", 1720, ("8.4.3", 3)),
-        ("wt1r", "WTPDF_1_0_REUSE", "WTPDF 1.0 Reuse validation profile", 1707, ("8.4.5.4", 3)),
+        ("ua2", "PDFUA_2", "PDF/UA-2 + Tagged PDF validation profile", 1723, ("5", 5)),
+        ("wt1a", "WTPDF_1_0_ACCESSIBILITY", "WTPDF 1.0 Accessibility validation profile", 1719, ("8.4.3", 3)),
+        ("wt1r", "WTPDF_1_0_REUSE", "WTPDF 1.0 Reuse validation profile", 1706, ("8.4.5.4", 3)),
     )
 
     FLAVOURS_LIST = sorted(
