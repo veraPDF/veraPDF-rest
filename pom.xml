@@ -43,7 +43,7 @@
 
   <properties>
     <dropwizard.version>2.1.7</dropwizard.version>
-    <fasterxml.version>2.10.0</fasterxml.version>
+    <fasterxml.version>2.15.0</fasterxml.version>
     <verapdf.validation.version>[1.29.0,1.30.0-RC)</verapdf.validation.version>
   </properties>
 
