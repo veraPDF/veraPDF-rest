@@ -33,5 +33,5 @@ jobs:
           file: ./Dockerfile
           build-args: GH_CHECKOUT=arlington-master
           push: true
-          tags: verapdf/arlington:latest,verapdf/arlington:v1.28.1
+          tags: verapdf/arlington:latest,verapdf/arlington:v1.28.2
           labels: ${{ steps.meta.outputs.labels }}
