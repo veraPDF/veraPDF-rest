@@ -18,12 +18,12 @@ import org.verapdf.rest.resources.HomePageResource;
 import org.verapdf.rest.resources.ValidateResource;
 import org.verapdf.rest.resources.ValidationExceptionMapper;
 
-import io.dropwizard.Application;
+import io.dropwizard.core.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.forms.MultiPartBundle;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-import io.dropwizard.views.ViewBundle;
+import io.dropwizard.core.setup.Bootstrap;
+import io.dropwizard.core.setup.Environment;
+import io.dropwizard.views.common.ViewBundle;
 
 /**
  * @author <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
