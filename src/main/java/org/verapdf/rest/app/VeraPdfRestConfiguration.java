@@ -3,7 +3,7 @@
  */
 package org.verapdf.rest.app;
 
-import io.dropwizard.Configuration;
+import io.dropwizard.core.Configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
