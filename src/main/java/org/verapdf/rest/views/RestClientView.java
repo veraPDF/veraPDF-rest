@@ -3,7 +3,7 @@
  */
 package org.verapdf.rest.views;
 
-import io.dropwizard.views.View;
+import io.dropwizard.views.common.View;
 
 /**
  * @author  <a href="mailto:carl@openpreservation.org">Carl Wilson</a>
