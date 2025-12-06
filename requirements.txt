@@ -28,5 +28,5 @@ requests==2.32.4
 soupsieve==2.5
 tomli==2.0.1
 typing-extensions==4.8.0
-urllib3==2.5.0
+urllib3==2.6.0
 xmltodict==0.13.0
