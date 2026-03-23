@@ -124,25 +124,25 @@ You can also list the available validation profiles at
       <item>
         <dateCreated>1456384991133</dateCreated>
         <creator>veraPDF Consortium</creator>
-        <name>PDF/A-1A validation profile</name>
+        <name>PDF/A-1a validation profile</name>
         <description>Validation rules against ISO 19005-1:2005, Cor.1:2007 and Cor.2:2011</description>
       </item>
       <item>
         <dateCreated>1456480484892</dateCreated>
         <creator>veraPDF Consortium</creator>
-        <name>PDF/A-2B validation profile</name>
+        <name>PDF/A-2b validation profile</name>
         <description>Validation rules against ISO 19005-2:2011</description>
       </item>
       <item>
         <dateCreated>1456480579375</dateCreated>
         <creator>veraPDF Consortium</creator>
-        <name>PDF/A-3B validation profile</name>
+        <name>PDF/A-3b validation profile</name>
         <description>Validation rules against ISO 19005-3:2012</description>
       </item>
       <item>
       <dateCreated>1456385033982</dateCreated>
       <creator>veraPDF Consortium</creator>
-      <name>PDF/A-1B validation profile</name>
+      <name>PDF/A-1b validation profile</name>
       <description>Validation rules against ISO 19005-1:2005, Cor.1:2007 and Cor.2:2011</description>
       </item>
     </Set>

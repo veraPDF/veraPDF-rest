@@ -21,7 +21,7 @@ teardown() {
 @test "--flavour, flavour will be applied based on a curl options, flavour=2b" {
 
     run curl -F "file=@$PROJECT_ROOT/Resources/a.pdf" localhost:8080/api/validate/2b  -H 'accept: application/json'
-    assert_output --partial '"profileName" : "PDF/A-2B validation profile"'
+    assert_output --partial '"profileName" : "PDF/A-2b validation profile"'
 
     [ "$status" -eq 0 ]
 }
