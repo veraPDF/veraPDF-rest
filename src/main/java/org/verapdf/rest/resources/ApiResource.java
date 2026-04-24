@@ -31,7 +31,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/api")
 @Tag(name = "veraPDF")
-@OpenAPIDefinition(info = @Info(title = "veraPDF API", description = "A REST service API for veraPDF", version = "V1.31.1", license = @License(name = "MIT", url = "https://opensource.org/licenses/MIT")), servers = {
+@OpenAPIDefinition(info = @Info(title = "veraPDF API", description = "A REST service API for veraPDF", version = "V1.30.1", license = @License(name = "MIT", url = "https://opensource.org/licenses/MIT")), servers = {
         @Server(url = "/", description = "default"),
         @Server(url = "https://arlington.verapdf.org", description = "prod"),
         @Server(url = "https://dev.arlington.duallab.com", description = "dev"),
