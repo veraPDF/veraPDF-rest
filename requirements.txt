@@ -1,5 +1,5 @@
 annotated-types==0.6.0
-black==24.3.0
+black==26.3.1
 certifi==2024.7.4
 charset-normalizer==3.3.2
 click==8.1.7
@@ -19,12 +19,12 @@ pydantic==2.4.2
 pydantic-core==2.10.1
 pydantic-xml==2.4.0
 pydentic==0.0.1.dev3
-pytest==7.4.3
+pytest==9.0.3
 pytest-base-url==2.1.0
 pytest-html==4.1.1
 pytest-metadata==3.0.0
 python-stdnum==1.19
-requests==2.32.4
+requests==2.33.0
 soupsieve==2.5
 tomli==2.0.1
 typing-extensions==4.8.0
