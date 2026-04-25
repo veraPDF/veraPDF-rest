@@ -29,6 +29,6 @@ teardown() {
 
     assert_output --partial "<report>"
     assert_output --partial "<name>a.pdf</name>"
-    assert_output --partial 'profileName="PDF/A-3A validation profile"'
+    assert_output --partial 'profileName="PDF/A-3a validation profile"'
 
 }

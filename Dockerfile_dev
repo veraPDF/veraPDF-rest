@@ -16,7 +16,7 @@ FROM eclipse-temurin:11-jdk-alpine as jre-builder
 
 # Create a custom Java runtime
 RUN "$JAVA_HOME/bin/jlink" \
-         --add-modules java.base,java.logging,java.xml,java.management,java.sql,java.desktop,jdk.crypto.ec \
+         --add-modules java.base,java.compiler,java.logging,java.xml,java.management,java.sql,java.desktop,jdk.crypto.ec \
          --strip-debug \
          --no-man-pages \
          --no-header-files \
@@ -26,9 +26,9 @@ RUN "$JAVA_HOME/bin/jlink" \
 # Now the final application image
 FROM alpine:3
 
-# Specify the veraPDF REST version if you want to (to be used in build automation), default is 1.28.2
+# Specify the veraPDF REST version if you want to (to be used in build automation), default is 1.30.1
 ARG VERAPDF_REST_VERSION
-ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-1.28.2}
+ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-1.30.1}
 
 # Set up dumb-init for process safety: https://github.com/Yelp/dumb-init
 ADD --link https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 /usr/local/bin/dumb-init 
