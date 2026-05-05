@@ -2,6 +2,7 @@ name: PR QA
 
 on:
   pull_request:
+    branches: [ integration ]
     types: [opened, synchronize, reopened]
 
 jobs:
