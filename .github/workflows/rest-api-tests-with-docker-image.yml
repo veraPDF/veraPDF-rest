@@ -10,44 +10,39 @@ jobs:
     if: github.repository == 'veraPDF/veraPDF-rest'
     name: Rest-api tests running in Docker container
     runs-on: ubuntu-latest
-    container: ubuntu
-    services:
-      verarest:
-        image: ghcr.io/verapdf/rest:latest
-        ports:
-          - 8080:8080
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Preparing Linux packages(Python and more ...)
-        if: runner.os == 'Linux'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Start veraPDF REST service
         run: |
-          echo pwd: $PWD
-          echo dir: $(ls ./)
+          docker run -d --name verarest -p 8080:8080 ghcr.io/verapdf/rest:latest
+          sleep 10
+          docker ps | grep verarest
 
-          apt-get update -y
-          apt-get install python3 -y
-          apt-get install python3-pip -y
-          echo install python3-venv -y
-          apt-get install python3-venv -y
-          
-          echo python3 -m venv .venv
-          python3 -m venv .venv
-          echo . .venv/bin/activate
-          . .venv/bin/activate
-          echo which python
-          which python
-          echo python3 -m pip install -r requirements.txt
-          python3 -m pip install -r requirements.txt
-          echo $(pip list)
-          echo pwd: $PWD
-          mkdir ./results 
-          echo $(pip list)
-          echo dir: $(ls ./)
-          echo $(which python)
-          echo $(pytest --version)
-          pytest --base_url=http://verarest:8080 --html=./results/report.html ./tests/
-          echo $(ls ./results/)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          mkdir -p ./results
+          pytest --base_url=http://localhost:8080 --html=./results/report.html ./tests/
+
+      - name: Debug (if tests fail)
+        if: failure()
+        run: |
+          echo "Checking if container is running:"
+          docker ps -a
+          echo "Container logs:"
+          docker logs verarest || echo "No logs available"
+          echo "Testing connection:"
+          curl -v http://localhost:8080/api/version || echo "Service not responding"
 
       - name: Generating report
         uses: actions/upload-artifact@v4
@@ -55,6 +50,12 @@ jobs:
         with:
           name: Results
           path: "./results"
+
+      - name: Clean up Docker container
+        if: always()
+        run: |
+          docker stop verarest || true
+          docker rm verarest || true
 
       - name: Notify slack tests succeeded
         if: success()
