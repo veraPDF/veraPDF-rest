@@ -150,13 +150,39 @@ function changeOutputFormat (newFormat) {
   outputFormat = newFormat;
 }
 
+var extensions = []
+
+function updateExtensions() {
+  extensions = []
+  if (document.getElementById('AAPL')?.checked) extensions.push('AAPL');
+  if (document.getElementById('ADBE_Extn3')?.checked) extensions.push('ADBE_Extn3');
+  if (document.getElementById('C2PA')?.checked) extensions.push('C2PA');
+  if (document.getElementById('EAPDF_1')?.checked) extensions.push('EAPDF_1');
+  if (document.getElementById('ETSI_PAdES')?.checked) extensions.push('ETSI_PAdES');
+  if (document.getElementById('ISO_19005_3')?.checked) extensions.push('ISO_19005_3');
+  if (document.getElementById('ISO_19593')?.checked) extensions.push('ISO_19593');
+  if (document.getElementById('ISO_21812')?.checked) extensions.push('ISO_21812');
+  if (document.getElementById('ISO_TS_24064')?.checked) extensions.push('ISO_TS_24064');
+  if (document.getElementById('ISO_TS_24654')?.checked) extensions.push('ISO_TS_24654');
+  if (document.getElementById('ISO_TS_32001')?.checked) extensions.push('ISO_TS_32001');
+  if (document.getElementById('ISO_TS_32003')?.checked) extensions.push('ISO_TS_32003');
+  if (document.getElementById('ISO_TS_32004')?.checked) extensions.push('ISO_TS_32004');
+  if (document.getElementById('ISO_TS_32007')?.checked) extensions.push('ISO_TS_32007');
+  if (document.getElementById('Malforms')?.checked) extensions.push('Malforms');
+  if (document.getElementById('OpenOffice')?.checked) extensions.push('OpenOffice');
+  if (document.getElementById('PDF_VT2')?.checked) extensions.push('PDF_VT2');
+  if (document.getElementById('WTPDF')?.checked) extensions.push('WTPDF');
+}
+
+
 function callVeraPdfService () {
+  updateExtensions()
   var formData = new FormData($('form')[0])
   $.when($('#results').empty()).then(addFileConfigurationToResult());
   var spinHtml = $('#spinner-template').html()
   $('#results').html(spinHtml)
   var selectedFile = $('#fileInput')[0].files[0];
-  pdfaValidator.validate(formData, flavour, function () {
+  pdfaValidator.validate(formData, flavour, extensions, function () {
     $.when(renderResult()).done(showDownloadBtn());
   }, outputFormat, selectedFile.size)
 }
