@@ -13,6 +13,7 @@ import java.net.URL;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,11 +35,11 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.verapdf.component.ComponentDetails;
 import org.verapdf.core.VeraPDFException;
 import org.verapdf.exceptions.VeraPDFParserException;
+import org.verapdf.extensions.ExtensionObjectType;
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider;
 import org.verapdf.io.SeekableInputStream;
 import org.verapdf.pdfa.Foundries;
 import org.verapdf.pdfa.flavours.PDFAFlavour;
-import org.verapdf.pdfa.results.ValidationResult;
 import org.verapdf.pdfa.validation.validators.ValidatorConfig;
 import org.verapdf.processor.BatchProcessor;
 import org.verapdf.processor.FormatOption;
@@ -125,11 +126,12 @@ public class ValidateResource {
             @Parameter(name = "file", schema = @Schema(implementation = File.class), style = ParameterStyle.FORM, description = "a PDF file uploaded to be validated") @FormDataParam("file") InputStream uploadedInputStream,
             @Parameter(hidden = true) @FormDataParam("file") final FormDataContentDisposition contentDispositionHeader,
             @Parameter(name = FILE_SIZE_HEADER, description = PARAM_FILE_SIZE_DESC) @HeaderParam(FILE_SIZE_HEADER) Integer fileSize,
+            @Parameter(description = "Selected extensions (e.g., AAPL, etc.)") @FormDataParam("extensions") List<String> extensions,
             @HeaderParam("Accept") String accepts) {
         return Response
                 .ok(validateFile(uploadedInputStream, contentDispositionHeader, profileId, sha1Hex,
                         formatOptionFromAccepts(accepts),
-                        fileSize), accepts)
+                        extensions, fileSize), accepts)
                 .build();
     }
 
@@ -147,11 +149,12 @@ public class ValidateResource {
             @Parameter(description = PARAM_PROFILE_DESC) @PathParam("profileId") String profileId,
             @Parameter(description = "a URL that resolves to PDF resource to be validated") @FormDataParam("url") String urlLink,
             @Parameter(name = FILE_SIZE_HEADER, description = PARAM_FILE_SIZE_DESC) @HeaderParam(FILE_SIZE_HEADER) Integer fileSize,
+            @Parameter(description = "Selected extensions (e.g., AAPL, etc.)") @FormDataParam("extensions") List<String> extensions,
             @HeaderParam("Accept") String accepts) {
         return Response
                 .ok(validateUrl(urlLink, profileId,
                         formatOptionFromAccepts(accepts),
-                        fileSize), accepts)
+                        extensions, fileSize), accepts)
                 .build();
     }
 
@@ -167,24 +170,24 @@ public class ValidateResource {
 
     private static InputStream validateFile(InputStream uploadedInputStream,
             FormDataContentDisposition contentDispositionHeader, String profileId,
-            String sha1Hex, FormatOption formatOption, Integer fileSize) {
+            String sha1Hex, FormatOption formatOption, List<String> extensions, Integer fileSize) {
         if (contentDispositionHeader == null) {
             throw new BadRequestException("File is empty");
         }
 
-        return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, sha1Hex, formatOption,
+        return validate(uploadedInputStream, contentDispositionHeader.getFileName(), profileId, sha1Hex, formatOption, extensions,
                 fileSize);
     }
 
     private static InputStream validateUrl(String urlLink, String profileId, FormatOption formatOption,
-            Integer fileSize) {
+                                           List<String> extensions, Integer fileSize) {
         InputStream uploadedInputStream = getInputStreamByUrlLink(urlLink);
 
-        return validate(uploadedInputStream, urlLink, profileId, null, formatOption, fileSize);
+        return validate(uploadedInputStream, urlLink, profileId, null, formatOption, extensions, fileSize);
     }
 
     private static InputStream validate(InputStream uploadedInputStream, String fileName, String profileId,
-            String sha1Hex, FormatOption formatOption, Integer fileSize) {
+            String sha1Hex, FormatOption formatOption, List<String> extensions, Integer fileSize) {
         if (fileName == null) {
             throw new BadRequestException("File name is empty");
         }
@@ -193,6 +196,11 @@ public class ValidateResource {
         PDFAFlavour flavour = PDFAFlavour.byFlavourId(profileId);
         ValidatorConfig validatorConfig = configManager.getValidatorConfig();
         validatorConfig.setFlavour(flavour);
+        if (extensions != null) {
+            for (String extension : extensions) {
+                validatorConfig.getEnabledExtensions().add(ExtensionObjectType.valueOf(extension));
+            }
+        }
         ProcessorConfig config = createProcessorConfig(validatorConfig);
         byte[] outputBytes;
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {

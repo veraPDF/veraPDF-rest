@@ -31,7 +31,12 @@ var pdfaValidator = {
       }
     })
   },
-  validate: function (formData, flavour, callback, contentType = "json", fileSize) {
+  validate: function (formData, flavour, extensions, callback, contentType = "json", fileSize) {
+      if (extensions && extensions.length) {
+          extensions.forEach(ext => {
+              formData.append("extensions", ext);
+          });
+      }
     $.ajax({
       beforeSend(xhrObj) {
         let headerpt1 = (contentType === "html") ? "text/" : "application/";
