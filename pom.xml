@@ -42,10 +42,47 @@
   </repositories>
 
   <properties>
-    <dropwizard.version>3.0.16</dropwizard.version>
+    <dropwizard.version>5.0.2</dropwizard.version>
+    <!-- Dropwizard 5.0.2 brings Jetty 12.1.9; 12.1.10 is the first release
+         with a fix for CVE-2026-10050, so the BOMs are imported explicitly. -->
+    <jetty.version>12.1.12</jetty.version>
+    <swagger.version>2.2.54</swagger.version>
+    <swagger.ui.version>5.32.14</swagger.ui.version>
+    <maven.compiler.release>17</maven.compiler.release>
     <fasterxml.version>2.21.4</fasterxml.version>
     <verapdf.validation.version>[1.31.0,1.32.0-RC)</verapdf.validation.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- These imports have to live in the root POM. Dropwizard's own BOM
+           manages Jackson and Jetty for itself, and a version a dependency
+           manages for itself wins over a plain <version> but loses to a root
+           <dependencyManagement> entry, so setting fasterxml.version alone
+           does not move the transitive jackson-databind. -->
+      <dependency>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>${fasterxml.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-bom</artifactId>
+        <version>${jetty.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.jetty.ee10</groupId>
+        <artifactId>jetty-ee10-bom</artifactId>
+        <version>${jetty.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <build>
     <plugins>
@@ -115,8 +152,8 @@
       <version>${dropwizard.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.fasterxml.jackson.jaxrs</groupId>
-      <artifactId>jackson-jaxrs-xml-provider</artifactId>
+      <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
+      <artifactId>jackson-jakarta-rs-xml-provider</artifactId>
       <version>${fasterxml.version}</version>
       <scope>compile</scope>
     </dependency>
@@ -146,10 +183,26 @@
       <artifactId>dropwizard-assets</artifactId>
       <version>${dropwizard.version}</version>
     </dependency>
+    <!-- com.smoketurner:dropwizard-swagger is not usable here any more: it
+         stops at 4.0.5-1 (released 2024-01-01) with no jakarta or Dropwizard 5
+         build. The spec is now served by registering swagger-jaxrs2's
+         OpenApiResource directly, and the UI from the swagger-ui webjar. -->
     <dependency>
-      <groupId>com.smoketurner</groupId>
-      <artifactId>dropwizard-swagger</artifactId>
-      <version>3.0.0-1</version>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-jaxrs2-jakarta</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>swagger-ui</artifactId>
+      <version>${swagger.ui.version}</version>
+    </dependency>
+
+    <!-- Dropwizard 5 pulls jetty-ee10-servlet but not jetty-ee10-servlets,
+         which is where CrossOriginFilter lives. -->
+    <dependency>
+      <groupId>org.eclipse.jetty.ee10</groupId>
+      <artifactId>jetty-ee10-servlets</artifactId>
     </dependency>
 
     <dependency>
