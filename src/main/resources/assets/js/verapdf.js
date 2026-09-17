@@ -171,6 +171,7 @@ function updateExtensions() {
   if (document.getElementById('Malforms')?.checked) extensions.push('Malforms');
   if (document.getElementById('OpenOffice')?.checked) extensions.push('OpenOffice');
   if (document.getElementById('PDF_VT2')?.checked) extensions.push('PDF_VT2');
+  if (document.getElementById('PDF_X')?.checked) extensions.push('PDF_X');
   if (document.getElementById('WTPDF')?.checked) extensions.push('WTPDF');
 }
 
