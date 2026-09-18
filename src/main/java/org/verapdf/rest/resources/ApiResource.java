@@ -17,10 +17,10 @@ import org.verapdf.ReleaseDetails;
 import org.verapdf.rest.environment.Environment;
 import org.verapdf.rest.environment.Environments;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 /**
  * API wrapper resource, provides routing for child API resources.
