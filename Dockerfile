@@ -1,6 +1,6 @@
 # See https://docs.docker.com/engine/userguide/eng-image/multistage-build/
-# First build the app on a maven open jdk 11 container
-FROM maven:3-eclipse-temurin-11-alpine AS app-builder
+# First build the app on a maven open jdk 21 container
+FROM maven:3-eclipse-temurin-21-alpine AS app-builder
 RUN apk add --no-cache git
 WORKDIR /build
 
@@ -16,15 +16,19 @@ RUN git checkout ${GH_CHECKOUT} && mvn clean package
 
 # Now build a Java JRE for the Alpine application image
 # https://github.com/docker-library/docs/blob/master/eclipse-temurin/README.md#creating-a-jre-using-jlink
-FROM eclipse-temurin:11-jdk-alpine as jre-builder
+FROM eclipse-temurin:21-jdk-alpine as jre-builder
 
-# Create a custom Java runtime
+# Create a custom Java runtime.
+#
+# jdk.unsupported carries sun.misc.Unsafe, which the Swagger classpath
+# scanner reaches for on the first /openapi.json request. Without it that
+# request answers 500 and every request after it answers 200.
 RUN "$JAVA_HOME/bin/jlink" \
-         --add-modules java.base,java.compiler,java.logging,java.xml,java.management,java.sql,java.desktop,jdk.crypto.ec \
+         --add-modules java.base,java.compiler,java.logging,java.xml,java.management,java.sql,java.desktop,jdk.crypto.ec,jdk.unsupported \
          --strip-debug \
          --no-man-pages \
          --no-header-files \
-         --compress=2 \
+         --compress=zip-6 \
          --output /javaruntime
 
 # Now the final application image
