@@ -35,8 +35,7 @@ ARG VERAPDF_REST_VERSION
 ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-1.31.1}
 
 # Set up dumb-init for process safety: https://github.com/Yelp/dumb-init
-ADD --link https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 /usr/local/bin/dumb-init 
-RUN chmod +x /usr/local/bin/dumb-init
+RUN apk add --no-cache dumb-init
 
 # Copy the JRE from the previous stage
 ENV JAVA_HOME=/opt/java/openjdk
