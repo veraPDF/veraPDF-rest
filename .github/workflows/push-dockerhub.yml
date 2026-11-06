@@ -11,6 +11,12 @@ jobs:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
       - name: Check out the repo
         uses: actions/checkout@v3
 
@@ -32,6 +38,7 @@ jobs:
           context: .
           file: ./Dockerfile
           build-args: GH_CHECKOUT=arlington-master
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: verapdf/arlington:latest,verapdf/arlington:v1.30.3
           labels: ${{ steps.meta.outputs.labels }}

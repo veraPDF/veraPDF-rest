@@ -16,6 +16,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
       - uses: actions/checkout@v3
         
       - name: Log in to the Container registry
@@ -38,6 +44,7 @@ jobs:
           push: true
           file: Dockerfile
           build-args: GH_CHECKOUT=arlington
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/verapdf/arlington:latest
           labels: ${{ steps.meta.outputs.labels }}
 
