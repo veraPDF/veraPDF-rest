@@ -1,6 +1,6 @@
 # See https://docs.docker.com/engine/userguide/eng-image/multistage-build/
 # First build the app on a maven open jdk 11 container
-FROM maven:3-eclipse-temurin-11-alpine AS dev-builder
+FROM maven:3-amazoncorretto-11-alpine AS dev-builder
 WORKDIR /build
 
 # Copy the current dev source branch to a local build dir
@@ -12,7 +12,7 @@ RUN mvn clean package
 
 # Now build a Java JRE for the Alpine application image
 # https://github.com/docker-library/docs/blob/master/eclipse-temurin/README.md#creating-a-jre-using-jlink
-FROM eclipse-temurin:11-jdk-alpine as jre-builder
+FROM amazoncorretto:11-alpine-jdk AS jre-builder
 
 # Create a custom Java runtime
 RUN "$JAVA_HOME/bin/jlink" \
@@ -24,19 +24,18 @@ RUN "$JAVA_HOME/bin/jlink" \
          --output /javaruntime
 
 # Now the final application image
-FROM alpine:3
+FROM alpine:3.24
 
 # Specify the veraPDF REST version if you want to (to be used in build automation), default is 1.31.1
 ARG VERAPDF_REST_VERSION
 ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-1.31.1}
 
 # Set up dumb-init for process safety: https://github.com/Yelp/dumb-init
-ADD --link https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 /usr/local/bin/dumb-init 
-RUN chmod +x /usr/local/bin/dumb-init
+RUN apk add --no-cache dumb-init
 
 # Copy the JRE from the previous stage
 ENV JAVA_HOME=/opt/java/openjdk
-ENV PATH "${JAVA_HOME}/bin:${PATH}"
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 COPY --from=jre-builder /javaruntime $JAVA_HOME
 
 # Since this is a running network service we'll create an unprivileged account
