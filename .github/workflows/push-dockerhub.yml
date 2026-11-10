@@ -39,5 +39,5 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: verapdf/rest:latest,verapdf/rest:v1.30.3
+          tags: verapdf/rest:latest,verapdf/rest:v1.30.4
           labels: ${{ steps.meta.outputs.labels }}
