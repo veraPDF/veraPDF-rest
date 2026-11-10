@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>verapdf-rest-arlington</artifactId>
-  <version>1.30.3</version>
+  <version>1.30.4</version>
 
   <name>veraPDF RESTful web services</name>
   <description>JAX-RS web services and client for veraPDF library</description>

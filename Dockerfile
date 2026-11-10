@@ -32,9 +32,9 @@ RUN "$JAVA_HOME/bin/jlink" \
 # Now the final application image
 FROM alpine:3.24
 
-# Specify the veraPDF REST version if you want to (to be used in build automation), default is 1.30.3
+# Specify the veraPDF REST version if you want to (to be used in build automation), default is 1.30.4
 ARG VERAPDF_REST_VERSION
-ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-1.30.3}
+ENV VERAPDF_REST_VERSION=${VERAPDF_REST_VERSION:-1.30.4}
 
 # Set up dumb-init for process safety: https://github.com/Yelp/dumb-init
 RUN apk add --no-cache dumb-init
